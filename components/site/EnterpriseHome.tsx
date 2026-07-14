@@ -1,4 +1,5 @@
 "use client";
+import { ArrowDown, ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import ArchitectureMap from "./ArchitectureMap";
 import ContactExperience from "./ContactExperience";
@@ -17,10 +18,10 @@ export default function EnterpriseHome() {
 					<p className="hero-lead">{copy.hero.lead}</p>
 					<div className="button-group">
 						<Link className="button button--primary" href="#contacto">
-							{copy.hero.primary} <span aria-hidden>↗</span>
+							{copy.hero.primary} <ArrowUpRight aria-hidden />
 						</Link>
 						<Link className="button button--secondary" href="#metodo">
-							{copy.hero.secondary} <span aria-hidden>↓</span>
+							{copy.hero.secondary} <ArrowDown aria-hidden />
 						</Link>
 					</div>
 					<p className="microcopy">{copy.hero.reassurance}</p>
@@ -90,7 +91,7 @@ export default function EnterpriseHome() {
 						</ol>
 					</div>
 					<Link className="text-link" href="#metodo">
-						{copy.proposal.cta} <span aria-hidden>→</span>
+						{copy.proposal.cta} <ArrowRight aria-hidden />
 					</Link>
 				</div>
 			</section>
@@ -119,7 +120,7 @@ export default function EnterpriseHome() {
 									<h3>{item.title}</h3>
 									<p>{item.body}</p>
 									<Link href="#contacto" data-intent={item.intent}>
-										{item.cta} <span aria-hidden>→</span>
+										{item.cta} <ArrowRight aria-hidden />
 									</Link>
 								</div>
 								<ul className="service-tags">

@@ -395,6 +395,12 @@ main,
 	transform: translateY(-2px);
 }
 
+.button > svg {
+	width: 1rem;
+	height: 1rem;
+	flex: 0 0 auto;
+}
+
 .button--primary {
 	color: white;
 	background: linear-gradient(145deg, #1470ff, var(--blue) 56%, #0647c8);
@@ -1622,12 +1628,13 @@ h1 {
 .faq-list summary::-webkit-details-marker {
 	display: none;
 }
-.faq-list summary span {
+.faq-list summary svg {
+	width: 1.1rem;
+	height: 1.1rem;
 	color: var(--blue);
-	font-size: 1.35rem;
 	transition: transform 180ms ease;
 }
-.faq-list details[open] summary span {
+.faq-list details[open] summary svg {
 	transform: rotate(45deg);
 }
 .faq-list details p {
@@ -2213,6 +2220,395 @@ h1 {
 	}
 }
 
+/* Mobile is a distinct reading and touch layout, rather than a scaled-down
+ * desktop canvas. These rules cover small phones through portrait tablets,
+ * where the Hero diagram and the navigation both need more deliberate space. */
+@media (max-width: 860px) {
+	html {
+		scroll-padding-top: 6.25rem;
+	}
+
+	.container {
+		width: min(calc(100% - 2rem), var(--container));
+	}
+
+	.header-shell {
+		width: min(calc(100% - 1rem), var(--shell));
+		min-height: 4rem;
+		padding: 0.45rem 0.5rem 0.45rem 0.7rem;
+	}
+
+	.brand,
+	.menu-toggle,
+	.language-toggle button,
+	.mobile-menu nav > a:not(.button),
+	.mobile-services-heading,
+	.mobile-service-links a {
+		min-height: 2.75rem;
+	}
+
+	.mobile-menu {
+		top: 5.25rem;
+		bottom: auto;
+		max-height: calc(100svh - 6rem - env(safe-area-inset-bottom));
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		padding: 0.85rem;
+		padding-bottom: max(0.85rem, env(safe-area-inset-bottom));
+	}
+
+	.mobile-menu nav {
+		gap: 0.25rem;
+	}
+
+	.mobile-menu .button {
+		min-height: 3.1rem;
+		margin-top: 0.35rem;
+	}
+
+	.hero {
+		min-height: auto;
+		padding-top: clamp(7rem, 16vw, 8rem);
+		padding-bottom: clamp(3.75rem, 9vw, 5rem);
+	}
+
+	.hero-copy {
+		max-width: 42rem;
+	}
+
+	.hero-kicker {
+		margin-bottom: 1.1rem;
+	}
+
+	h1 {
+		max-width: 15ch;
+		margin-bottom: 1.1rem;
+		font-size: clamp(2.45rem, 10vw, 4.2rem);
+		letter-spacing: -0.032em;
+		line-height: 1.02;
+	}
+
+	.hero-lead {
+		max-width: 37rem;
+		font-size: clamp(1rem, 2.3vw, 1.12rem);
+		line-height: 1.58;
+	}
+
+	.button-group {
+		width: min(100%, 27rem);
+		margin-top: 1.65rem;
+	}
+
+	.button-group .button {
+		min-height: 3.15rem;
+	}
+
+	.hero-visual {
+		margin-top: clamp(2.5rem, 8vw, 3.75rem);
+	}
+
+	.architecture-map {
+		max-width: 38rem;
+		padding: clamp(1rem, 3.5vw, 1.5rem);
+		border-radius: 1rem;
+	}
+
+	.architecture-map::before {
+		opacity: 0.4;
+	}
+
+	.architecture-map::after {
+		width: 20rem;
+		height: 14rem;
+		left: calc(50% - 10rem);
+		filter: blur(3.25rem);
+	}
+
+	.architecture-map figcaption {
+		margin-bottom: 1.25rem;
+		font-size: 0.62rem;
+	}
+
+	.architecture-stage {
+		display: flex;
+		min-height: 0;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.architecture-stage::before {
+		display: none;
+	}
+
+	.architecture-side,
+	.architecture-side--outcomes {
+		width: min(100%, 31rem);
+		justify-items: stretch;
+		text-align: left;
+	}
+
+	.architecture-side > span {
+		padding-inline: 0.15rem;
+	}
+
+	.architecture-side ul,
+	.architecture-side--sources ul,
+	.architecture-side--outcomes ul {
+		width: 100%;
+		gap: 0.55rem;
+	}
+
+	.architecture-node,
+	.architecture-side--outcomes .architecture-node {
+		min-height: 3.25rem;
+		justify-content: flex-start;
+		padding: 0.7rem 0.8rem;
+		font-size: 0.84rem;
+	}
+
+	.architecture-node__connector,
+	.architecture-core::before,
+	.architecture-core::after {
+		display: none;
+	}
+
+	.architecture-core {
+		order: 0;
+		width: min(100%, 20rem);
+		aspect-ratio: auto;
+		padding: 1.4rem 1rem;
+		border-radius: 1rem;
+	}
+
+	.architecture-side--sources {
+		order: -1;
+	}
+
+	.architecture-core > strong {
+		font-size: 1.65rem;
+	}
+
+	.architecture-core ul {
+		width: min(100%, 15rem);
+	}
+
+	.architecture-core li {
+		min-height: 2rem;
+		font-size: 0.72rem;
+	}
+
+	.architecture-control {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 0.4rem;
+		margin-top: 1.25rem;
+		padding: 0.8rem;
+	}
+
+	.architecture-control strong {
+		font-size: 0.76rem;
+		text-align: left;
+	}
+
+	.capability-band {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 0.9rem;
+		margin-top: 3rem;
+		padding-block: 1rem;
+	}
+
+	.capability-band ul {
+		justify-content: flex-start;
+	}
+
+	.section {
+		padding-block: clamp(4rem, 10vw, 5.5rem);
+	}
+
+	.section-heading h2,
+	.private-copy h2,
+	.contact-copy h2 {
+		letter-spacing: -0.03em;
+	}
+
+	.section-heading h2 {
+		font-size: clamp(2rem, 7.5vw, 3.1rem);
+	}
+
+	.section-heading > p:last-child,
+	.private-copy .private-lead {
+		font-size: 1rem;
+		line-height: 1.62;
+	}
+
+	.problem-grid,
+	.operating-model,
+	.private-shell,
+	.method-grid,
+	.faq-grid,
+	.contact-intro,
+	.meeting-panel {
+		gap: 2.5rem;
+	}
+
+	.service-row {
+		grid-template-columns: 1fr;
+		gap: 0.85rem;
+		padding: 1.75rem 0;
+	}
+
+	.service-tags {
+		grid-column: auto;
+	}
+
+	.private-ai,
+	.contact {
+		padding-block: clamp(4.25rem, 11vw, 5.75rem);
+	}
+
+	.private-note {
+		grid-template-columns: 1fr;
+		gap: 0.6rem;
+		padding: 1.1rem 1.15rem;
+	}
+
+	.contact {
+		padding-bottom: max(4rem, calc(2.5rem + env(safe-area-inset-bottom)));
+	}
+
+	.form-panel {
+		padding: 1.1rem;
+		border-radius: 1rem;
+	}
+
+	.field-row {
+		grid-template-columns: 1fr;
+		gap: 0;
+	}
+
+	.field input,
+	.field select,
+	.field textarea,
+	.form-submit {
+		font-size: max(1rem, 16px);
+	}
+
+	.site-footer {
+		padding-bottom: max(1.5rem, calc(1rem + env(safe-area-inset-bottom)));
+	}
+
+	.site-footer nav a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.75rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.container {
+		width: min(calc(100% - 1.5rem), var(--container));
+	}
+
+	.header-shell {
+		top: max(0.35rem, env(safe-area-inset-top));
+	}
+
+	.brand img {
+		width: 7.5rem;
+		height: 2.58rem;
+	}
+
+	.menu-toggle {
+		width: 2.9rem;
+		height: 2.9rem;
+	}
+
+	.mobile-menu {
+		left: 0.5rem;
+		right: 0.5rem;
+		top: 5rem;
+		border-radius: 1rem;
+	}
+
+	h1 {
+		max-width: 13ch;
+		font-size: clamp(2.35rem, 11vw, 3.1rem);
+	}
+
+	.hero-kicker {
+		max-width: 100%;
+		padding-inline: 0.7rem;
+		font-size: 0.64rem;
+		letter-spacing: 0.07em;
+	}
+
+	.button-group {
+		display: grid;
+		gap: 0.6rem;
+	}
+
+	.microcopy {
+		font-size: 0.76rem;
+		line-height: 1.45;
+	}
+
+	.architecture-map {
+		padding: 0.85rem;
+	}
+
+	.architecture-node {
+		min-height: 3.1rem;
+	}
+
+	.architecture-core {
+		padding: 1.2rem 0.85rem;
+	}
+
+	.architecture-control {
+		font-size: 0.7rem;
+	}
+
+	.problem-list article,
+	.method-list li,
+	.case-item {
+		gap: 0.8rem;
+	}
+
+	.case-item {
+		grid-template-columns: 2rem 1fr;
+		padding: 1.25rem;
+	}
+
+	.case-item > a {
+		grid-column: 2;
+		min-height: 2.75rem;
+	}
+
+	.private-visual {
+		padding: 1rem;
+		border-radius: 1rem;
+	}
+
+	.next-step,
+	.form-panel {
+		padding: 1rem;
+	}
+}
+
+@media (hover: none) and (pointer: coarse) {
+	.button:active,
+	.mobile-menu nav > a:not(.button):active,
+	.mobile-service-links a:active,
+	.services-menu__trigger:active {
+		transform: scale(0.985);
+	}
+
+	.button:hover {
+		transform: none;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	html {
 		scroll-behavior: auto;
@@ -2227,44 +2623,5 @@ h1 {
 	}
 	.button:hover {
 		transform: none;
-	}
-}
-
-@media (max-width: 720px) {
-	.architecture-stage {
-		grid-template-columns: 1fr;
-		gap: 1.5rem;
-		min-height: auto;
-	}
-
-	.architecture-side,
-	.architecture-side--outcomes {
-		justify-items: stretch;
-		text-align: left;
-	}
-
-	.architecture-side > span {
-		padding-inline: 0.15rem;
-	}
-
-	.architecture-side--outcomes .architecture-node {
-		justify-content: flex-start;
-	}
-
-	.architecture-node__connector {
-		display: none;
-	}
-
-	.architecture-core {
-		width: 100%;
-		max-width: 24rem;
-		aspect-ratio: auto;
-		padding: 1.65rem 1.25rem;
-		border-radius: var(--radius-lg);
-	}
-
-	.architecture-core::before,
-	.architecture-core::after {
-		display: none;
 	}
 }

@@ -1,7 +1,7 @@
 "use client";
 import CalendlyWidget from "@/components/meeting-section/CalendlyWidget";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarDays, CheckCircle2 } from "lucide-react";
+import { ArrowUpRight, CalendarDays, CheckCircle2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocale } from "./LocaleProvider";
@@ -304,7 +304,7 @@ export default function ContactExperience() {
 								disabled={isSubmitting}
 							>
 								{isSubmitting ? copy.form.sending : copy.form.submit}{" "}
-								<span aria-hidden>↗</span>
+								<ArrowUpRight aria-hidden />
 							</button>
 						</form>
 					)}

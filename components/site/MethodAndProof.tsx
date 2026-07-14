@@ -1,4 +1,5 @@
 "use client";
+import { ArrowRight, Plus } from "lucide-react";
 import Link from "next/link";
 import { useLocale } from "./LocaleProvider";
 export default function MethodAndProof() {
@@ -15,7 +16,7 @@ export default function MethodAndProof() {
 						<h2 id="method-title">{copy.method.title}</h2>
 						<p>{copy.method.lead}</p>
 						<Link className="text-link" href="#contacto" data-intent="unclear">
-							{copy.method.cta} <span aria-hidden>→</span>
+							{copy.method.cta} <ArrowRight aria-hidden />
 						</Link>
 					</header>
 					<ol className="method-list">
@@ -53,7 +54,7 @@ export default function MethodAndProof() {
 									<p>{item.body}</p>
 								</div>
 								<Link href="#contacto" data-intent={item.intent}>
-									{item.cta} <span aria-hidden>→</span>
+									{item.cta} <ArrowRight aria-hidden />
 								</Link>
 							</article>
 						))}
@@ -86,7 +87,7 @@ export default function MethodAndProof() {
 							<details key={item.title}>
 								<summary>
 									{item.title}
-									<span aria-hidden>+</span>
+									<Plus aria-hidden />
 								</summary>
 								<p>{item.body}</p>
 							</details>

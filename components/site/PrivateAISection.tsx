@@ -1,4 +1,5 @@
 "use client";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useLocale } from "./LocaleProvider";
 export default function PrivateAISection() {
@@ -31,7 +32,7 @@ export default function PrivateAISection() {
 						href="#contacto"
 						data-intent="private"
 					>
-						{p.cta} <span aria-hidden>↗</span>
+						{p.cta} <ArrowUpRight aria-hidden />
 					</Link>
 				</div>
 				<div className="private-visual" role="img" aria-label={p.visual}>
