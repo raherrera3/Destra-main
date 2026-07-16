@@ -44,7 +44,10 @@ export default function SiteFooter() {
 				<p>
 					© {new Date().getFullYear()} DESTRA. {copy.footer.copyright}
 				</p>
-				<p>{copy.footer.legal}</p>
+				<nav className="footer-legal" aria-label={copy.footer.privacy}>
+					<Link href="/privacidad">{copy.footer.privacy}</Link>
+					<Link href="/terminos-y-condiciones">{copy.footer.terms}</Link>
+				</nav>
 			</div>
 		</footer>
 	);

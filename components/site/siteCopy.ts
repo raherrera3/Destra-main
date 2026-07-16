@@ -132,7 +132,8 @@ type SiteCopy = {
 		capabilities: string;
 		explore: string;
 		links: string[];
-		legal: string;
+		privacy: string;
+		terms: string;
 		copyright: string;
 	};
 };
@@ -465,8 +466,8 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 				"Por qué DESTRA",
 				"Estudio gratuito",
 			],
-			legal:
-				"Información legal y de contacto pendiente de confirmación antes de publicar.",
+			privacy: "Política de privacidad",
+			terms: "Términos y condiciones",
 			copyright: "Todos los derechos reservados.",
 		},
 	},
@@ -790,7 +791,8 @@ siteCopy.en = {
 			"Why DESTRA",
 			"Free AI assessment",
 		],
-		legal: "Legal and contact information must be confirmed before publishing.",
+		privacy: "Privacy policy",
+		terms: "Terms and conditions",
 		copyright: "All rights reserved.",
 	},
 };

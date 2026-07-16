@@ -1981,6 +1981,111 @@ h1 {
 	margin: 0;
 }
 
+.footer-legal {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 1rem;
+}
+
+.footer-legal a {
+	min-height: 2rem;
+	color: inherit;
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.footer-legal a:hover {
+	color: white;
+}
+
+.legal-page {
+	min-height: 100svh;
+	padding: clamp(2.5rem, 8vw, 6rem) 0;
+	background: radial-gradient(
+			circle at 80% 0%,
+			rgba(92, 150, 255, 0.13),
+			transparent 26rem
+		), var(--background);
+}
+
+.legal-page__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1.5rem;
+	margin-bottom: clamp(3rem, 7vw, 5.5rem);
+}
+
+.legal-page__brand {
+	font-weight: 800;
+	letter-spacing: 0.14em;
+	color: var(--navy);
+}
+
+.legal-page__back {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
+	padding: 0.45rem 0.8rem;
+	border: 1px solid rgba(17, 64, 140, 0.18);
+	border-radius: 999px;
+	color: var(--navy);
+	font-size: 0.9rem;
+	font-weight: 700;
+}
+
+.legal-page__back:hover {
+	border-color: rgba(32, 111, 255, 0.5);
+	background: rgba(255, 255, 255, 0.75);
+}
+
+.legal-page__content {
+	width: min(100%, 48rem);
+	margin: 0 auto;
+	padding: clamp(1.5rem, 4vw, 3.5rem);
+	border: 1px solid rgba(166, 194, 233, 0.74);
+	border-radius: var(--radius-lg);
+	background: rgba(255, 255, 255, 0.9);
+	box-shadow: 0 1.5rem 4rem rgba(23, 61, 121, 0.09);
+}
+
+.legal-page__content h1 {
+	margin: 0 0 2.5rem;
+	color: var(--navy);
+	font-size: clamp(2rem, 5vw, 3.4rem);
+	letter-spacing: -0.045em;
+	line-height: 1.04;
+}
+
+.legal-page__content h2 {
+	margin: 2.5rem 0 0.8rem;
+	color: var(--navy);
+	font-size: clamp(1.1rem, 2.3vw, 1.35rem);
+}
+
+.legal-page__content p,
+.legal-page__content li {
+	color: #30425d;
+	line-height: 1.7;
+}
+
+.legal-page__content p,
+.legal-page__content ul {
+	margin: 0.8rem 0;
+}
+
+.legal-page__content ul {
+	padding-left: 1.2rem;
+}
+
+.legal-page__content a {
+	color: #075fd7;
+	font-weight: 650;
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
 @media (max-width: 1024px) {
 	.desktop-nav,
 	.header-actions {
@@ -2217,6 +2322,9 @@ h1 {
 	}
 	.footer-bottom {
 		flex-direction: column;
+	}
+	.footer-legal {
+		justify-content: flex-start;
 	}
 }
 

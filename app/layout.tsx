@@ -1,3 +1,4 @@
+import { siteUrl } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
@@ -10,10 +11,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+	metadataBase: new URL(siteUrl),
 	title: "Consultoría y soluciones de IA para empresas | DESTRA",
 	description:
 		"Estrategia, desarrollo, integración e infraestructura de IA para empresas. Soluciones a medida, IA privada y despliegues on-premise con DESTRA.",
 	applicationName: "DESTRA",
+	alternates: {
+		canonical: "/",
+	},
 	keywords: [
 		"consultoría de inteligencia artificial",
 		"soluciones de IA para empresas",
@@ -26,9 +31,25 @@ export const metadata: Metadata = {
 		type: "website",
 		locale: "es_ES",
 		siteName: "DESTRA",
+		url: "/",
 		title: "DESTRA | IA diseñada para operar en tu empresa",
 		description:
 			"De la estrategia a la infraestructura: diseñamos, integramos y desplegamos soluciones de inteligencia artificial para organizaciones.",
+		images: [
+			{
+				url: "/opengraph-image",
+				width: 1200,
+				height: 630,
+				alt: "DESTRA — IA diseñada para operar en tu empresa",
+			},
+		],
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "DESTRA | IA diseñada para operar en tu empresa",
+		description:
+			"Estrategia, desarrollo, integración e infraestructura de IA para empresas.",
+		images: ["/opengraph-image"],
 	},
 	robots: {
 		index: true,
