@@ -2,10 +2,23 @@ import LegalPage from "@/components/site/LegalPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "Términos y condiciones | DESTRA",
-	description: "Términos y condiciones de DESTRA.",
+	title: "Términos y condiciones de uso | DESTRA",
+	description:
+		"Condiciones de uso del sitio web destra.es, titularidad de MAJOIRA S.A., y marco aplicable a sus contenidos y servicios.",
 	alternates: { canonical: "/terminos-y-condiciones" },
 	robots: { index: true, follow: true },
+	openGraph: {
+		title: "Términos y condiciones de uso | DESTRA",
+		description:
+			"Condiciones de uso, propiedad intelectual y responsabilidad aplicables a destra.es.",
+		url: "/terminos-y-condiciones",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "Términos y condiciones de uso | DESTRA",
+		description:
+			"Condiciones de uso, propiedad intelectual y responsabilidad aplicables a destra.es.",
+	},
 };
 
 export default function TermsPage() {

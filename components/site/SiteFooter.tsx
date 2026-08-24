@@ -1,10 +1,18 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useCookieConsent } from "./CookieConsent";
 import { useLocale } from "./LocaleProvider";
 export default function SiteFooter() {
 	const { copy } = useLocale();
+	const { openPreferences } = useCookieConsent();
 	const links = copy.footer.links;
+	const capabilityDestinations = [
+		"#servicio-strategy",
+		"#servicio-solution",
+		"#servicio-architecture",
+		"#ia-privada",
+	];
 	return (
 		<footer className="site-footer">
 			<div className="container footer-grid">
@@ -19,11 +27,12 @@ export default function SiteFooter() {
 						/>
 					</Link>
 					<p>{copy.footer.summary}</p>
+					<p className="footer-legal-entity">{copy.footer.legalEntity}</p>
 				</div>
 				<nav aria-label={copy.footer.capabilities}>
 					<strong>{copy.footer.capabilities}</strong>
 					{links.slice(0, 4).map((label, index) => (
-						<Link href={index === 3 ? "#ia-privada" : "#servicios"} key={label}>
+						<Link href={capabilityDestinations[index]} key={label}>
 							{label}
 						</Link>
 					))}
@@ -47,6 +56,13 @@ export default function SiteFooter() {
 				<nav className="footer-legal" aria-label={copy.footer.privacy}>
 					<Link href="/privacidad">{copy.footer.privacy}</Link>
 					<Link href="/terminos-y-condiciones">{copy.footer.terms}</Link>
+					<button
+						className="footer-cookie-button"
+						type="button"
+						onClick={openPreferences}
+					>
+						{copy.footer.cookies}
+					</button>
 				</nav>
 			</div>
 		</footer>

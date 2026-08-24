@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowUpRight, CalendarDays, CheckCircle2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useCookieConsent } from "./CookieConsent";
 import { useLocale } from "./LocaleProvider";
 import {
 	type ContactRequest,
@@ -55,6 +56,7 @@ function Field({
 }
 export default function ContactExperience() {
 	const { copy } = useLocale();
+	const { hasConsent, openPreferences } = useCookieConsent();
 	const [sent, setSent] = useState(false);
 	const [serverError, setServerError] = useState("");
 	const summary = useRef<HTMLDivElement>(null);
@@ -316,10 +318,22 @@ export default function ContactExperience() {
 					<h2>{copy.contact.meetingTitle}</h2>
 					<p>{copy.contact.meetingLead}</p>
 				</div>
-				{calendlyUrl ? (
+				{calendlyUrl && hasConsent ? (
 					<div className="calendly-shell">
 						<CalendlyWidget url={calendlyUrl} />
 					</div>
+				) : calendlyUrl ? (
+					<section className="calendar-consent-prompt">
+						<h3>{copy.cookies.calendarPromptTitle}</h3>
+						<p>{copy.cookies.calendarPromptDescription}</p>
+						<button
+							className="button button--light"
+							type="button"
+							onClick={openPreferences}
+						>
+							{copy.cookies.calendarPromptAction}
+						</button>
+					</section>
 				) : (
 					<div className="meeting-unavailable">
 						<p>{copy.contact.unavailable}</p>

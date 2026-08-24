@@ -1,3 +1,4 @@
+import { CookieConsentProvider } from "@/components/site/CookieConsent";
 import { siteUrl } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
@@ -68,7 +69,9 @@ export default function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
 	return (
 		<html lang="es">
-			<body className={`${inter.variable} ${inter.className}`}>{children}</body>
+			<body className={`${inter.variable} ${inter.className}`}>
+				<CookieConsentProvider>{children}</CookieConsentProvider>
+			</body>
 		</html>
 	);
 }

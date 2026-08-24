@@ -77,7 +77,11 @@ export default function MethodAndProof() {
 					</div>
 				</div>
 			</section>
-			<section className="section faq" aria-labelledby="faq-title">
+			<section
+				className="section faq"
+				id="preguntas-frecuentes"
+				aria-labelledby="faq-title"
+			>
 				<div className="container faq-grid">
 					<header className="section-heading">
 						<h2 id="faq-title">{copy.faq.title}</h2>

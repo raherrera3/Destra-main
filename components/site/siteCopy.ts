@@ -108,6 +108,24 @@ type SiteCopy = {
 		meetingLead: string;
 		unavailable: string;
 	};
+	cookies: {
+		title: string;
+		description: string;
+		accept: string;
+		reject: string;
+		configure: string;
+		save: string;
+		close: string;
+		privacyLink: string;
+		necessaryTitle: string;
+		necessaryDescription: string;
+		alwaysOn: string;
+		calendlyTitle: string;
+		calendlyDescription: string;
+		calendarPromptTitle: string;
+		calendarPromptDescription: string;
+		calendarPromptAction: string;
+	};
 	form: {
 		errorSummary: string;
 		retry: string;
@@ -134,6 +152,8 @@ type SiteCopy = {
 		links: string[];
 		privacy: string;
 		terms: string;
+		cookies: string;
+		legalEntity: string;
 		copyright: string;
 	};
 };
@@ -398,6 +418,28 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 				"La sesión estratégica se habilitará cuando la agenda de DESTRA esté configurada.",
 			unavailable: "La agenda todavía no está disponible.",
 		},
+		cookies: {
+			title: "Tu privacidad, bajo control",
+			description:
+				"Solo activamos la agenda de Calendly si das tu consentimiento. Puedes cambiar esta elección cuando quieras.",
+			accept: "Aceptar y activar agenda",
+			reject: "Rechazar",
+			configure: "Configurar",
+			save: "Guardar selección",
+			close: "Cerrar configuración de cookies",
+			privacyLink: "Ver política de privacidad",
+			necessaryTitle: "Preferencia necesaria",
+			necessaryDescription:
+				"Guardamos tu elección de privacidad en este navegador para respetarla.",
+			alwaysOn: "Siempre activa",
+			calendlyTitle: "Agenda de Calendly",
+			calendlyDescription:
+				"Al activarla, Calendly puede cargar sus propios recursos para mostrar y gestionar una cita.",
+			calendarPromptTitle: "Activa la agenda solo si quieres usarla",
+			calendarPromptDescription:
+				"Calendly es un servicio de terceros. No se carga hasta que des tu consentimiento.",
+			calendarPromptAction: "Configurar cookies",
+		},
 		form: {
 			errorSummary: "Revisa los campos indicados.",
 			retry:
@@ -468,6 +510,9 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			],
 			privacy: "Política de privacidad",
 			terms: "Términos y condiciones",
+			cookies: "Configurar cookies",
+			legalEntity:
+				"Responsable del sitio: MAJOIRA S.A. · C/Valencia nº 318, 08009 Barcelona · contacto@destra.es",
 			copyright: "Todos los derechos reservados.",
 		},
 	},
@@ -729,6 +774,28 @@ siteCopy.en = {
 			"The strategic session will be enabled when DESTRA’s calendar is configured.",
 		unavailable: "The calendar is not available yet.",
 	},
+	cookies: {
+		title: "Your privacy, under your control",
+		description:
+			"We only activate the Calendly calendar when you give consent. You can change this choice at any time.",
+		accept: "Accept and enable calendar",
+		reject: "Reject",
+		configure: "Configure",
+		save: "Save selection",
+		close: "Close cookie settings",
+		privacyLink: "View privacy policy",
+		necessaryTitle: "Necessary preference",
+		necessaryDescription:
+			"We store your privacy choice in this browser so we can respect it.",
+		alwaysOn: "Always on",
+		calendlyTitle: "Calendly calendar",
+		calendlyDescription:
+			"When enabled, Calendly may load its own resources to display and manage a meeting.",
+		calendarPromptTitle: "Only enable the calendar if you want to use it",
+		calendarPromptDescription:
+			"Calendly is a third-party service. It does not load until you give consent.",
+		calendarPromptAction: "Configure cookies",
+	},
 	form: {
 		errorSummary: "Review the highlighted fields.",
 		retry: "Your details remain in the form so you can try again.",
@@ -793,6 +860,9 @@ siteCopy.en = {
 		],
 		privacy: "Privacy policy",
 		terms: "Terms and conditions",
+		cookies: "Configure cookies",
+		legalEntity:
+			"Website controller: MAJOIRA S.A. · C/Valencia nº 318, 08009 Barcelona · contacto@destra.es",
 		copyright: "All rights reserved.",
 	},
 };

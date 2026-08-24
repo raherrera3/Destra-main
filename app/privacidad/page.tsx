@@ -2,10 +2,23 @@ import LegalPage from "@/components/site/LegalPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "Política de privacidad | DESTRA",
-	description: "Política de privacidad de DESTRA.",
+	title: "Política de privacidad y cookies | DESTRA",
+	description:
+		"Consulta cómo MAJOIRA S.A. trata los datos personales y gestiona el consentimiento para la agenda de Calendly en destra.es.",
 	alternates: { canonical: "/privacidad" },
 	robots: { index: true, follow: true },
+	openGraph: {
+		title: "Política de privacidad y cookies | DESTRA",
+		description:
+			"Información sobre el tratamiento de datos personales y las preferencias de cookies en destra.es.",
+		url: "/privacidad",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "Política de privacidad y cookies | DESTRA",
+		description:
+			"Información sobre el tratamiento de datos personales y las preferencias de cookies en destra.es.",
+	},
 };
 
 export default function PrivacyPage() {
@@ -43,8 +56,8 @@ export default function PrivacyPage() {
 						consentimiento expreso.
 					</li>
 					<li>
-						Mejorar la experiencia del usuario mediante el análisis de
-						navegación (cookies).
+						Guardar y respetar la elección de privacidad sobre la agenda de
+						Calendly cuando el usuario la configure.
 					</li>
 				</ul>
 			</section>
@@ -73,11 +86,11 @@ export default function PrivacyPage() {
 				<h2>4. Destinatarios de los datos</h2>
 				<p>
 					Los datos personales no se cederán a terceros, salvo obligación legal
-					o en caso necesario para la prestación del servicio (por ejemplo,
-					proveedores tecnológicos que prestan servicios bajo contrato de
-					confidencialidad).
+					o cuando sea necesario para prestar el servicio solicitado. Si el
+					usuario activa voluntariamente la agenda de Calendly, ese proveedor
+					tratará los datos necesarios para gestionar la cita conforme a sus
+					propias condiciones.
 				</p>
-				<p>No se prevé la transferencia internacional de datos.</p>
 			</section>
 			<section>
 				<h2>5. Derechos de los usuarios</h2>
@@ -118,17 +131,20 @@ export default function PrivacyPage() {
 					<li>Interacciones con la web (cookies y similares).</li>
 				</ul>
 			</section>
-			<section>
+			<section id="cookies">
 				<h2>7. Información sobre cookies</h2>
 				<p>
-					Este sitio web utiliza cookies propias y de terceros para fines
-					técnicos, analíticos y publicitarios, tal como se detalla en nuestra
-					Política de Cookies.
+					Este sitio guarda la preferencia de privacidad en el navegador para
+					respetar la elección del usuario. La agenda de Calendly, cuando está
+					configurada, es un servicio de terceros y no se carga hasta que el
+					usuario la activa expresamente desde el aviso o la configuración de
+					cookies.
 				</p>
 				<p>
-					El usuario puede configurar su navegador para rechazar la instalación
-					de cookies, aunque esto podría afectar al correcto funcionamiento del
-					sitio web.
+					Se puede aceptar, rechazar o modificar esta elección en cualquier
+					momento desde el enlace “Configurar cookies” disponible en el pie de
+					la página de inicio. Rechazar la agenda no impide utilizar el
+					formulario de contacto.
 				</p>
 			</section>
 		</LegalPage>

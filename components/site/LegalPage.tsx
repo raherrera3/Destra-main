@@ -22,6 +22,15 @@ export default function LegalPage({ title, children }: LegalPageProps) {
 						Volver al inicio
 					</Link>
 				</header>
+				<nav className="breadcrumbs" aria-label="Migas de pan">
+					<ol>
+						<li>
+							<Link href="/">Inicio</Link>
+						</li>
+						<li aria-hidden="true">/</li>
+						<li aria-current="page">{title}</li>
+					</ol>
+				</nav>
 				<article className="legal-page__content">
 					<h1>{title}</h1>
 					{children}
