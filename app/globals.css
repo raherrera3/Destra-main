@@ -278,9 +278,8 @@ main,
 .brand img {
 	display: block;
 	width: 9.5rem;
-	height: 3.25rem;
-	object-fit: cover;
-	border-radius: 0.7rem;
+	height: auto;
+	object-fit: contain;
 }
 
 .desktop-nav {
@@ -1956,9 +1955,8 @@ h1 {
 
 .footer-brand img {
 	width: 9.5rem;
-	height: 3.25rem;
-	object-fit: cover;
-	border-radius: 0.7rem;
+	height: auto;
+	object-fit: contain;
 }
 
 .footer-brand p {
@@ -2296,9 +2294,15 @@ h1 {
 }
 
 .legal-page__brand {
-	font-weight: 800;
-	letter-spacing: 0.14em;
-	color: var(--navy);
+	display: inline-flex;
+	align-items: center;
+}
+
+.legal-page__brand img {
+	display: block;
+	width: 9.5rem;
+	height: auto;
+	object-fit: contain;
 }
 
 .legal-page__back {
@@ -2449,9 +2453,10 @@ h1 {
 		min-height: 4rem;
 	}
 	.brand img,
-	.footer-brand img {
+	.footer-brand img,
+	.legal-page__brand img {
 		width: 8.25rem;
-		height: 2.85rem;
+		height: auto;
 	}
 	.hero {
 		min-height: auto;
@@ -2925,7 +2930,11 @@ h1 {
 
 	.brand img {
 		width: 7.5rem;
-		height: 2.58rem;
+		height: auto;
+	}
+
+	.legal-page__brand img {
+		width: 7.5rem;
 	}
 
 	.menu-toggle {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import BrandLogo from "./BrandLogo";
 
 type LegalPageProps = {
 	title: string;
@@ -16,7 +17,10 @@ export default function LegalPage({ title, children }: LegalPageProps) {
 						href="/"
 						aria-label="DESTRA, volver al inicio"
 					>
-						DESTRA
+						<BrandLogo
+							surface="light"
+							sizes="(max-width: 720px) 132px, 152px"
+						/>
 					</Link>
 					<Link className="legal-page__back" href="/">
 						Volver al inicio

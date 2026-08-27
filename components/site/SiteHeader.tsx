@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronDown, Menu, X } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import {
 	type KeyboardEvent as ReactKeyboardEvent,
@@ -10,6 +9,7 @@ import {
 	useRef,
 	useState,
 } from "react";
+import BrandLogo from "./BrandLogo";
 import LanguageToggle from "./LanguageToggle";
 import { useLocale } from "./LocaleProvider";
 
@@ -118,11 +118,8 @@ export default function SiteHeader() {
 					aria-label={copy.header.home}
 					onClick={close}
 				>
-					<Image
-						src="/destra-logo.png"
-						alt="DESTRA"
-						width={689}
-						height={237}
+					<BrandLogo
+						surface="light"
 						priority
 						sizes="(max-width: 768px) 132px, 152px"
 					/>

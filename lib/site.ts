@@ -6,7 +6,7 @@ export const organizationSchema = {
 	name: "DESTRA",
 	legalName: "MAJOIRA S.A.",
 	url: siteUrl,
-	logo: `${siteUrl}/destra-logo.png`,
+	logo: `${siteUrl}/destra-logo-dark.png`,
 	email: "contacto@destra.es",
 	address: {
 		"@type": "PostalAddress",

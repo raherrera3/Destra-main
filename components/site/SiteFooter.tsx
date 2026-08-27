@@ -1,6 +1,6 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
+import BrandLogo from "./BrandLogo";
 import { useCookieConsent } from "./CookieConsent";
 import { useLocale } from "./LocaleProvider";
 export default function SiteFooter() {
@@ -18,13 +18,7 @@ export default function SiteFooter() {
 			<div className="container footer-grid">
 				<div className="footer-brand">
 					<Link href="#inicio" aria-label={copy.header.home}>
-						<Image
-							src="/destra-logo.png"
-							alt="DESTRA"
-							width={689}
-							height={237}
-							sizes="152px"
-						/>
+						<BrandLogo surface="dark" sizes="152px" />
 					</Link>
 					<p>{copy.footer.summary}</p>
 					<p className="footer-legal-entity">{copy.footer.legalEntity}</p>
