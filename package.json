@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "format": "biome format --write ./app ./components/site ./components/Particles.tsx ./components/meeting-section/CalendlyWidget.tsx",
+    "format": "biome format --write ./app ./components/site ./components/Particles.tsx",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "biome check ./app ./components/site ./components/Particles.tsx ./components/meeting-section/CalendlyWidget.tsx",
+    "lint": "biome check ./app ./components/site ./components/Particles.tsx",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -53,7 +53,6 @@
     "next": "15.2.4",
     "next-themes": "^0.4.4",
     "react": "^19",
-    "react-calendly": "^4.3.1",
     "react-dom": "^19",
     "react-hook-form": "^7.54.1",
     "react-particles": "latest",

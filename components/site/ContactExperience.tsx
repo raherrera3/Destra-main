@@ -1,10 +1,8 @@
 "use client";
-import CalendlyWidget from "@/components/meeting-section/CalendlyWidget";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowUpRight, CalendarDays, CheckCircle2 } from "lucide-react";
+import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useCookieConsent } from "./CookieConsent";
 import { useLocale } from "./LocaleProvider";
 import {
 	type ContactRequest,
@@ -12,17 +10,6 @@ import {
 	needValues,
 } from "./contactSchema";
 import type { ContactErrorCode } from "./siteCopy";
-function getCalendlyUrl() {
-	const value = process.env.NEXT_PUBLIC_CALENDLY_URL?.trim();
-	if (!value) return null;
-	try {
-		const url = new URL(value);
-		return url.protocol === "https:" ? url.toString() : null;
-	} catch {
-		return null;
-	}
-}
-const calendlyUrl = getCalendlyUrl();
 function Field({
 	id,
 	label,
@@ -56,7 +43,6 @@ function Field({
 }
 export default function ContactExperience() {
 	const { copy } = useLocale();
-	const { hasConsent, openPreferences } = useCookieConsent();
 	const [sent, setSent] = useState(false);
 	const [serverError, setServerError] = useState("");
 	const summary = useRef<HTMLDivElement>(null);
@@ -311,34 +297,6 @@ export default function ContactExperience() {
 						</form>
 					)}
 				</div>
-			</div>
-			<div className="container meeting-panel">
-				<div className="meeting-copy">
-					<CalendarDays aria-hidden />
-					<h2>{copy.contact.meetingTitle}</h2>
-					<p>{copy.contact.meetingLead}</p>
-				</div>
-				{calendlyUrl && hasConsent ? (
-					<div className="calendly-shell">
-						<CalendlyWidget url={calendlyUrl} />
-					</div>
-				) : calendlyUrl ? (
-					<section className="calendar-consent-prompt">
-						<h3>{copy.cookies.calendarPromptTitle}</h3>
-						<p>{copy.cookies.calendarPromptDescription}</p>
-						<button
-							className="button button--light"
-							type="button"
-							onClick={openPreferences}
-						>
-							{copy.cookies.calendarPromptAction}
-						</button>
-					</section>
-				) : (
-					<div className="meeting-unavailable">
-						<p>{copy.contact.unavailable}</p>
-					</div>
-				)}
 			</div>
 		</section>
 	);

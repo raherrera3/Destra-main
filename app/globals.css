@@ -1843,104 +1843,6 @@ h1 {
 	line-height: 1.65;
 }
 
-.meeting-panel {
-	display: grid;
-	grid-template-columns: minmax(18rem, 0.72fr) minmax(30rem, 1.28fr);
-	gap: clamp(2rem, 5vw, 5rem);
-	align-items: start;
-	margin-top: 6rem;
-	padding-top: 5rem;
-	border-top: 1px solid rgba(180, 205, 239, 0.2);
-}
-
-.meeting-copy {
-	position: sticky;
-	top: 8rem;
-}
-.meeting-copy > svg {
-	width: 2.4rem;
-	height: 2.4rem;
-	margin-bottom: 1.25rem;
-	color: #76a9ff;
-}
-.meeting-copy h2 {
-	max-width: 14ch;
-	margin-bottom: 1rem;
-	color: white;
-	font-size: clamp(2rem, 3.5vw, 3.35rem);
-	font-weight: 610;
-	line-height: 1.05;
-}
-.meeting-copy > p:not(.eyebrow) {
-	color: #afbed3;
-	line-height: 1.7;
-}
-.meeting-copy .text-link {
-	color: #a9c8ff;
-}
-
-.calendly-shell {
-	min-height: 43.1rem;
-	overflow: hidden;
-	border: 1px solid rgba(174, 204, 247, 0.26);
-	border-radius: var(--radius-lg);
-	background: white;
-	box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.22);
-}
-
-.calendly-loading {
-	display: grid;
-	min-height: 30rem;
-	place-items: center;
-	color: var(--ink-soft);
-}
-
-.meeting-unavailable {
-	display: grid;
-	min-height: 20rem;
-	place-items: center;
-	padding: 2rem;
-	border: 1px dashed rgba(154, 191, 244, 0.32);
-	border-radius: var(--radius-lg);
-	background: rgba(4, 18, 40, 0.4);
-	text-align: center;
-}
-
-.meeting-unavailable p {
-	max-width: 26rem;
-	margin: 0;
-	color: #9fb0c8;
-	font-size: 0.9rem;
-	line-height: 1.6;
-}
-
-.calendar-consent-prompt {
-	display: grid;
-	min-height: 20rem;
-	place-items: center;
-	align-content: center;
-	gap: 1rem;
-	padding: clamp(1.5rem, 4vw, 3rem);
-	border: 1px solid rgba(174, 204, 247, 0.26);
-	border-radius: var(--radius-lg);
-	background: rgba(4, 18, 40, 0.4);
-	text-align: center;
-}
-
-.calendar-consent-prompt h3 {
-	max-width: 22rem;
-	margin: 0;
-	color: white;
-	font-size: clamp(1.3rem, 2.5vw, 1.7rem);
-}
-
-.calendar-consent-prompt p {
-	max-width: 32rem;
-	margin: 0;
-	color: #afbed3;
-	line-height: 1.65;
-}
-
 .site-footer {
 	padding: 4.5rem 0 1.5rem;
 	color: #dce8fb;
@@ -2428,15 +2330,11 @@ h1 {
 		grid-template-columns: 1fr;
 		gap: 1.5rem;
 	}
-	.contact-intro,
-	.meeting-panel {
+	.contact-intro {
 		grid-template-columns: 1fr;
 	}
 	.contact-copy {
 		max-width: 49rem;
-	}
-	.meeting-copy {
-		position: static;
 	}
 }
 
@@ -2590,14 +2488,6 @@ h1 {
 	.form-panel {
 		margin-inline: -0.1rem;
 		border-radius: var(--radius-lg);
-	}
-	.meeting-panel {
-		margin-top: 4rem;
-		padding-top: 4rem;
-	}
-	.calendly-shell {
-		min-height: 43.1rem;
-		border-radius: var(--radius-md);
 	}
 	.footer-grid {
 		grid-template-columns: 1fr;
@@ -2838,8 +2728,7 @@ h1 {
 	.private-shell,
 	.method-grid,
 	.faq-grid,
-	.contact-intro,
-	.meeting-panel {
+	.contact-intro {
 		gap: 2.5rem;
 	}
 

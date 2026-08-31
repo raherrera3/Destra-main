@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
 	title: "Política de privacidad y cookies | DESTRA",
 	description:
-		"Consulta cómo MAJOIRA S.A. trata los datos personales y gestiona el consentimiento para la agenda de Calendly en destra.es.",
+		"Consulta cómo MAJOIRA S.A. trata los datos personales y gestiona las preferencias de privacidad en destra.es.",
 	alternates: { canonical: "/privacidad" },
 	robots: { index: true, follow: true },
 	openGraph: {
@@ -55,10 +55,6 @@ export default function PrivacyPage() {
 						Gestionar el envío de comunicaciones comerciales, en caso de
 						consentimiento expreso.
 					</li>
-					<li>
-						Guardar y respetar la elección de privacidad sobre la agenda de
-						Calendly cuando el usuario la configure.
-					</li>
 				</ul>
 			</section>
 			<section>
@@ -86,10 +82,7 @@ export default function PrivacyPage() {
 				<h2>4. Destinatarios de los datos</h2>
 				<p>
 					Los datos personales no se cederán a terceros, salvo obligación legal
-					o cuando sea necesario para prestar el servicio solicitado. Si el
-					usuario activa voluntariamente la agenda de Calendly, ese proveedor
-					tratará los datos necesarios para gestionar la cita conforme a sus
-					propias condiciones.
+					o cuando sea necesario para prestar el servicio solicitado.
 				</p>
 			</section>
 			<section>
@@ -134,16 +127,13 @@ export default function PrivacyPage() {
 			<section id="cookies">
 				<h2>7. Información sobre cookies</h2>
 				<p>
-					Este sitio guarda la preferencia de privacidad en el navegador para
-					respetar la elección del usuario. La agenda de Calendly, cuando está
-					configurada, es un servicio de terceros y no se carga hasta que el
-					usuario la activa expresamente desde el aviso o la configuración de
-					cookies.
+					Este sitio guarda únicamente la preferencia de privacidad en el
+					navegador para respetar la elección del usuario.
 				</p>
 				<p>
 					Se puede aceptar, rechazar o modificar esta elección en cualquier
 					momento desde el enlace “Configurar cookies” disponible en el pie de
-					la página de inicio. Rechazar la agenda no impide utilizar el
+					la página de inicio. Rechazar esta preferencia no impide utilizar el
 					formulario de contacto.
 				</p>
 			</section>

@@ -8,7 +8,6 @@ import { useLocale } from "./LocaleProvider";
 type Consent = "unknown" | "accepted" | "rejected";
 
 type CookieConsentContextValue = {
-	hasConsent: boolean;
 	shouldShowBanner: boolean;
 	isInitialized: boolean;
 	preferencesOpen: boolean;
@@ -16,7 +15,6 @@ type CookieConsentContextValue = {
 	reject: () => void;
 	openPreferences: () => void;
 	closePreferences: () => void;
-	savePreferences: (allowCalendly: boolean) => void;
 };
 
 const STORAGE_KEY = "destra-cookie-consent-v1";
@@ -59,16 +57,10 @@ export function CookieConsentProvider({
 	const reject = useCallback(() => saveConsent("rejected"), [saveConsent]);
 	const openPreferences = useCallback(() => setPreferencesOpen(true), []);
 	const closePreferences = useCallback(() => setPreferencesOpen(false), []);
-	const savePreferences = useCallback(
-		(allowCalendly: boolean) =>
-			saveConsent(allowCalendly ? "accepted" : "rejected"),
-		[saveConsent],
-	);
 
 	return (
 		<CookieConsentContext.Provider
 			value={{
-				hasConsent: consent === "accepted",
 				shouldShowBanner: consent === "unknown",
 				isInitialized,
 				preferencesOpen,
@@ -76,7 +68,6 @@ export function CookieConsentProvider({
 				reject,
 				openPreferences,
 				closePreferences,
-				savePreferences,
 			}}
 		>
 			{children}
@@ -96,7 +87,6 @@ export function useCookieConsent() {
 export default function CookieConsentBanner() {
 	const { copy } = useLocale();
 	const {
-		hasConsent,
 		isInitialized,
 		preferencesOpen,
 		shouldShowBanner,
@@ -104,14 +94,8 @@ export default function CookieConsentBanner() {
 		reject,
 		openPreferences,
 		closePreferences,
-		savePreferences,
 	} = useCookieConsent();
-	const [allowCalendly, setAllowCalendly] = useState(hasConsent);
 	const dialog = useRef<HTMLDialogElement>(null);
-
-	useEffect(() => {
-		setAllowCalendly(hasConsent);
-	}, [hasConsent]);
 
 	useEffect(() => {
 		if (!preferencesOpen) return;
@@ -196,21 +180,6 @@ export default function CookieConsentBanner() {
 							</div>
 							<span>{copy.cookies.alwaysOn}</span>
 						</div>
-						<label
-							className="cookie-option cookie-option--choice"
-							htmlFor="calendly-consent"
-						>
-							<div>
-								<strong>{copy.cookies.calendlyTitle}</strong>
-								<p>{copy.cookies.calendlyDescription}</p>
-							</div>
-							<input
-								id="calendly-consent"
-								type="checkbox"
-								checked={allowCalendly}
-								onChange={(event) => setAllowCalendly(event.target.checked)}
-							/>
-						</label>
 						<div className="cookie-dialog__actions">
 							<button
 								className="button button--secondary"
@@ -222,7 +191,7 @@ export default function CookieConsentBanner() {
 							<button
 								className="button button--primary"
 								type="button"
-								onClick={() => savePreferences(allowCalendly)}
+								onClick={accept}
 							>
 								{copy.cookies.save}
 							</button>

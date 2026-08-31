@@ -13,4 +13,4 @@ La web se dirige a perfiles directivos y tecnológicos de organizaciones mediana
 
 ## Conversión
 
-La conversión principal es preparar una conversación estratégica mediante el formulario cualificado. También se conserva una agenda Calendly configurable.
+La conversión principal es preparar una conversación estratégica mediante el formulario cualificado.

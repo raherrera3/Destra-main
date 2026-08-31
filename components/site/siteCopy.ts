@@ -104,9 +104,6 @@ type SiteCopy = {
 		successTitle: string;
 		success: string;
 		again: string;
-		meetingTitle: string;
-		meetingLead: string;
-		unavailable: string;
 	};
 	cookies: {
 		title: string;
@@ -120,11 +117,6 @@ type SiteCopy = {
 		necessaryTitle: string;
 		necessaryDescription: string;
 		alwaysOn: string;
-		calendlyTitle: string;
-		calendlyDescription: string;
-		calendarPromptTitle: string;
-		calendarPromptDescription: string;
-		calendarPromptAction: string;
 	};
 	form: {
 		errorSummary: string;
@@ -413,16 +405,12 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			success:
 				"El canal de contacto ha confirmado la recepción. Revisaremos el contexto antes de responder.",
 			again: "Enviar otra solicitud",
-			meetingTitle: "Prefieres hablar primero?",
-			meetingLead:
-				"La sesión estratégica se habilitará cuando la agenda de DESTRA esté configurada.",
-			unavailable: "La agenda todavía no está disponible.",
 		},
 		cookies: {
 			title: "Tu privacidad, bajo control",
 			description:
-				"Solo activamos la agenda de Calendly si das tu consentimiento. Puedes cambiar esta elección cuando quieras.",
-			accept: "Aceptar y activar agenda",
+				"Guardamos únicamente la preferencia necesaria para respetar tu elección de privacidad.",
+			accept: "Aceptar",
 			reject: "Rechazar",
 			configure: "Configurar",
 			save: "Guardar selección",
@@ -432,13 +420,6 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			necessaryDescription:
 				"Guardamos tu elección de privacidad en este navegador para respetarla.",
 			alwaysOn: "Siempre activa",
-			calendlyTitle: "Agenda de Calendly",
-			calendlyDescription:
-				"Al activarla, Calendly puede cargar sus propios recursos para mostrar y gestionar una cita.",
-			calendarPromptTitle: "Activa la agenda solo si quieres usarla",
-			calendarPromptDescription:
-				"Calendly es un servicio de terceros. No se carga hasta que des tu consentimiento.",
-			calendarPromptAction: "Configurar cookies",
 		},
 		form: {
 			errorSummary: "Revisa los campos indicados.",
@@ -769,16 +750,12 @@ siteCopy.en = {
 		success:
 			"The contact channel has confirmed receipt. We will review the context before replying.",
 		again: "Send another request",
-		meetingTitle: "Prefer to talk first?",
-		meetingLead:
-			"The strategic session will be enabled when DESTRA’s calendar is configured.",
-		unavailable: "The calendar is not available yet.",
 	},
 	cookies: {
 		title: "Your privacy, under your control",
 		description:
-			"We only activate the Calendly calendar when you give consent. You can change this choice at any time.",
-		accept: "Accept and enable calendar",
+			"We only store the necessary preference needed to respect your privacy choice.",
+		accept: "Accept",
 		reject: "Reject",
 		configure: "Configure",
 		save: "Save selection",
@@ -788,13 +765,6 @@ siteCopy.en = {
 		necessaryDescription:
 			"We store your privacy choice in this browser so we can respect it.",
 		alwaysOn: "Always on",
-		calendlyTitle: "Calendly calendar",
-		calendlyDescription:
-			"When enabled, Calendly may load its own resources to display and manage a meeting.",
-		calendarPromptTitle: "Only enable the calendar if you want to use it",
-		calendarPromptDescription:
-			"Calendly is a third-party service. It does not load until you give consent.",
-		calendarPromptAction: "Configure cookies",
 	},
 	form: {
 		errorSummary: "Review the highlighted fields.",
