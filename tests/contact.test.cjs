@@ -425,6 +425,10 @@ test("contact opens as an accessible liquid-glass drawer with resilient fallback
 		path.join(root, "components/site/ContactExperience.tsx"),
 		"utf8",
 	);
+	const shell = fs.readFileSync(
+		path.join(root, "components/site/SiteShell.tsx"),
+		"utf8",
+	);
 	const globals = fs.readFileSync(path.join(root, "app/globals.css"), "utf8");
 	const copy = fs.readFileSync(
 		path.join(root, "components/site/siteCopy.ts"),
@@ -434,6 +438,9 @@ test("contact opens as an accessible liquid-glass drawer with resilient fallback
 	assert.match(source, /a\[href=["']#contacto["']\]/);
 	assert.match(source, /DialogPrimitive\.Content/);
 	assert.match(source, /feDisplacementMap/);
+	assert.match(shell, /id="button-glass"/);
+	assert.match(shell, /feDisplacementMap/);
+	assert.match(globals, /url\(#button-glass\)/);
 	assert.match(globals, /\.contact-drawer/);
 	assert.match(globals, /prefers-reduced-transparency:\s*reduce/);
 	assert.match(copy, /cta:\s*"Contacto"/);

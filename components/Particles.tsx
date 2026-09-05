@@ -23,12 +23,12 @@ export default function ParticlesBackground() {
 			fullScreen: { enable: false },
 			fpsLimit: 30,
 			particles: {
-				color: { value: "#1469ff" },
+				color: { value: "#1d70f2" },
 				links: {
 					enable: true,
-					color: "#77a5ff",
+					color: "#8ab7ff",
 					distance: 165,
-					opacity: 0.1,
+					opacity: 0.13,
 					width: 1,
 				},
 				move: {
@@ -38,13 +38,22 @@ export default function ParticlesBackground() {
 					// Perceptible while scrolling, without becoming a distracting UI effect.
 					speed: 0.3,
 				},
-				number: { density: { enable: true, area: 950 }, value: 34 },
-				opacity: { value: { min: 0.12, max: 0.21 } },
+				number: { density: { enable: true, area: 950 }, value: 38 },
+				opacity: { value: { min: 0.15, max: 0.25 } },
 				shape: { type: "circle" },
-				size: { value: { min: 1.15, max: 2 } },
+				size: { value: { min: 1.2, max: 2.15 } },
 			},
 			interactivity: {
-				events: { onHover: { enable: false }, onClick: { enable: false } },
+				events: {
+					onHover: { enable: !reduced, mode: "grab" },
+					onClick: { enable: false },
+				},
+				modes: {
+					grab: {
+						distance: 140,
+						links: { color: "#8ab7ff", opacity: 0.3 },
+					},
+				},
 			},
 			detectRetina: false,
 		}),
