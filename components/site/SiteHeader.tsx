@@ -119,7 +119,7 @@ export default function SiteHeader() {
 					onClick={close}
 				>
 					<BrandLogo
-						surface="light"
+						surface="dark"
 						priority
 						sizes="(max-width: 768px) 132px, 152px"
 					/>

@@ -125,6 +125,7 @@ type SiteCopy = {
 		errorSummary: string;
 		retry: string;
 		labels: Record<string, string>;
+		groups: { about: string; project: string };
 		hints: Record<string, string>;
 		placeholder: string;
 		needs: Record<NeedValue, string>;
@@ -428,6 +429,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			errorSummary: "Revisa los campos indicados.",
 			retry:
 				"Los datos permanecen en el formulario para que puedas intentarlo de nuevo.",
+			groups: { about: "Sobre ti", project: "Sobre el proyecto" },
 			labels: {
 				name: "Nombre y apellidos",
 				email: "Correo profesional",
@@ -776,6 +778,7 @@ siteCopy.en = {
 	form: {
 		errorSummary: "Review the highlighted fields.",
 		retry: "Your details remain in the form so you can try again.",
+		groups: { about: "About you", project: "About the project" },
 		labels: {
 			name: "Full name",
 			email: "Work email",

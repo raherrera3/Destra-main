@@ -316,6 +316,40 @@ export default function ContactExperience() {
 									<a href="mailto:contacto@destra.es">contacto@destra.es</a>
 								</div>
 							)}
+							<fieldset className="need-choice">
+								<legend className="form-group-label">
+									{l.need}{" "}
+									<span className="form-group-label__hint">
+										[{copy.form.placeholder}]
+									</span>
+								</legend>
+								<div
+									className="need-chips"
+									aria-describedby={describedBy("need")}
+								>
+									{needValues.map((value) => (
+										<span className="need-chip" key={value}>
+											<input
+												type="radio"
+												id={`need-${value}`}
+												value={value}
+												aria-invalid={!!errors.need}
+												{...register("need")}
+											/>
+											<label htmlFor={`need-${value}`}>
+												<i className="need-chip__tick" aria-hidden="true" />
+												{copy.form.needs[value]}
+											</label>
+										</span>
+									))}
+								</div>
+								{errors.need?.message && (
+									<small className="field-error" id="need-error">
+										{errors.need.message}
+									</small>
+								)}
+							</fieldset>
+							<p className="form-group-label">{copy.form.groups.about}</p>
 							<div className="field-row">
 								<Field
 									id="name"
@@ -377,30 +411,8 @@ export default function ContactExperience() {
 									/>
 								</Field>
 							</div>
+							<p className="form-group-label">{copy.form.groups.project}</p>
 							<div className="field-row">
-								<Field
-									id="need"
-									label={l.need}
-									required
-									error={errors.need?.message}
-								>
-									<select
-										id="need"
-										defaultValue=""
-										aria-invalid={!!errors.need}
-										aria-describedby={describedBy("need")}
-										{...register("need")}
-									>
-										<option value="" disabled>
-											{copy.form.placeholder}
-										</option>
-										{needValues.map((value) => (
-											<option key={value} value={value}>
-												{copy.form.needs[value]}
-											</option>
-										))}
-									</select>
-								</Field>
 								<Field id="size" label={l.size} error={errors.size?.message}>
 									<select
 										id="size"
