@@ -161,7 +161,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			mobileNav: "Navegación móvil",
 			open: "Abrir menú",
 			close: "Cerrar menú",
-			cta: "Estudio gratuito",
+			cta: "Estudio sin compromiso",
 			language: "Idioma",
 			servicesMenu: "Ver servicios",
 		},
@@ -176,7 +176,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			kicker: "Partner de IA para organizaciones",
 			title: "Convierte la IA en una capacidad que tu empresa puede operar.",
 			lead: "Definimos la prioridad, construimos la solución y la integramos en tus sistemas, datos y equipos.",
-			primary: "Solicitar estudio gratuito",
+			primary: "Solicitar estudio sin compromiso",
 			secondary: "Ver cómo trabajamos",
 			reassurance:
 				"Sin coste ni compromiso. Revisamos tu caso y proponemos el siguiente paso.",
@@ -305,7 +305,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 		method: {
 			title: "Un proceso claro, desde el primer estudio.",
 			lead: "Alineamos oportunidad, arquitectura, integración y adopción desde el inicio.",
-			cta: "Empezar con un estudio gratuito",
+			cta: "Empezar con un estudio sin compromiso",
 			steps: [
 				{
 					title: "Diagnosticar",
@@ -376,7 +376,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			items: [
 				{
 					title: "¿Necesitamos un caso de uso definido?",
-					body: "No. Podemos empezar por un proceso, necesidad o restricción y ordenar las oportunidades en el estudio gratuito.",
+					body: "No. Podemos empezar por un proceso, necesidad o restricción y ordenar las oportunidades en el estudio sin compromiso.",
 				},
 				{
 					title: "¿Trabajáis con nuestros sistemas actuales?",
@@ -393,7 +393,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			],
 		},
 		contact: {
-			title: "Solicita un estudio gratuito de tu caso.",
+			title: "Solicita un estudio sin compromiso de tu caso.",
 			lead: "Cuéntanos el reto. Prepararemos una primera evaluación con prioridad, viabilidad y siguiente paso.",
 			includes: "Qué incluye",
 			points: [
@@ -458,7 +458,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 				"250–999",
 				"1.000 o más",
 			],
-			submit: "Solicitar estudio gratuito",
+			submit: "Solicitar estudio sin compromiso",
 			sending: "Enviando…",
 			validation: {
 				name: "Indica tu nombre y apellidos",
@@ -492,7 +492,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 				"Método",
 				"Casos de uso",
 				"Por qué DESTRA",
-				"Estudio gratuito",
+				"Estudio sin compromiso",
 			],
 			privacy: "Política de privacidad",
 			terms: "Términos y condiciones",
@@ -513,7 +513,7 @@ siteCopy.en = {
 		mobileNav: "Mobile navigation",
 		open: "Open menu",
 		close: "Close menu",
-		cta: "Free AI assessment",
+		cta: "Let’s discuss your project",
 		language: "Language",
 		servicesMenu: "View services",
 	},
@@ -528,7 +528,7 @@ siteCopy.en = {
 		kicker: "AI partner for organisations",
 		title: "Turn AI into a capability your business can run.",
 		lead: "We define the priority, build the solution and integrate it with your systems, data and teams.",
-		primary: "Request a free AI assessment",
+		primary: "Let’s discuss your project",
 		secondary: "See how we work",
 		reassurance:
 			"No cost, no commitment. We review your case and recommend the next step.",
@@ -656,7 +656,7 @@ siteCopy.en = {
 	method: {
 		title: "A clear process, from the first assessment.",
 		lead: "We align opportunity, architecture, integration and adoption from the outset.",
-		cta: "Start with a free assessment",
+		cta: "Let’s discuss your project",
 		steps: [
 			{ title: "Diagnose", body: "Process, systems, data and constraints." },
 			{ title: "Prioritise", body: "Value, feasibility, risk and effort." },
@@ -724,7 +724,7 @@ siteCopy.en = {
 		items: [
 			{
 				title: "Do we need a defined use case?",
-				body: "No. We can start with a process, need or constraint and prioritise opportunities in the free assessment.",
+				body: "No. We can start with a process, need or constraint and prioritise opportunities in an initial assessment, with no commitment required.",
 			},
 			{
 				title: "Do you work with our current systems?",
@@ -741,8 +741,8 @@ siteCopy.en = {
 		],
 	},
 	contact: {
-		title: "Request a free assessment of your case.",
-		lead: "Tell us about the challenge. We will prepare an initial view of priority, feasibility and the next step.",
+		title: "Let’s discuss your project",
+		lead: "An initial assessment, with no commitment required. Tell us about the challenge so we can explore priorities, feasibility and the next step.",
 		includes: "What it includes",
 		points: [
 			"A well-framed starting point.",
@@ -799,7 +799,7 @@ siteCopy.en = {
 			unclear: "We are not sure yet",
 		},
 		sizes: ["Prefer not to say", "1–49", "50–249", "250–999", "1,000+"],
-		submit: "Request my free assessment",
+		submit: "Let’s discuss your project",
 		sending: "Sending…",
 		validation: {
 			name: "Enter your full name",
@@ -834,7 +834,7 @@ siteCopy.en = {
 			"Method",
 			"Use cases",
 			"Why DESTRA",
-			"Free AI assessment",
+			"Let’s discuss your project",
 		],
 		privacy: "Privacy policy",
 		terms: "Terms and conditions",

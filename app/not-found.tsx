@@ -32,7 +32,7 @@ export default function NotFound() {
 						Ir al inicio
 					</Link>
 					<Link className="button button--secondary" href="/#contacto">
-						Solicitar un estudio gratuito
+						Solicitar un estudio sin compromiso
 					</Link>
 				</div>
 			</div>

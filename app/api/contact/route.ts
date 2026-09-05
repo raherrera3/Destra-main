@@ -171,7 +171,7 @@ export async function POST(request: Request) {
 				from,
 				to: [to],
 				reply_to: lead.email,
-				subject: `Estudio gratuito — ${lead.company.replace(/[\r\n]+/g, " ")} — ${lead.need}`,
+				subject: `Estudio sin compromiso — ${lead.company.replace(/[\r\n]+/g, " ")} — ${lead.need}`,
 				text,
 			}),
 			signal: AbortSignal.timeout(12_000),
