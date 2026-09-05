@@ -4,6 +4,7 @@ export const locales = ["es", "en"] as const;
 export type Locale = (typeof locales)[number];
 export type ContactErrorCode =
 	| "invalid_content_type"
+	| "request_too_large"
 	| "not_configured"
 	| "rate_limited"
 	| "invalid_request"
@@ -473,6 +474,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 				rate_limited: "Hay demasiados intentos. Espera unos minutos.",
 				invalid_request: "Revisa los datos de la solicitud.",
 				invalid_session: "Recarga la página e inténtalo de nuevo.",
+				request_too_large: "La solicitud es demasiado grande. Reduce el texto.",
 				verification_failed: "Completa de nuevo la verificación de seguridad.",
 				verification_unavailable:
 					"No se ha podido verificar la seguridad. Inténtalo de nuevo.",
@@ -815,6 +817,7 @@ siteCopy.en = {
 				"There have been too many attempts. Please wait a few minutes.",
 			invalid_request: "Review the request details.",
 			invalid_session: "Reload the page and try again.",
+			request_too_large: "The request is too large. Shorten the text.",
 			verification_failed: "Complete the security check again.",
 			verification_unavailable:
 				"The security check is unavailable. Please try again.",

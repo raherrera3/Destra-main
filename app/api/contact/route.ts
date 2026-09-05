@@ -65,6 +65,15 @@ function isRateLimited(key: string) {
 }
 
 export async function POST(request: Request) {
+	// The trusted reverse proxy must overwrite these headers, not forward arbitrary client values.
+	const clientKey =
+		request.headers.get("cf-connecting-ip")?.trim() ||
+		request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+		"local";
+	if (isRateLimited(clientKey))
+		return failure("rate_limited", 429, { "Retry-After": "600" });
+
+
 	if (
 		!(request.headers.get("content-type") ?? "")
 			.toLowerCase()
@@ -74,7 +83,21 @@ export async function POST(request: Request) {
 	}
 	let body: unknown;
 	try {
-		body = await request.json();
+		const reader = request.body?.getReader();
+		if (!reader) return failure("invalid_request", 400);
+		const bytes = new Uint8Array(16 * 1024);
+		let length = 0;
+		while (true) {
+			const chunk = await reader.read();
+			if (chunk.done) break;
+			if (length + chunk.value.byteLength > bytes.byteLength) {
+				await reader.cancel();
+				return failure("request_too_large", 413);
+			}
+			bytes.set(chunk.value, length);
+			length += chunk.value.byteLength;
+		}
+		body = await new Response(bytes.slice(0, length)).json();
 	} catch {
 		return failure("invalid_request", 400);
 	}
@@ -86,13 +109,6 @@ export async function POST(request: Request) {
 	if (elapsed < 1200 || elapsed > 2 * 60 * 60 * 1000)
 		return failure("invalid_session", 400);
 
-	// The trusted reverse proxy must overwrite these headers, not forward arbitrary client values.
-	const clientKey =
-		request.headers.get("cf-connecting-ip")?.trim() ||
-		request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-		"local";
-	if (isRateLimited(clientKey))
-		return failure("rate_limited", 429, { "Retry-After": "600" });
 
 	const key = process.env.RESEND_API_KEY?.trim();
 	const from = process.env.CONTACT_FROM_EMAIL?.trim();

@@ -285,7 +285,7 @@ test("invalid requests consume the IP limit before JSON parsing", async () => {
 test("body limit is 16KiB of actual streamed bytes even with a false Content-Length", async () => {
 	const h = harness();
 	let cancelled = false;
-	const input = JSON.stringify({ ...values(), ignored: "x".repeat(20_000) });
+	const input = JSON.stringify({ ...values(), ignored: "x".repeat(40_000) });
 	let offset = 0;
 	const stream = new ReadableStream({
 		pull(controller) {
