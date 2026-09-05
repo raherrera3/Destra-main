@@ -214,7 +214,7 @@ export default function SiteHeader() {
 						href="#contacto"
 						onClick={close}
 					>
-						{copy.hero.primary}
+						{copy.header.cta}
 					</Link>
 				</nav>
 			</div>

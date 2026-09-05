@@ -95,8 +95,7 @@ body::before {
 	inset: 0;
 	z-index: 0;
 	pointer-events: none;
-	background:
-		radial-gradient(
+	background: radial-gradient(
 			60rem 40rem at 12% -8%,
 			rgba(20, 105, 255, 0.28),
 			transparent 62%
@@ -273,7 +272,25 @@ main,
 	min-height: 4.5rem;
 	margin-inline: auto;
 	padding: 0.55rem 0.65rem 0.55rem 0.8rem;
+	border-color: rgba(190, 214, 255, 0.2);
 	border-radius: 1.2rem;
+	background: linear-gradient(
+			135deg,
+			rgba(255, 255, 255, 0.09),
+			transparent 38%
+		), rgba(5, 13, 30, 0.22);
+	box-shadow: 0 1.25rem 3.5rem rgba(0, 5, 18, 0.3), inset 0 1px 0
+		rgba(255, 255, 255, 0.2);
+	-webkit-backdrop-filter: blur(22px) saturate(180%);
+	backdrop-filter: blur(22px) saturate(180%);
+}
+
+.header-shell.glass-surface::before {
+	background: linear-gradient(
+			115deg,
+			rgba(255, 255, 255, 0.24),
+			transparent 24%
+		), linear-gradient(170deg, transparent 58%, rgba(83, 147, 255, 0.08));
 }
 
 .header-actions {
@@ -921,8 +938,8 @@ h1 {
 		rgba(20, 105, 255, 0.32) 54%,
 		rgba(8, 40, 110, 0.5)
 	);
-	box-shadow: inset 0 1px 0 var(--edge), 0 1.4rem 3.25rem rgba(20, 105, 255, 0.3),
-		0 0 0 0.7rem rgba(20, 105, 255, 0.07);
+	box-shadow: inset 0 1px 0 var(--edge), 0 1.4rem 3.25rem
+		rgba(20, 105, 255, 0.3), 0 0 0 0.7rem rgba(20, 105, 255, 0.07);
 	text-align: center;
 }
 
@@ -1707,29 +1724,123 @@ h1 {
 }
 
 .contact {
-	padding-bottom: 6rem;
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	padding-block: clamp(6rem, 10vw, 9rem);
 	color: #dce8fb;
-	background: linear-gradient(150deg, #07152d, #0a2145);
+	background: radial-gradient(
+			circle at 78% 48%,
+			rgba(20, 105, 255, 0.24),
+			transparent 28%
+		), linear-gradient(145deg, #050a14 0%, #08172f 58%, #0a2145 100%);
+}
+
+.contact::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background-image: linear-gradient(
+			rgba(255, 255, 255, 0.035) 1px,
+			transparent 1px
+		), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+	background-size: 4rem 4rem;
+	mask-image: linear-gradient(90deg, transparent, #000 48%, #000);
 }
 
 .contact-intro {
 	display: grid;
-	grid-template-columns: minmax(0, 0.8fr) minmax(32rem, 1.2fr);
-	gap: clamp(3rem, 7vw, 7rem);
+	grid-template-columns: minmax(0, 1fr) minmax(17rem, 0.55fr);
+	gap: clamp(3rem, 9vw, 9rem);
+	align-items: center;
 }
 
 .contact-copy h2 {
-	max-width: 13ch;
+	max-width: 12ch;
 	margin-bottom: 1.5rem;
 	color: white;
-	font-size: clamp(2.5rem, 4.5vw, 4.6rem);
+	font-size: clamp(3rem, 5.8vw, 6.2rem);
 	font-weight: 610;
-	line-height: 1.02;
+	line-height: 0.95;
+	letter-spacing: -0.055em;
 }
 
 .contact-copy > p:not(.eyebrow) {
+	max-width: 38rem;
 	color: #afbed3;
+	font-size: clamp(1rem, 1.5vw, 1.18rem);
 	line-height: 1.7;
+}
+
+.contact-eyebrow {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.65rem;
+	margin-bottom: 1.4rem;
+	color: var(--blue-3);
+	font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: 0.7rem;
+	font-weight: 650;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+}
+
+.contact-eyebrow::before {
+	content: "";
+	width: 1.75rem;
+	height: 1px;
+	background: currentColor;
+}
+
+.contact-open {
+	margin-top: 2rem;
+}
+
+.contact-preview {
+	position: relative;
+	min-height: 24rem;
+	padding: 3.5rem 2.25rem;
+	border: 1px solid rgba(161, 196, 255, 0.24);
+	border-radius: 2rem;
+	background: linear-gradient(
+			135deg,
+			rgba(255, 255, 255, 0.12),
+			transparent 42%
+		), rgba(7, 22, 48, 0.58);
+	box-shadow: 0 2.5rem 8rem rgba(0, 7, 25, 0.58), inset 0 1px 0
+		rgba(255, 255, 255, 0.16);
+	backdrop-filter: blur(20px) saturate(145%);
+	transform: perspective(60rem) rotateY(-7deg) rotateX(2deg);
+}
+
+.contact-preview::before {
+	content: "";
+	position: absolute;
+	inset: 1.1rem;
+	border: 1px solid rgba(255, 255, 255, 0.07);
+	border-radius: 1.35rem;
+}
+
+.contact-preview span {
+	display: block;
+	height: 3rem;
+	margin-bottom: 1.9rem;
+	border-bottom: 1px solid rgba(188, 210, 244, 0.28);
+}
+
+.contact-preview span:nth-child(2) {
+	width: 78%;
+}
+
+.contact-preview i {
+	display: block;
+	width: 8rem;
+	height: 2.8rem;
+	margin-top: 2.8rem;
+	border-radius: 999px;
+	background: linear-gradient(135deg, var(--blue), #4f91ff);
+	box-shadow: 0 1rem 2.5rem rgba(20, 105, 255, 0.34);
 }
 
 .next-step {
@@ -1749,11 +1860,6 @@ h1 {
 	color: #afbed3;
 	font-size: 0.86rem;
 	line-height: 1.75;
-}
-.contact-copy .privacy-note {
-	margin-top: 1.25rem;
-	color: #8fa2bc;
-	font-size: 0.77rem;
 }
 
 .form-panel {
@@ -1922,8 +2028,8 @@ h1 {
 	font-weight: 500;
 	line-height: 1;
 	cursor: pointer;
-	transition: color 160ms ease-out, border-color 160ms ease-out,
-		background 160ms ease-out, transform 110ms ease-out;
+	transition: color 160ms ease-out, border-color 160ms ease-out, background
+		160ms ease-out, transform 110ms ease-out;
 }
 
 .need-chip__tick {
@@ -2055,6 +2161,312 @@ h1 {
 	margin: 0 0 1.5rem;
 	color: var(--ink-soft);
 	line-height: 1.65;
+}
+
+/* WorldQuant-style entry, translated to DESTRA's dark visual system. The
+ * SVG displacement is progressive enhancement; blur remains the fallback. */
+.contact-drawer-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 100;
+	background: rgba(1, 5, 14, 0.46);
+	backdrop-filter: blur(12px) saturate(88%);
+}
+
+.contact-drawer-overlay[data-state="open"] {
+	animation: contact-overlay-in 420ms ease-out both;
+}
+
+.contact-drawer-overlay[data-state="closed"] {
+	animation: contact-overlay-out 260ms ease-in both;
+}
+
+.contact-drawer {
+	position: fixed;
+	inset: 0 auto 0 0;
+	z-index: 101;
+	width: clamp(40rem, 47vw, 48rem);
+	height: 100dvh;
+	overflow: hidden;
+	border: 1px solid rgba(171, 204, 255, 0.22);
+	border-left: 0;
+	border-radius: 0 2.25rem 2.25rem 0;
+	outline: none;
+	color: var(--ink);
+	background: linear-gradient(
+			145deg,
+			rgba(255, 255, 255, 0.14),
+			transparent 32%
+		), linear-gradient(160deg, rgba(8, 28, 59, 0.56), rgba(3, 10, 23, 0.68));
+	box-shadow: 2.5rem 0 8rem rgba(0, 5, 16, 0.54), inset -1px 0
+		rgba(255, 255, 255, 0.14), inset 0 1px rgba(255, 255, 255, 0.12);
+	-webkit-backdrop-filter: blur(24px) saturate(155%);
+}
+
+.contact-drawer::before,
+.contact-drawer::after {
+	content: "";
+	position: absolute;
+	pointer-events: none;
+}
+
+.contact-drawer::before {
+	inset: 0;
+	background: radial-gradient(
+			circle at 0 0,
+			rgba(92, 151, 255, 0.24),
+			transparent 33%
+		),
+		radial-gradient(
+			circle at 96% 74%,
+			rgba(20, 105, 255, 0.13),
+			transparent 26%
+		);
+}
+
+.contact-drawer::after {
+	top: 0;
+	right: 0;
+	width: 1px;
+	height: 100%;
+	background: linear-gradient(
+		transparent,
+		rgba(153, 194, 255, 0.8),
+		transparent
+	);
+	box-shadow: 0 0 2rem rgba(51, 126, 255, 0.8);
+}
+
+.contact-drawer[data-state="open"] {
+	animation: contact-drawer-in 650ms
+		linear(0, 0.45 7%, 0.75 14%, 0.94 23%, 1.04 32%, 1.01 49%, 1) both;
+}
+
+.contact-drawer[data-state="closed"] {
+	animation: contact-drawer-out 300ms ease-in both;
+}
+
+.contact-drawer__filter {
+	position: absolute;
+	width: 0;
+	height: 0;
+}
+
+.contact-drawer__shell {
+	position: relative;
+	z-index: 1;
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding: clamp(2rem, 5vw, 4.5rem) clamp(1.5rem, 5vw, 4.5rem) 3rem;
+	scrollbar-color: rgba(107, 165, 255, 0.55) transparent;
+}
+
+.contact-drawer__close {
+	position: absolute;
+	top: 1.25rem;
+	right: 1.5rem;
+	display: grid;
+	width: 3rem;
+	height: 3rem;
+	place-items: center;
+	padding: 0;
+	border: 1px solid rgba(255, 255, 255, 0.16);
+	border-radius: 999px;
+	color: var(--ink);
+	background: rgba(255, 255, 255, 0.07);
+	cursor: pointer;
+	transition: border-color 160ms ease, background 160ms ease, transform 160ms
+		ease;
+}
+
+.contact-drawer__close:hover {
+	border-color: rgba(107, 165, 255, 0.65);
+	background: rgba(20, 105, 255, 0.18);
+	transform: rotate(5deg);
+}
+
+.contact-drawer__close:focus-visible {
+	outline: 3px solid rgba(var(--ring), 0.95);
+	outline-offset: 3px;
+}
+
+.contact-drawer__close svg {
+	width: 1.15rem;
+	height: 1.15rem;
+}
+
+.contact-drawer__header {
+	padding-right: 3.5rem;
+}
+
+.contact-drawer__title {
+	max-width: 12ch;
+	margin: 0;
+	color: #fff;
+	font-size: clamp(2.25rem, 3.2vw, 3.5rem);
+	font-weight: 600;
+	line-height: 0.97;
+	letter-spacing: -0.055em;
+}
+
+.contact-drawer__lead {
+	max-width: 38rem;
+	margin: 1.4rem 0 0;
+	color: var(--ink-soft);
+	font-size: 1rem;
+	line-height: 1.65;
+}
+
+.next-step--drawer {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 1.5rem;
+	margin: 2rem 0 2.75rem;
+	padding: 1rem 1.1rem;
+	border-color: rgba(169, 198, 239, 0.16);
+	background: rgba(1, 9, 23, 0.34);
+}
+
+.next-step--drawer strong {
+	padding-top: 0.16rem;
+	font-size: 0.75rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.next-step--drawer ul {
+	margin: 0;
+	font-size: 0.78rem;
+}
+
+.contact-drawer .form-panel {
+	margin: 0;
+	padding: clamp(1.1rem, 2.5vw, 1.75rem);
+	border: 1px solid rgba(177, 207, 255, 0.15);
+	border-radius: 1.5rem;
+	background: linear-gradient(
+			145deg,
+			rgba(255, 255, 255, 0.075),
+			transparent 34%
+		), rgba(3, 12, 28, 0.22);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.11), 0 1.5rem 4rem
+		rgba(0, 5, 18, 0.18);
+	-webkit-backdrop-filter: blur(14px) saturate(155%);
+	backdrop-filter: blur(14px) saturate(155%);
+}
+
+.contact-drawer .field > span {
+	color: var(--ink-muted);
+	font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.11em;
+	text-transform: uppercase;
+}
+
+.contact-drawer .form-panel form > .form-group-label {
+	margin-top: 2rem;
+	padding-top: 1.75rem;
+	border-top: 1px solid var(--line);
+}
+
+.contact-drawer__privacy {
+	margin: 1.5rem 0 0;
+	color: var(--ink-muted);
+	font-size: 0.75rem;
+	line-height: 1.55;
+}
+
+@keyframes contact-overlay-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes contact-overlay-out {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes contact-drawer-in {
+	from {
+		transform: translate3d(-104%, 0, 0);
+	}
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes contact-drawer-out {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		transform: translate3d(-104%, 0, 0);
+	}
+}
+
+@media (max-width: 960px) {
+	.contact-drawer {
+		width: min(42rem, calc(100vw - 1rem));
+		min-width: 0;
+	}
+}
+
+@media (max-width: 640px) {
+	.contact-preview {
+		display: none;
+	}
+
+	.contact-drawer {
+		width: 100vw;
+		border-right: 0;
+		border-radius: 0;
+		backdrop-filter: blur(20px) saturate(145%) !important;
+	}
+
+	.contact-drawer__shell {
+		padding: max(1.25rem, env(safe-area-inset-top)) 1.25rem
+			max(2rem, env(safe-area-inset-bottom));
+	}
+
+	.contact-drawer__header {
+		padding-right: 2.5rem;
+	}
+
+	.contact-drawer__title {
+		font-size: clamp(2.45rem, 12vw, 3.75rem);
+	}
+
+	.next-step--drawer {
+		display: block;
+	}
+
+	.next-step--drawer ul {
+		margin-top: 0.65rem;
+	}
+}
+
+/* biome-ignore lint/correctness/noUnknownMediaFeatureName: implemented by Safari and kept as progressive enhancement */
+@media (prefers-reduced-transparency: reduce) {
+	.contact-drawer-overlay {
+		backdrop-filter: none;
+	}
+
+	.contact-drawer {
+		background: #08162d;
+		backdrop-filter: none !important;
+		-webkit-backdrop-filter: none;
+	}
 }
 
 .site-footer {
@@ -2485,12 +2897,14 @@ h1 {
 }
 
 @media (max-width: 1024px) {
-	.desktop-nav,
-	.header-actions {
+	.desktop-nav {
 		display: none;
 	}
 	.header-shell {
-		grid-template-columns: 1fr auto;
+		grid-template-columns: 1fr auto auto;
+	}
+	.header-actions .language-toggle {
+		display: none;
 	}
 	.menu-toggle {
 		display: inline-flex;

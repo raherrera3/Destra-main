@@ -99,8 +99,11 @@ type SiteCopy = {
 	why: { title: string; items: Item[] };
 	faq: { title: string; items: Item[] };
 	contact: {
+		eyebrow: string;
 		title: string;
 		lead: string;
+		open: string;
+		close: string;
 		includes: string;
 		points: string[];
 		privacy: string;
@@ -163,7 +166,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			mobileNav: "Navegación móvil",
 			open: "Abrir menú",
 			close: "Cerrar menú",
-			cta: "Estudio sin compromiso",
+			cta: "Contacto",
 			language: "Idioma",
 			servicesMenu: "Ver servicios",
 		},
@@ -395,8 +398,11 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			],
 		},
 		contact: {
-			title: "Solicita un estudio sin compromiso de tu caso.",
+			eyebrow: "Contacto",
+			title: "Hablemos",
 			lead: "Cuéntanos el reto. Prepararemos una primera evaluación con prioridad, viabilidad y siguiente paso.",
+			open: "Abrir formulario",
+			close: "Cerrar formulario",
 			includes: "Qué incluye",
 			points: [
 				"Un punto de partida bien encuadrado.",
@@ -517,7 +523,7 @@ siteCopy.en = {
 		mobileNav: "Mobile navigation",
 		open: "Open menu",
 		close: "Close menu",
-		cta: "Let’s discuss your project",
+		cta: "Contact",
 		language: "Language",
 		servicesMenu: "View services",
 	},
@@ -745,8 +751,11 @@ siteCopy.en = {
 		],
 	},
 	contact: {
-		title: "Let’s discuss your project",
+		eyebrow: "Contact",
+		title: "Let’s talk",
 		lead: "An initial assessment, with no commitment required. Tell us about the challenge so we can explore priorities, feasibility and the next step.",
+		open: "Open contact form",
+		close: "Close contact form",
 		includes: "What it includes",
 		points: [
 			"A well-framed starting point.",

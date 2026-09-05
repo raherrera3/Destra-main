@@ -419,3 +419,23 @@ test("form associates every field error/hint, validates acknowledgments and expo
 		/\.mobile-cta\[hidden\]\s*\{\s*display:\s*none/,
 	);
 });
+
+test("contact opens as an accessible liquid-glass drawer with resilient fallbacks", () => {
+	const source = fs.readFileSync(
+		path.join(root, "components/site/ContactExperience.tsx"),
+		"utf8",
+	);
+	const globals = fs.readFileSync(path.join(root, "app/globals.css"), "utf8");
+	const copy = fs.readFileSync(
+		path.join(root, "components/site/siteCopy.ts"),
+		"utf8",
+	);
+	assert.match(source, /@radix-ui\/react-dialog/);
+	assert.match(source, /a\[href=["']#contacto["']\]/);
+	assert.match(source, /DialogPrimitive\.Content/);
+	assert.match(source, /feDisplacementMap/);
+	assert.match(globals, /\.contact-drawer/);
+	assert.match(globals, /prefers-reduced-transparency:\s*reduce/);
+	assert.match(copy, /cta:\s*"Contacto"/);
+	assert.match(copy, /title:\s*"Hablemos"/);
+});
