@@ -2943,3 +2943,8 @@ h1 {
 		transform: none;
 	}
 }
+
+/* Do not let the fixed mobile CTA intercept fields while contact is visible. */
+.mobile-cta[hidden] {
+	display: none;
+}

@@ -8,6 +8,8 @@ export type ContactErrorCode =
 	| "rate_limited"
 	| "invalid_request"
 	| "invalid_session"
+	| "verification_failed"
+	| "verification_unavailable"
 	| "delivery_failed"
 	| "unexpected_failure";
 
@@ -471,6 +473,9 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 				rate_limited: "Hay demasiados intentos. Espera unos minutos.",
 				invalid_request: "Revisa los datos de la solicitud.",
 				invalid_session: "Recarga la página e inténtalo de nuevo.",
+				verification_failed: "Completa de nuevo la verificación de seguridad.",
+				verification_unavailable:
+					"No se ha podido verificar la seguridad. Inténtalo de nuevo.",
 				delivery_failed: "El canal de contacto no ha confirmado la recepción.",
 				unexpected_failure: "No se ha podido completar el envío.",
 			},
@@ -810,6 +815,9 @@ siteCopy.en = {
 				"There have been too many attempts. Please wait a few minutes.",
 			invalid_request: "Review the request details.",
 			invalid_session: "Reload the page and try again.",
+			verification_failed: "Complete the security check again.",
+			verification_unavailable:
+				"The security check is unavailable. Please try again.",
 			delivery_failed: "The contact channel did not confirm receipt.",
 			unexpected_failure: "We could not complete the request.",
 		},
