@@ -12,8 +12,8 @@
 	--ink-muted: #8fa3c4;
 
 	/* Fondos profundos */
-	--navy: #04070f;
-	--navy-2: #0a1324;
+	--navy: #061226;
+	--navy-2: #0b1e3a;
 
 	/* Azul Destra */
 	--blue: #1d70f2;
@@ -24,8 +24,8 @@
 	--blue-wash: rgba(29, 112, 242, 0.08);
 
 	/* Superficies */
-	--surface: #060b16;
-	--surface-soft: #08101f;
+	--surface: #09182e;
+	--surface-soft: #0c203c;
 	--glass: rgba(255, 255, 255, 0.055);
 	--glass-strong: rgba(255, 255, 255, 0.085);
 	--edge: rgba(255, 255, 255, 0.14);
@@ -48,7 +48,7 @@
 		var(--edge);
 
 	--ring: 134 181 255;
-	--background: 216 45% 6%;
+	--background: 216 67% 11%;
 	--foreground: 219 60% 95%;
 	--primary: 217 89% 53%;
 	--primary-foreground: 0 0% 100%;
