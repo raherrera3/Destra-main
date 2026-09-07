@@ -950,8 +950,7 @@ main,
 }
 
 /* ── Contacto (panel lateral) ─────────────────────────────────────────────
- * Entra desde el mismo borde en el que vive el CTA de la cabecera, para que
- * el gesto tenga continuidad espacial. Alto completo, columna única. */
+ * Entra por el borde izquierdo. Alto completo, columna única. */
 
 .contact-drawer-overlay {
 	position: fixed;
@@ -972,7 +971,7 @@ main,
 
 .contact-drawer {
 	position: fixed;
-	inset: 0 0 0 auto;
+	inset: 0 auto 0 0;
 	z-index: var(--z-drawer);
 	width: min(46rem, 100vw);
 	height: 100dvh;
@@ -980,14 +979,14 @@ main,
 	outline: none;
 	color: var(--ink);
 	border: 1px solid rgba(171, 204, 255, 0.24);
-	border-right: 0;
-	border-radius: 2rem 0 0 2rem;
+	border-left: 0;
+	border-radius: 0 2rem 2rem 0;
 	background: linear-gradient(
 			145deg,
 			rgba(255, 255, 255, 0.13),
 			transparent 34%
 		), linear-gradient(165deg, rgba(11, 45, 85, 0.94), rgba(5, 24, 48, 0.96));
-	box-shadow: -2.5rem 0 8rem rgba(0, 5, 16, 0.5), inset 1px 0 0
+	box-shadow: 2.5rem 0 8rem rgba(0, 5, 16, 0.5), inset -1px 0 0
 		rgba(255, 255, 255, 0.16);
 	-webkit-backdrop-filter: blur(26px) saturate(150%);
 	backdrop-filter: blur(26px) saturate(150%);
@@ -1007,7 +1006,7 @@ main,
 	content: "";
 	position: absolute;
 	top: 0;
-	left: 0;
+	right: 0;
 	width: 1px;
 	height: 100%;
 	pointer-events: none;
@@ -1034,13 +1033,13 @@ main,
 
 @keyframes drawer-in {
 	from {
-		transform: translateX(100%);
+		transform: translateX(-100%);
 	}
 }
 
 @keyframes drawer-out {
 	to {
-		transform: translateX(100%);
+		transform: translateX(-100%);
 	}
 }
 
