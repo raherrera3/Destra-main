@@ -442,9 +442,18 @@ main,
 	}
 }
 
-/* La refracción óptica se mantiene como mejora de escritorio: Chromium y
- * WebKit aceptan el filtro SVG en `backdrop-filter`; el resto conserva el
- * esmerilado anterior sin perder nada esencial. */
+/* Refracción óptica real: sólo Chromium desplaza el fondo con el filtro SVG
+ * dentro de `backdrop-filter`. Safari y Firefox se quedan con el esmerilado
+ * de arriba, que es un resultado perfectamente digno.
+ *
+ * NO QUITAR EL `@supports`. No es un adorno de progresividad: sin él, Safari
+ * descarta la declaración `backdrop-filter` ENTERA al no entender el `url()`,
+ * y la cabecera y los botones se quedan sin cristal ninguno, transparentes.
+ * Comprobado el 2026-09-07 con una página de prueba aislada en Safari 26:
+ * la caja con `url()` sin proteger desaparecía; la protegida se ve bien.
+ *
+ * Se evaluaron y descartaron dos librerías para esto (naughtyduk/liquidGL y
+ * rdev/liquid-glass-react); ver el mensaje del commit que trae este comentario. */
 @media (min-width: 861px) {
 	@supports (
 			(backdrop-filter: url("#button-glass") blur(1px)) or
