@@ -1,31 +1,16 @@
 import { CookieConsentProvider } from "@/components/site/CookieConsent";
 import { siteUrl } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
-import { Archivo, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { Azeret_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 import "./globals.css";
 
-// Archivo para titulares (tracking negativo a tamaño grande), Plex Sans para
-// texto corrido y Plex Mono para etiquetas en versalita: el vocabulario de
-// ingeniería que sostiene la dirección visual.
-const display = Archivo({
-	subsets: ["latin"],
-	display: "swap",
-	weight: ["600", "700", "800"],
-	variable: "--font-display",
-});
-
-const sans = IBM_Plex_Sans({
+// Neue Montreal se declara en la pila CSS principal para usar cualquier copia
+// instalada/licenciada; Azeret Mono sí está disponible mediante next/font.
+const mono = Azeret_Mono({
 	subsets: ["latin"],
 	display: "swap",
 	weight: ["400", "500", "600"],
-	variable: "--font-sans",
-});
-
-const mono = IBM_Plex_Mono({
-	subsets: ["latin"],
-	display: "swap",
-	weight: ["400", "500"],
 	variable: "--font-mono",
 });
 
@@ -88,9 +73,7 @@ export default function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
 	return (
 		<html lang="es">
-			<body
-				className={`${display.variable} ${sans.variable} ${mono.variable} ${sans.className}`}
-			>
+			<body className={mono.variable}>
 				<CookieConsentProvider>{children}</CookieConsentProvider>
 			</body>
 		</html>

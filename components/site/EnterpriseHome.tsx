@@ -1,6 +1,12 @@
 "use client";
 
-import { ArrowDown, ArrowRight, ArrowUpRight, Plus } from "lucide-react";
+import {
+	ArrowDown,
+	ArrowRight,
+	ArrowUpRight,
+	CircleDot,
+	Plus,
+} from "lucide-react";
 import Link from "next/link";
 import ContactExperience from "./ContactExperience";
 import { useLocale } from "./LocaleProvider";
@@ -35,7 +41,11 @@ export default function EnterpriseHome() {
 			>
 				<div className="container">
 					<header className="section-heading section-heading--wide">
-						<h2 id="services-title">{copy.services.title}</h2>
+						<h2 id="services-title">
+							<span className="accent-underline accent-underline--aqua">
+								{copy.services.title}
+							</span>
+						</h2>
 						<p>{copy.services.lead}</p>
 					</header>
 					<div className="service-list">
@@ -45,7 +55,12 @@ export default function EnterpriseHome() {
 								id={`servicio-${item.intent}`}
 								key={item.title}
 							>
-								<h3>{item.title}</h3>
+								<h3>
+									<span className="service-bullet" aria-hidden="true">
+										<CircleDot />
+									</span>
+									{item.title}
+								</h3>
 								<div className="service-detail">
 									<strong>{copy.services.labels.solution}</strong>
 									<p>{item.body}</p>
@@ -74,7 +89,11 @@ export default function EnterpriseHome() {
 			<section className="section faq" id="faq" aria-labelledby="faq-title">
 				<div className="container faq-grid">
 					<header className="section-heading">
-						<h2 id="faq-title">{copy.faq.title}</h2>
+						<h2 id="faq-title">
+							<span className="accent-underline accent-underline--violet">
+								{copy.faq.title}
+							</span>
+						</h2>
 					</header>
 					<div className="faq-list">
 						{copy.faq.items.map((item) => (
