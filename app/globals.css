@@ -12,48 +12,79 @@
  * rejilla. Aquí el cristal es una receta con variables, no una cascada.
  * ═══════════════════════════════════════════════════════════════════════════ */
 
+/* ── Neue Montreal ────────────────────────────────────────────────────────
+ * Fuente principal de la marca. Es comercial (Pangram Pangram) y su licencia
+ * no permite redistribuirla, así que no vive en el repositorio. Se carga en
+ * dos pasos y sin bloquear nada:
+ *
+ *   1. `local()` la usa si el visitante la tiene instalada en su equipo.
+ *   2. `url()` la sirve a todo el mundo en cuanto se deposite el woff2 con
+ *      licencia en `public/fonts/`. Los nombres exactos de archivo están en
+ *      `public/fonts/README.md`. No hace falta tocar código: basta el archivo.
+ *
+ * Mientras el archivo no exista, la petición falla en silencio y la pila cae a
+ * Helvetica Neue / Arial. `font-display: swap` evita cualquier parpadeo. */
+@font-face {
+	font-family: "Neue Montreal";
+	src: local("Neue Montreal"), local("PPNeueMontreal-Book"),
+		url("/fonts/NeueMontreal-Regular.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Neue Montreal";
+	src: local("Neue Montreal Medium"), local("PPNeueMontreal-Medium"),
+		url("/fonts/NeueMontreal-Medium.woff2") format("woff2");
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Neue Montreal";
+	src: local("Neue Montreal Bold"), local("PPNeueMontreal-Bold"),
+		url("/fonts/NeueMontreal-Bold.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
 :root {
-	--font-sans: "Neue Montreal", "PP Neue Montreal", "Helvetica Neue", Helvetica,
-		Arial, sans-serif;
+	/* Principal: Neue Montreal. Secundaria: Azeret Mono, que next/font inyecta
+	 * como --font-mono desde app/layout.tsx. */
+	--font-sans: "Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	--font-mono-stack: var(--font-mono), ui-monospace, SFMono-Regular, Menlo,
+		monospace;
 
-	/* Texto */
-	--ink: #f7fbff;
-	--ink-soft: #d9e7f6;
-	--ink-muted: #adc4dd;
+	/* Paleta cerrada DESTRA. El resto de colores deriva sólo de estos cuatro. */
+	--blue: #002fc1;
+	--navy: #051062;
+	--paper: #fffbf9;
+	--cyan: #8cfcff;
 
-	/* Fondos profundos */
-	--navy: #071f3d;
-	--navy-2: #0b2d55;
-
-	/* Azul Destra */
-	--blue: #3f8cff;
-	--blue-3: #a9ceff;
-	--blue-pale: rgba(29, 112, 242, 0.16);
-	--accent-sky: #80bdff;
-	--accent-coral: #ffac91;
-	--accent-violet: #b9a7ff;
-
-	/* Superficies */
-	--surface: #0d3563;
-	--surface-soft: #10406f;
-	--glass: rgba(220, 239, 255, 0.1);
-	--edge: rgba(235, 247, 255, 0.25);
-
-	--line: rgba(235, 247, 255, 0.14);
-	--line-strong: rgba(235, 247, 255, 0.25);
-
-	--success: #5fd8a4;
-	--error: #ff9a92;
-	--error-bg: rgba(242, 105, 94, 0.14);
+	/* Texto y superficies semánticas. */
+	--ink: var(--paper);
+	--ink-soft: color-mix(in srgb, var(--paper) 84%, transparent);
+	--ink-muted: color-mix(in srgb, var(--paper) 66%, transparent);
+	--navy-2: var(--navy);
+	--blue-3: var(--cyan);
+	--blue-pale: color-mix(in srgb, var(--blue) 16%, transparent);
+	--surface: var(--navy);
+	--glass: color-mix(in srgb, var(--cyan) 10%, transparent);
+	--edge: color-mix(in srgb, var(--cyan) 34%, transparent);
+	--line: color-mix(in srgb, var(--cyan) 14%, transparent);
+	--line-strong: color-mix(in srgb, var(--cyan) 25%, transparent);
+	--success: var(--blue);
+	--error: var(--blue);
+	--error-bg: color-mix(in srgb, var(--blue) 10%, var(--paper));
+	--focus-ring: color-mix(in srgb, var(--cyan) 95%, transparent);
 
 	--container: 73.75rem;
 	--shell: 80rem;
 	--radius-sm: 0.625rem;
-	--radius-md: 1rem;
 	--radius-lg: 1.5rem;
-	--radius-xl: 2rem;
-
-	--ring: 134 181 255;
 
 	/* Escala de elevación semántica. Nunca 999 ni 9999. */
 	--z-particles: 2;
@@ -69,12 +100,6 @@
 	/* Salida exponencial. Sin rebote, sin elástica. */
 	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 	--ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
-
-	/* Tokens que Tailwind lee del preflight. */
-	--background: 216 67% 11%;
-	--foreground: 219 60% 95%;
-	--border: 218 30% 20%;
-	--input: 218 30% 24%;
 }
 
 /* ── Base ─────────────────────────────────────────────────────────────── */
@@ -93,9 +118,9 @@ body {
 	color: var(--ink);
 	background: linear-gradient(
 		180deg,
-		#0f4073 0%,
+		color-mix(in srgb, var(--blue) 25%, var(--navy)) 0%,
 		var(--surface) 48%,
-		#0a2a50 100%
+		var(--navy) 100%
 	);
 	background-attachment: fixed;
 	font-family: var(--font-sans);
@@ -113,17 +138,17 @@ body::before {
 	pointer-events: none;
 	background: radial-gradient(
 			54rem 34rem at 12% -4%,
-			rgba(139, 199, 255, 0.38),
+			color-mix(in srgb, var(--cyan) 38%, transparent),
 			transparent 62%
 		),
 		radial-gradient(
 			42rem 28rem at 94% 12%,
-			rgba(88, 162, 255, 0.24),
+			color-mix(in srgb, var(--cyan) 24%, transparent),
 			transparent 64%
 		),
 		radial-gradient(
 			50rem 40rem at 50% 106%,
-			rgba(29, 112, 242, 0.14),
+			color-mix(in srgb, var(--cyan) 14%, transparent),
 			transparent 60%
 		);
 }
@@ -150,7 +175,7 @@ summary {
 }
 
 :where(a, button, input, select, textarea, summary):focus-visible {
-	outline: 3px solid rgba(var(--ring), 0.95);
+	outline: 3px solid var(--focus-ring);
 	outline-offset: 3px;
 }
 
@@ -190,7 +215,7 @@ p {
  * sección: sólo la usan campos y fichas con información real detrás. */
 .label-mono {
 	color: var(--ink-muted);
-	font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-family: var(--font-mono-stack);
 	font-size: 0.6875rem;
 	font-weight: 500;
 	letter-spacing: 0.11em;
@@ -216,7 +241,7 @@ p {
 	z-index: var(--z-skip);
 	padding: 0.75rem 1rem;
 	border-radius: var(--radius-sm);
-	color: white;
+	color: var(--paper);
 	background: var(--navy);
 	font-weight: 700;
 	transform: translateY(-180%);
@@ -269,16 +294,8 @@ main,
 	line-height: 1.7;
 }
 
-.accent-text--sky {
-	color: var(--accent-sky);
-}
-
-.accent-text--coral {
-	color: var(--accent-coral);
-}
-
-.accent-text--violet {
-	color: var(--accent-violet);
+.accent-text--cyan {
+	color: var(--cyan);
 }
 
 /* Un único lienzo fijo mantiene la atmósfera continua mientras el documento
@@ -305,12 +322,12 @@ main,
 	border: 1px solid var(--line-strong);
 	background: linear-gradient(
 			145deg,
-			rgba(255, 255, 255, 0.16),
-			rgba(255, 255, 255, 0.05) 46%,
-			rgba(124, 190, 255, 0.09)
-		), rgba(6, 36, 69, 0.42);
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 1rem 2.5rem
-		rgba(2, 22, 48, 0.18);
+			color-mix(in srgb, var(--paper) 16%, transparent),
+			color-mix(in srgb, var(--paper) 5%, transparent) 46%,
+			color-mix(in srgb, var(--cyan) 9%, transparent)
+		), color-mix(in srgb, var(--navy) 42%, transparent);
+	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 32%, transparent), 0
+		1rem 2.5rem color-mix(in srgb, var(--navy) 18%, transparent);
 	-webkit-backdrop-filter: blur(22px) saturate(155%);
 	backdrop-filter: blur(22px) saturate(155%);
 }
@@ -323,9 +340,14 @@ main,
 	pointer-events: none;
 	background: radial-gradient(
 			70% 120% at 12% -40%,
-			rgba(255, 255, 255, 0.3),
+			color-mix(in srgb, var(--paper) 30%, transparent),
 			transparent 65%
-		), linear-gradient(105deg, transparent 62%, rgba(176, 220, 255, 0.1));
+		),
+		linear-gradient(
+			105deg,
+			transparent 62%,
+			color-mix(in srgb, var(--cyan) 10%, transparent)
+		);
 }
 
 .liquid-glass-filters {
@@ -340,23 +362,22 @@ main,
  * Botones, chips y el toggle de idioma comparten el mismo material. La regla
  * es puramente visual: no toca `position` de nada que no sea suyo. */
 
-.button,
 .menu-toggle,
 .language-toggle button[aria-pressed="true"],
 .need-chip input:checked + label {
 	position: relative;
 	overflow: hidden;
 	isolation: isolate;
-	border: 1px solid rgba(245, 251, 255, 0.34);
-	color: #fff;
+	border: 1px solid color-mix(in srgb, var(--paper) 34%, transparent);
+	color: var(--paper);
 	background: linear-gradient(
 		145deg,
-		rgba(255, 255, 255, 0.28),
-		rgba(255, 255, 255, 0.11) 48%,
-		rgba(144, 203, 255, 0.13)
+		color-mix(in srgb, var(--paper) 28%, transparent),
+		color-mix(in srgb, var(--paper) 11%, transparent) 48%,
+		color-mix(in srgb, var(--cyan) 13%, transparent)
 	);
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -1px 0
-		rgba(168, 214, 255, 0.2);
+	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 60%, transparent),
+		inset 0 -1px 0 color-mix(in srgb, var(--cyan) 20%, transparent);
 	-webkit-backdrop-filter: blur(16px) saturate(165%);
 	backdrop-filter: blur(16px) saturate(165%);
 	transition: transform 360ms var(--ease-out), background 180ms ease,
@@ -365,7 +386,6 @@ main,
 
 /* El reflejo especular que recorre el control al pasar por encima. Es lo que
  * separa un cristal vivo de un rectángulo translúcido. */
-.button::after,
 .menu-toggle::after,
 .language-toggle button[aria-pressed="true"]::after,
 .need-chip input:checked + label::after {
@@ -376,10 +396,10 @@ main,
 	pointer-events: none;
 	background: linear-gradient(
 		112deg,
-		rgba(255, 255, 255, 0.32),
+		color-mix(in srgb, var(--paper) 32%, transparent),
 		transparent 28%,
 		transparent 70%,
-		rgba(170, 218, 255, 0.18)
+		color-mix(in srgb, var(--cyan) 18%, transparent)
 	);
 	opacity: 0.52;
 	transform: translateX(-8%);
@@ -397,7 +417,13 @@ main,
 	font-size: 0.92rem;
 	font-weight: 700;
 	line-height: 1.2;
+	border: 1px solid var(--cyan);
+	color: var(--navy);
+	background: var(--paper);
+	box-shadow: none;
 	cursor: pointer;
+	transition: transform 360ms var(--ease-out), background 180ms ease,
+		border-color 180ms ease, color 180ms ease;
 }
 
 .button > svg {
@@ -407,41 +433,34 @@ main,
 }
 
 .button--primary {
-	border-color: rgba(194, 222, 255, 0.78);
-	color: #071f3d;
-	background: linear-gradient(
-		135deg,
-		rgba(169, 206, 255, 0.98),
-		rgba(93, 158, 247, 0.94)
-	);
+	border-color: var(--cyan);
+	color: var(--navy);
+	background: var(--paper);
 }
 
 .button--secondary {
+	color: var(--paper);
+	background: transparent;
+}
+
+.menu-toggle:hover,
+.language-toggle button[aria-pressed="true"]:hover,
+.need-chip input:checked + label:hover {
+	border-color: color-mix(in srgb, var(--paper) 55%, transparent);
 	background: linear-gradient(
 		145deg,
-		rgba(255, 255, 255, 0.18),
-		rgba(255, 255, 255, 0.07) 48%,
-		rgba(144, 203, 255, 0.1)
+		color-mix(in srgb, var(--paper) 38%, transparent),
+		color-mix(in srgb, var(--cyan) 18%, transparent) 52%,
+		color-mix(in srgb, var(--cyan) 22%, transparent)
 	);
 }
 
 .button:hover,
-.menu-toggle:hover,
-.language-toggle button[aria-pressed="true"]:hover,
-.need-chip input:checked + label:hover {
-	border-color: rgba(255, 255, 255, 0.55);
-	background: linear-gradient(
-		145deg,
-		rgba(255, 255, 255, 0.38),
-		rgba(216, 239, 255, 0.18) 52%,
-		rgba(151, 207, 255, 0.22)
-	);
-}
-
-.button--primary:hover {
-	border-color: rgba(232, 244, 255, 0.96);
-	color: #04192f;
-	background: linear-gradient(135deg, #c0ddff, #78adf6);
+.button--primary:hover,
+.button--secondary:hover {
+	border-color: var(--cyan);
+	color: var(--navy);
+	background: var(--cyan);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -451,7 +470,6 @@ main,
 		transform: translateY(-1px) scale(1.018);
 	}
 
-	.button:hover::after,
 	.menu-toggle:hover::after {
 		opacity: 0.88;
 		transform: translateX(7%);
@@ -487,7 +505,6 @@ main,
 			backdrop-filter: url("#button-glass") blur(22px) saturate(155%);
 		}
 
-		.button,
 		.menu-toggle,
 		.contact-drawer__close,
 		.need-chip input:checked + label {
@@ -530,13 +547,13 @@ main,
 	min-height: 2.75rem;
 }
 
-.brand img,
-.footer-brand img,
-.legal-page__brand img {
+.brand-logo {
 	display: block;
 	width: 9.5rem;
-	height: auto;
-	object-fit: contain;
+	aspect-ratio: 833 / 313;
+	background: var(--paper);
+	-webkit-mask: url("/destra-logo-light.png") center / contain no-repeat;
+	mask: url("/destra-logo-light.png") center / contain no-repeat;
 }
 
 .desktop-nav {
@@ -560,8 +577,8 @@ main,
 
 .desktop-nav a:hover,
 .desktop-nav a:focus-visible {
-	color: #fff;
-	background: rgba(224, 242, 255, 0.13);
+	color: var(--paper);
+	background: color-mix(in srgb, var(--paper) 13%, transparent);
 }
 
 .header-actions {
@@ -646,7 +663,7 @@ main,
 }
 
 .mobile-menu nav > a:not(.button):hover {
-	background: rgba(224, 242, 255, 0.13);
+	background: color-mix(in srgb, var(--paper) 13%, transparent);
 }
 
 .mobile-menu .language-toggle {
@@ -673,15 +690,19 @@ main,
 	pointer-events: none;
 	background: radial-gradient(
 			circle at 50% 6%,
-			rgba(139, 199, 255, 0.26),
+			color-mix(in srgb, var(--cyan) 26%, transparent),
 			transparent 38%
 		),
 		radial-gradient(
 			circle at 4% 42%,
-			rgba(135, 196, 255, 0.12),
+			color-mix(in srgb, var(--cyan) 12%, transparent),
 			transparent 28%
 		),
-		radial-gradient(circle at 96% 52%, rgba(51, 123, 255, 0.1), transparent 30%);
+		radial-gradient(
+			circle at 96% 52%,
+			color-mix(in srgb, var(--cyan) 10%, transparent),
+			transparent 30%
+		);
 }
 
 .hero-copy {
@@ -704,8 +725,7 @@ main,
 	border-radius: 999px;
 	background: var(--glass);
 	color: var(--blue-3);
-	font: 650 0.7rem / 1.4 var(--font-mono), ui-monospace, SFMono-Regular, Menlo,
-		monospace;
+	font: 650 0.7rem / 1.4 var(--font-mono-stack);
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
 }
@@ -766,7 +786,7 @@ main,
  * delimitan con claridad dónde empieza y termina cada servicio. */
 
 .services {
-	background: rgba(6, 36, 69, 0.26);
+	background: color-mix(in srgb, var(--navy) 26%, transparent);
 	border-block: 1px solid var(--line);
 }
 
@@ -785,8 +805,8 @@ main,
 	overflow: hidden;
 	border: 1px solid var(--line-strong);
 	border-radius: var(--radius-lg);
-	background: rgba(219, 239, 255, 0.065);
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+	background: color-mix(in srgb, var(--cyan) 6.5%, transparent);
+	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 8%, transparent);
 	transition: border-color 260ms ease, background-color 260ms ease;
 }
 
@@ -800,7 +820,7 @@ main,
 	pointer-events: none;
 	background: linear-gradient(
 		100deg,
-		rgba(139, 199, 255, 0.11),
+		color-mix(in srgb, var(--cyan) 11%, transparent),
 		transparent 46%
 	);
 	opacity: 0;
@@ -814,8 +834,8 @@ main,
 
 .service-row:hover,
 .service-row:focus-within {
-	border-color: rgba(194, 225, 255, 0.42);
-	background: rgba(219, 239, 255, 0.085);
+	border-color: color-mix(in srgb, var(--cyan) 42%, transparent);
+	background: color-mix(in srgb, var(--cyan) 8.5%, transparent);
 }
 
 .service-row > * {
@@ -841,10 +861,10 @@ main,
 	height: 2rem;
 	flex: 0 0 auto;
 	place-items: center;
-	border: 1px solid rgba(128, 189, 255, 0.46);
+	border: 1px solid color-mix(in srgb, var(--cyan) 46%, transparent);
 	border-radius: 999px;
-	color: var(--accent-sky);
-	background: rgba(128, 189, 255, 0.1);
+	color: var(--cyan);
+	background: color-mix(in srgb, var(--cyan) 10%, transparent);
 }
 
 .service-bullet svg {
@@ -852,23 +872,8 @@ main,
 	height: 0.95rem;
 }
 
-.service-row:nth-child(2) .service-bullet {
-	border-color: rgba(255, 172, 145, 0.44);
-	color: var(--accent-coral);
-	background: rgba(255, 172, 145, 0.1);
-}
 
-.service-row:nth-child(3) .service-bullet {
-	border-color: rgba(185, 167, 255, 0.46);
-	color: var(--accent-violet);
-	background: rgba(185, 167, 255, 0.1);
-}
 
-.service-row:nth-child(4) .service-bullet {
-	border-color: rgba(169, 206, 255, 0.46);
-	color: var(--blue-3);
-	background: rgba(169, 206, 255, 0.1);
-}
 
 .service-detail {
 	padding-top: 1rem;
@@ -879,7 +884,7 @@ main,
 	display: block;
 	margin-bottom: 0.6rem;
 	color: var(--blue-3);
-	font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-family: var(--font-mono-stack);
 	font-size: 0.68rem;
 	font-weight: 500;
 	letter-spacing: 0.11em;
@@ -906,7 +911,7 @@ main,
 	justify-self: start;
 	gap: 0.45rem;
 	min-height: 2.75rem;
-	color: #fff;
+	color: var(--paper);
 	font-size: 0.86rem;
 	font-weight: 700;
 }
@@ -924,7 +929,11 @@ main,
 /* ── Preguntas ────────────────────────────────────────────────────────── */
 
 .faq {
-	background: linear-gradient(180deg, transparent, rgba(6, 36, 69, 0.3));
+	background: linear-gradient(
+		180deg,
+		transparent,
+		color-mix(in srgb, var(--navy) 30%, transparent)
+	);
 }
 
 .faq-grid {
@@ -1003,7 +1012,11 @@ main,
 /* ── Contacto (sección) ───────────────────────────────────────────────── */
 
 .contact {
-	background: linear-gradient(145deg, #0c3766, #0f4a81);
+	background: linear-gradient(
+		145deg,
+		color-mix(in srgb, var(--blue) 18%, var(--navy)),
+		color-mix(in srgb, var(--blue) 34%, var(--navy))
+	);
 }
 
 .contact-copy {
@@ -1037,7 +1050,7 @@ main,
 	position: fixed;
 	inset: 0;
 	z-index: var(--z-overlay);
-	background: rgba(1, 12, 30, 0.52);
+	background: color-mix(in srgb, var(--navy) 52%, transparent);
 	-webkit-backdrop-filter: blur(10px) saturate(90%);
 	backdrop-filter: blur(10px) saturate(90%);
 }
@@ -1059,16 +1072,21 @@ main,
 	overflow-y: auto;
 	outline: none;
 	color: var(--ink);
-	border: 1px solid rgba(171, 204, 255, 0.24);
+	border: 1px solid color-mix(in srgb, var(--cyan) 24%, transparent);
 	border-left: 0;
 	border-radius: 0 2rem 2rem 0;
 	background: linear-gradient(
 			145deg,
-			rgba(255, 255, 255, 0.13),
+			color-mix(in srgb, var(--paper) 13%, transparent),
 			transparent 34%
-		), linear-gradient(165deg, rgba(11, 45, 85, 0.94), rgba(5, 24, 48, 0.96));
-	box-shadow: 2.5rem 0 8rem rgba(0, 5, 16, 0.5), inset -1px 0 0
-		rgba(255, 255, 255, 0.16);
+		),
+		linear-gradient(
+			165deg,
+			color-mix(in srgb, var(--navy) 94%, transparent),
+			color-mix(in srgb, var(--navy) 96%, transparent)
+		);
+	box-shadow: 2.5rem 0 8rem color-mix(in srgb, var(--navy) 50%, transparent),
+		inset -1px 0 0 color-mix(in srgb, var(--paper) 16%, transparent);
 	-webkit-backdrop-filter: blur(26px) saturate(150%);
 	backdrop-filter: blur(26px) saturate(150%);
 	/* El usuario no quiere una barra de scroll a la derecha del formulario. El
@@ -1093,7 +1111,7 @@ main,
 	pointer-events: none;
 	background: linear-gradient(
 		transparent,
-		rgba(153, 194, 255, 0.75),
+		color-mix(in srgb, var(--cyan) 75%, transparent),
 		transparent
 	);
 }
@@ -1144,10 +1162,10 @@ main,
 	height: 2.75rem;
 	place-items: center;
 	padding: 0;
-	border: 1px solid rgba(245, 251, 255, 0.3);
+	border: 1px solid color-mix(in srgb, var(--paper) 30%, transparent);
 	border-radius: 999px;
-	color: #fff;
-	background: rgba(255, 255, 255, 0.13);
+	color: var(--paper);
+	background: color-mix(in srgb, var(--paper) 13%, transparent);
 	cursor: pointer;
 	-webkit-backdrop-filter: blur(16px) saturate(165%);
 	backdrop-filter: blur(16px) saturate(165%);
@@ -1156,8 +1174,8 @@ main,
 }
 
 .contact-drawer__close:hover {
-	border-color: rgba(255, 255, 255, 0.55);
-	background: rgba(255, 255, 255, 0.22);
+	border-color: color-mix(in srgb, var(--paper) 55%, transparent);
+	background: color-mix(in srgb, var(--paper) 22%, transparent);
 }
 
 .contact-drawer__close svg {
@@ -1197,11 +1215,12 @@ main,
 .form-panel {
 	flex: 1;
 	padding: clamp(1.1rem, 2vw, 1.5rem);
-	border: 1px solid rgba(255, 255, 255, 0.82);
+	border: 1px solid color-mix(in srgb, var(--paper) 82%, transparent);
 	border-radius: var(--radius-lg);
-	color: #0b2d55;
-	background: rgba(250, 253, 255, 0.95);
-	box-shadow: 0 1.25rem 3.5rem rgba(2, 22, 48, 0.2), inset 0 1px 0 #fff;
+	color: var(--navy);
+	background: color-mix(in srgb, var(--paper) 95%, transparent);
+	box-shadow: 0 1.25rem 3.5rem color-mix(in srgb, var(--navy) 20%, transparent),
+		inset 0 1px 0 var(--paper);
 }
 
 .contact-drawer form {
@@ -1236,7 +1255,7 @@ main,
 
 .field > span {
 	color: var(--ink-muted);
-	font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-family: var(--font-mono-stack);
 	font-size: 0.6875rem;
 	font-weight: 500;
 	letter-spacing: 0.11em;
@@ -1271,7 +1290,7 @@ main,
 	padding: 0.45rem 0.15rem 0.55rem;
 	appearance: none;
 	border: 0;
-	border-bottom: 1px solid rgba(235, 247, 255, 0.26);
+	border-bottom: 1px solid color-mix(in srgb, var(--paper) 26%, transparent);
 	border-radius: 0;
 	color: var(--ink);
 	background: transparent;
@@ -1289,7 +1308,7 @@ main,
 }
 
 .field ::placeholder {
-	color: #9db1cd;
+	color: color-mix(in srgb, var(--navy) 48%, var(--paper));
 	opacity: 1;
 }
 
@@ -1329,7 +1348,7 @@ main,
 .form-group-label {
 	margin: 0;
 	color: var(--ink-muted);
-	font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-family: var(--font-mono-stack);
 	font-size: 0.6875rem;
 	font-weight: 500;
 	letter-spacing: 0.14em;
@@ -1387,9 +1406,9 @@ main,
 	gap: 0.5rem;
 	min-height: 2.5rem;
 	padding: 0.55rem 0.95rem;
-	border: 1px solid rgba(235, 247, 255, 0.16);
+	border: 1px solid color-mix(in srgb, var(--paper) 16%, transparent);
 	border-radius: 999px;
-	background: rgba(218, 239, 255, 0.07);
+	background: color-mix(in srgb, var(--cyan) 7%, transparent);
 	color: var(--ink-soft);
 	font-size: 0.8125rem;
 	font-weight: 500;
@@ -1422,8 +1441,8 @@ main,
 }
 
 .need-chip input:checked + label {
-	border-color: rgba(245, 251, 255, 0.45);
-	color: #fff;
+	border-color: color-mix(in srgb, var(--paper) 45%, transparent);
+	color: var(--paper);
 }
 
 .need-chip input:checked + label .need-chip__tick {
@@ -1433,7 +1452,7 @@ main,
 }
 
 .need-chip input:focus-visible + label {
-	outline: 3px solid rgba(var(--ring), 0.95);
+	outline: 3px solid var(--focus-ring);
 	outline-offset: 3px;
 }
 
@@ -1442,34 +1461,34 @@ main,
 .form-panel .field small,
 .form-panel .field em,
 .form-panel .contact-drawer__privacy {
-	color: #536b86;
+	color: color-mix(in srgb, var(--navy) 68%, var(--paper));
 }
 
 .form-panel .field:focus-within > span,
 .form-panel .form-group-label__hint {
-	color: #1266b4;
+	color: var(--blue);
 }
 
 .form-panel .field input,
 .form-panel .field select,
 .form-panel .field textarea {
-	border-bottom-color: rgba(11, 45, 85, 0.24);
-	color: #0b2d55;
+	border-bottom-color: color-mix(in srgb, var(--navy) 24%, transparent);
+	color: var(--navy);
 }
 
 .form-panel .field ::placeholder {
-	color: #5f7690;
+	color: color-mix(in srgb, var(--navy) 60%, var(--paper));
 }
 
 .form-panel .field option {
-	color: #0b2d55;
-	background: #fff;
+	color: var(--navy);
+	background: var(--paper);
 }
 
 .form-panel .field input:hover,
 .form-panel .field select:hover,
 .form-panel .field textarea:hover {
-	border-bottom-color: rgba(11, 45, 85, 0.48);
+	border-bottom-color: color-mix(in srgb, var(--navy) 48%, transparent);
 }
 
 .form-panel .field input:focus,
@@ -1478,68 +1497,81 @@ main,
 .form-panel .field input:focus-visible,
 .form-panel .field select:focus-visible,
 .form-panel .field textarea:focus-visible {
-	border-bottom-color: #1672c4;
+	border-bottom-color: var(--blue);
 }
 
 .form-panel .field [aria-invalid="true"] {
-	border-bottom-color: #b42318;
+	border-bottom-color: var(--blue);
 }
 
 .form-panel .field .field-error,
 .form-panel .need-choice > .field-error {
-	color: #b42318;
+	color: var(--blue);
 }
 
 .form-panel .need-chip input[aria-invalid="true"] + label {
-	border-color: rgba(180, 35, 24, 0.48);
+	border-color: color-mix(in srgb, var(--blue) 48%, transparent);
 }
 
 .form-panel .need-chip label {
-	border-color: rgba(11, 45, 85, 0.17);
-	color: #34516f;
-	background: rgba(13, 53, 99, 0.045);
+	border-color: color-mix(in srgb, var(--navy) 17%, transparent);
+	color: color-mix(in srgb, var(--navy) 72%, var(--paper));
+	background: color-mix(in srgb, var(--navy) 4.5%, transparent);
 }
 
 .form-panel .need-chip input:hover + label {
-	border-color: rgba(11, 45, 85, 0.36);
-	color: #0b2d55;
+	border-color: color-mix(in srgb, var(--navy) 36%, transparent);
+	color: var(--navy);
 }
 
 .form-panel .need-chip input:checked + label {
-	border-color: #1672c4;
-	color: #fff;
-	background: linear-gradient(135deg, #176fbe, #155796);
+	border-color: var(--blue);
+	color: var(--paper);
+	background: var(--blue);
 }
 
 .form-panel .need-chip input:checked + label .need-chip__tick {
-	background: var(--accent-sky);
+	background: var(--cyan);
 }
 
 .form-panel .form-success h3 {
-	color: #0b2d55;
+	color: var(--navy);
 }
 
 .form-panel .form-success p {
-	color: #536b86;
+	color: color-mix(in srgb, var(--navy) 68%, var(--paper));
 }
 
 .form-panel .form-success .button--secondary {
-	border-color: rgba(11, 45, 85, 0.24);
-	color: #0b2d55;
-	background: rgba(13, 53, 99, 0.08);
+	border-color: color-mix(in srgb, var(--navy) 24%, transparent);
+	color: var(--navy);
+	background: transparent;
+}
+
+.form-panel .button--primary {
+	border-color: var(--blue);
+	color: var(--paper);
+	background: var(--blue);
+}
+
+.form-panel .button--primary:hover,
+.form-panel .button--secondary:hover {
+	border-color: var(--blue);
+	color: var(--paper);
+	background: var(--navy);
 }
 
 .form-panel .error-summary,
 .form-panel .server-error {
-	border-color: rgba(180, 35, 24, 0.36);
-	color: #8f2118;
-	background: #fff0ee;
+	border-color: color-mix(in srgb, var(--blue) 36%, transparent);
+	color: var(--navy);
+	background: color-mix(in srgb, var(--blue) 10%, var(--paper));
 }
 
 .error-summary,
 .server-error {
 	padding: 0.85rem 1rem;
-	border: 1px solid rgba(242, 105, 94, 0.45);
+	border: 1px solid color-mix(in srgb, var(--blue) 45%, transparent);
 	border-radius: 0.75rem;
 	color: var(--error);
 	background: var(--error-bg);
@@ -1600,7 +1632,7 @@ main,
 }
 
 /* Ventanas cortas: el panel se aprieta antes que ceder al scroll. */
-@media (min-width: 861px) and (max-height: 880px) {
+@media (min-width: 861px) and (max-height: 920px) {
 	.contact-drawer__shell {
 		gap: 1rem;
 		padding-block: 1.5rem;
@@ -1662,6 +1694,47 @@ main,
 	}
 }
 
+/* Portátiles de 13" con la ventana entera ocupada: último apretón antes de
+ * ceder al scroll. El escalón anterior se calibró para 768 px y allí encaja
+ * justo, así que este va aparte en lugar de estrecharlo más. */
+@media (min-width: 861px) and (max-height: 720px) {
+	.contact-drawer__shell {
+		gap: 0.6rem;
+		padding-block: 0.9rem;
+	}
+
+	.contact-drawer__title {
+		margin-bottom: 0.3rem;
+		font-size: 1.5rem;
+	}
+
+	.contact-drawer__lead {
+		font-size: 0.82rem;
+		line-height: 1.45;
+	}
+
+	.contact-drawer form {
+		gap: 0.4rem 1.15rem;
+	}
+
+	.field textarea {
+		min-height: 3rem;
+	}
+
+	.need-chip label {
+		min-height: 2.1rem;
+		padding-block: 0.3rem;
+	}
+
+	.form-panel {
+		padding: 0.9rem;
+	}
+
+	.contact-drawer__privacy {
+		font-size: 0.68rem;
+	}
+}
+
 /* ── Pie ──────────────────────────────────────────────────────────────── */
 
 .site-footer {
@@ -1686,7 +1759,7 @@ main,
 .footer-brand .footer-legal-entity {
 	max-width: 32rem;
 	margin-top: 0.85rem;
-	color: #8ba0bd;
+	color: color-mix(in srgb, var(--paper) 58%, transparent);
 	font-size: 0.74rem;
 	line-height: 1.55;
 }
@@ -1703,8 +1776,8 @@ main,
 .site-footer nav strong,
 .footer-contact strong {
 	margin-bottom: 0.35rem;
-	color: #fff;
-	font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+	color: var(--paper);
+	font-family: var(--font-mono-stack);
 	font-size: 0.7rem;
 	font-weight: 500;
 	letter-spacing: 0.14em;
@@ -1723,7 +1796,7 @@ main,
 
 .site-footer nav a:hover,
 .footer-contact a:hover {
-	color: #fff;
+	color: var(--paper);
 }
 
 /* Teléfono y correo son la conversión de reserva del pie: merecen peso. */
@@ -1737,8 +1810,8 @@ main,
 	gap: 2rem;
 	margin-top: 3.25rem;
 	padding-top: 1.5rem;
-	border-top: 1px solid rgba(201, 218, 242, 0.17);
-	color: #8ba0bd;
+	border-top: 1px solid color-mix(in srgb, var(--cyan) 17%, transparent);
+	color: color-mix(in srgb, var(--paper) 58%, transparent);
 	font-size: 0.76rem;
 }
 
@@ -1772,7 +1845,7 @@ main,
 
 .footer-legal a:hover,
 .footer-cookie-button:hover {
-	color: #fff;
+	color: var(--paper);
 }
 
 .mobile-cta {
@@ -1807,8 +1880,8 @@ main,
 	border: 1px solid var(--line-strong);
 	border-radius: 1rem;
 	color: var(--ink);
-	background: rgba(7, 31, 61, 0.92);
-	box-shadow: 0 1.2rem 3rem rgba(2, 20, 52, 0.34);
+	background: color-mix(in srgb, var(--navy) 92%, transparent);
+	box-shadow: 0 1.2rem 3rem color-mix(in srgb, var(--navy) 34%, transparent);
 	-webkit-backdrop-filter: blur(18px) saturate(150%);
 	backdrop-filter: blur(18px) saturate(150%);
 }
@@ -1856,7 +1929,7 @@ main,
 	display: grid;
 	place-items: center;
 	padding: 1rem;
-	background: rgba(1, 14, 35, 0.66);
+	background: color-mix(in srgb, var(--navy) 66%, transparent);
 }
 
 .cookie-dialog {
@@ -1867,12 +1940,12 @@ main,
 	padding: clamp(1.25rem, 4vw, 2rem);
 	border: 1px solid var(--line-strong);
 	border-radius: 1.15rem;
-	background: rgba(7, 31, 61, 0.96);
-	box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.4);
+	background: color-mix(in srgb, var(--navy) 96%, transparent);
+	box-shadow: 0 1.5rem 4rem color-mix(in srgb, black 40%, transparent);
 }
 
 .cookie-dialog:focus-visible {
-	outline: 3px solid rgba(var(--ring), 0.95);
+	outline: 3px solid var(--focus-ring);
 	outline-offset: 3px;
 }
 
@@ -1965,7 +2038,7 @@ main,
 
 .legal-page__back:hover {
 	border-color: var(--edge);
-	background: rgba(224, 242, 255, 0.14);
+	background: color-mix(in srgb, var(--paper) 14%, transparent);
 }
 
 .breadcrumbs {
@@ -1996,8 +2069,8 @@ main,
 	padding: clamp(1.5rem, 4vw, 3.25rem);
 	border: 1px solid var(--line);
 	border-radius: var(--radius-lg);
-	background: rgba(220, 239, 255, 0.06);
-	box-shadow: 0 1.5rem 4rem rgba(0, 12, 32, 0.22);
+	background: color-mix(in srgb, var(--paper) 6%, transparent);
+	box-shadow: 0 1.5rem 4rem color-mix(in srgb, var(--navy) 22%, transparent);
 }
 
 .legal-page__content h1 {
@@ -2055,8 +2128,7 @@ main,
 .not-found-page__code {
 	margin: 0 0 1.25rem;
 	color: var(--blue-3);
-	font: 650 0.72rem / 1.4 var(--font-mono), ui-monospace, SFMono-Regular, Menlo,
-		monospace;
+	font: 650 0.72rem / 1.4 var(--font-mono-stack);
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
 }
@@ -2208,18 +2280,18 @@ main,
 	.menu-toggle,
 	.language-toggle button[aria-pressed="true"],
 	.need-chip input:checked + label {
-		background: #174b7c;
+		background: color-mix(in srgb, var(--blue) 30%, var(--navy));
 		-webkit-backdrop-filter: none;
 		backdrop-filter: none;
 	}
 
 	.button--primary {
-		color: #071f3d;
-		background: #80b6f5;
+		color: var(--navy);
+		background: var(--cyan);
 	}
 
 	.form-panel {
-		background: #fafdff;
+		background: var(--paper);
 	}
 }
 

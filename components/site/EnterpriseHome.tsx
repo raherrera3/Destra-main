@@ -14,8 +14,20 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import ContactExperience from "./ContactExperience";
-import type { NeedValue } from "./contactSchema";
 import { useLocale } from "./LocaleProvider";
+import type { NeedValue } from "./contactSchema";
+
+function accentWord(text: string, word: string) {
+	const index = text.indexOf(word);
+	if (index < 0) return text;
+	return (
+		<>
+			{text.slice(0, index)}
+			<span className="accent-text accent-text--cyan">{word}</span>
+			{text.slice(index + word.length)}
+		</>
+	);
+}
 
 const serviceIcons: Record<NeedValue, LucideIcon> = {
 	fde: Bot,
@@ -26,7 +38,7 @@ const serviceIcons: Record<NeedValue, LucideIcon> = {
 };
 
 export default function EnterpriseHome() {
-	const { copy } = useLocale();
+	const { copy, locale } = useLocale();
 
 	return (
 		<>
@@ -34,7 +46,9 @@ export default function EnterpriseHome() {
 				<div className="hero-glow" aria-hidden="true" />
 				<div className="container hero-copy">
 					<p className="hero-kicker">{copy.hero.kicker}</p>
-					<h1 id="hero-title">{copy.hero.title}</h1>
+					<h1 id="hero-title">
+						{accentWord(copy.hero.title, locale === "es" ? "IA" : "AI")}
+					</h1>
 					<p className="hero-lead">{copy.hero.lead}</p>
 					<div className="button-group">
 						<Link className="button button--primary" href="#contacto">
@@ -56,7 +70,7 @@ export default function EnterpriseHome() {
 				<div className="container">
 					<header className="section-heading section-heading--wide">
 						<h2 id="services-title">
-							<span className="accent-text accent-text--sky">
+							<span className="accent-text accent-text--cyan">
 								{copy.services.title}
 							</span>
 						</h2>
@@ -108,9 +122,10 @@ export default function EnterpriseHome() {
 				<div className="container faq-grid">
 					<header className="section-heading">
 						<h2 id="faq-title">
-							<span className="accent-text accent-text--violet">
-								{copy.faq.title}
-							</span>
+							{accentWord(
+								copy.faq.title,
+								locale === "es" ? "empezar" : "first",
+							)}
 						</h2>
 					</header>
 					<div className="faq-list">

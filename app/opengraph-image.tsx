@@ -12,8 +12,8 @@ export default function OpenGraphImage() {
 				height: "100%",
 				width: "100%",
 				background:
-					"radial-gradient(circle at 78% 22%, #dbeafe 0, transparent 28%), linear-gradient(135deg, #f8fbff 0%, #ffffff 58%, #edf5ff 100%)",
-				color: "#10245b",
+					"radial-gradient(circle at 78% 22%, #8CFCFF 0, transparent 28%), linear-gradient(135deg, #FFFBF9 0%, #FFFBF9 58%, #8CFCFF 100%)",
+				color: "#051062",
 				padding: "82px 96px",
 				flexDirection: "column",
 				justifyContent: "space-between",
@@ -38,7 +38,7 @@ export default function OpenGraphImage() {
 				}}
 			>
 				<div
-					style={{ color: "#2463eb", fontSize: 25, letterSpacing: "0.08em" }}
+					style={{ color: "#002FC1", fontSize: 25, letterSpacing: "0.08em" }}
 				>
 					PARTNER DE IA PARA ORGANIZACIONES
 				</div>
@@ -53,7 +53,7 @@ export default function OpenGraphImage() {
 					IA diseñada para operar en tu empresa.
 				</div>
 			</div>
-			<div style={{ display: "flex", color: "#38528e", fontSize: 28 }}>
+			<div style={{ display: "flex", color: "#051062", fontSize: 28 }}>
 				Estrategia · Sistemas · Datos · Infraestructura
 			</div>
 		</div>,

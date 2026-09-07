@@ -15,7 +15,7 @@ export default function SiteFooter() {
 			<div className="container footer-grid">
 				<div className="footer-brand">
 					<Link href="#inicio" aria-label={copy.header.home}>
-						<BrandLogo surface="dark" sizes="152px" />
+						<BrandLogo />
 					</Link>
 					<p>{copy.footer.summary}</p>
 					<p className="footer-legal-entity">{copy.footer.legalEntity}</p>

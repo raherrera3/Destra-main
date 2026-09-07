@@ -65,15 +65,17 @@ export const viewport: Viewport = {
 	width: "device-width",
 	initialScale: 1,
 	viewportFit: "cover",
-	themeColor: "#0d3563",
+	themeColor: "#051062",
 };
 
 export default function RootLayout({
 	children,
 }: Readonly<{ children: ReactNode }>) {
 	return (
-		<html lang="es">
-			<body className={mono.variable}>
+		// La variable de next/font va en <html>: --font-mono-stack se declara en
+		// :root y necesita que --font-mono exista ya en ese ámbito.
+		<html lang="es" className={mono.variable}>
+			<body>
 				<CookieConsentProvider>{children}</CookieConsentProvider>
 			</body>
 		</html>

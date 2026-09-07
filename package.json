@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "check:colors": "node scripts/check-visual-colors.mjs",
     "format": "biome format --write ./app ./components/site ./components/Particles.tsx",
     "dev": "next dev",
     "build": "next build",

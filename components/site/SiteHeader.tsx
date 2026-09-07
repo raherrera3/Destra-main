@@ -62,11 +62,7 @@ export default function SiteHeader() {
 					aria-label={copy.header.home}
 					onClick={close}
 				>
-					<BrandLogo
-						surface="dark"
-						priority
-						sizes="(max-width: 768px) 132px, 152px"
-					/>
+					<BrandLogo />
 				</Link>
 				<nav className="desktop-nav" aria-label={copy.header.nav}>
 					{nav.map(([href, label]) => (

@@ -17,7 +17,7 @@ export default function LegalPage({ title, children }: LegalPageProps) {
 						href="/"
 						aria-label="DESTRA, volver al inicio"
 					>
-						<BrandLogo surface="dark" sizes="(max-width: 720px) 132px, 152px" />
+						<BrandLogo />
 					</Link>
 					<Link className="legal-page__back" href="/">
 						Volver al inicio

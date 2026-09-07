@@ -23,10 +23,10 @@ export default function ParticlesBackground() {
 			fullScreen: { enable: false },
 			fpsLimit: 30,
 			particles: {
-				color: { value: "#1d70f2" },
+				color: { value: "#002FC1" },
 				links: {
 					enable: true,
-					color: "#8ab7ff",
+					color: "#8CFCFF",
 					distance: 165,
 					opacity: 0.13,
 					width: 1,
@@ -51,7 +51,7 @@ export default function ParticlesBackground() {
 				modes: {
 					grab: {
 						distance: 140,
-						links: { color: "#8ab7ff", opacity: 0.3 },
+						links: { color: "#8CFCFF", opacity: 0.3 },
 					},
 				},
 			},
