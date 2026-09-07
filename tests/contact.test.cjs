@@ -22,7 +22,7 @@ const values = () => ({
 	email: "lead@example.com",
 	company: "Empresa de Prueba",
 	role: "",
-	need: "strategy",
+	need: ["fde", "architecture"],
 	size: "",
 	context: "Consulta de prueba con suficiente contexto.",
 	website: "",
@@ -200,7 +200,7 @@ test("awaits provider acknowledgment and sends all lead fields, source/date and 
 		"Persona de Prueba",
 		"Empresa de Prueba",
 		"lead@example.com",
-		"strategy",
+		"Forward Deployed Engineer",
 		"Consulta de prueba",
 		"Cargo: (vacío)",
 		"Tamaño: (vacío)",
@@ -277,7 +277,9 @@ test("invalid requests consume the IP limit before JSON parsing", async () => {
 		await expectError(await h.POST(request("{broken")), 400, "invalid_request");
 	}
 	const blocked = request("{broken");
-	blocked.json = () => { throw new Error("Rate-limited body must not be parsed"); };
+	blocked.json = () => {
+		throw new Error("Rate-limited body must not be parsed");
+	};
 	await expectError(await h.POST(blocked), 429, "rate_limited");
 	assert.equal(h.calls.length, 0);
 });
@@ -289,24 +291,52 @@ test("body limit is 16KiB of actual streamed bytes even with a false Content-Len
 	let offset = 0;
 	const stream = new ReadableStream({
 		pull(controller) {
-			if (offset >= input.length) { controller.close(); return; }
-			controller.enqueue(new TextEncoder().encode(input.slice(offset, offset + 4096)));
+			if (offset >= input.length) {
+				controller.close();
+				return;
+			}
+			controller.enqueue(
+				new TextEncoder().encode(input.slice(offset, offset + 4096)),
+			);
 			offset += 4096;
 		},
-		cancel() { cancelled = true; },
+		cancel() {
+			cancelled = true;
+		},
 	});
 	const oversized = new Request("https://www.destra.es/api/contact", {
-		method: "POST", duplex: "half", body: stream,
-		headers: { "Content-Type": "application/json", "Content-Length": "1", "CF-Connecting-IP": "192.0.2.1" },
+		method: "POST",
+		duplex: "half",
+		body: stream,
+		headers: {
+			"Content-Type": "application/json",
+			"Content-Length": "1",
+			"CF-Connecting-IP": "192.0.2.1",
+		},
 	});
 	await expectError(await h.POST(oversized), 413, "request_too_large");
 	assert.equal(cancelled, true);
 	assert.equal(h.calls.length, 0);
 	// Exact boundary passes; one more byte fails. Count bytes, not JS characters.
 	const valid = JSON.stringify(values());
-	assert.equal((await h.POST(request(valid + " ".repeat(16384 - Buffer.byteLength(valid))))).status, 200);
-	await expectError(await h.POST(request(valid + " ".repeat(16385 - Buffer.byteLength(valid)))), 413, "request_too_large");
-	await expectError(await h.POST(request({ ...values(), ignored: "漢".repeat(6000) })), 413, "request_too_large");
+	assert.equal(
+		(
+			await h.POST(
+				request(valid + " ".repeat(16384 - Buffer.byteLength(valid))),
+			)
+		).status,
+		200,
+	);
+	await expectError(
+		await h.POST(request(valid + " ".repeat(16385 - Buffer.byteLength(valid)))),
+		413,
+		"request_too_large",
+	);
+	await expectError(
+		await h.POST(request({ ...values(), ignored: "漢".repeat(6000) })),
+		413,
+		"request_too_large",
+	);
 });
 test("optional CRM is scheduled after success only; failures never change the response", async () => {
 	const env = {
@@ -343,7 +373,7 @@ test("optional CRM is scheduled after success only; failures never change the re
 		200,
 	);
 });
-test("client acknowledgment is typed, and enum/max-length validation stays localized", () => {
+test("client acknowledgment is typed, and multi-need/max-length validation stays localized", () => {
 	const { schema } = harness();
 	for (const locale of ["es", "en"]) {
 		const messages = {
@@ -357,7 +387,7 @@ test("client acknowledgment is typed, and enum/max-length validation stays local
 			.createContactRequestSchema(messages, locale)
 			.safeParse({
 				...values(),
-				need: "",
+				need: [],
 				name: "x".repeat(121),
 				role: "x".repeat(121),
 			});
@@ -371,6 +401,16 @@ test("client acknowledgment is typed, and enum/max-length validation stays local
 		).message;
 		assert.match(limit, locale === "es" ? /caracteres/ : /characters/);
 	}
+	assert.equal(
+		schema.contactRequestSchema.safeParse({ ...values(), need: "fde" })
+			.success,
+		false,
+	);
+	assert.equal(
+		schema.contactRequestSchema.safeParse({ ...values(), need: ["unclear"] })
+			.success,
+		true,
+	);
 	assert.equal(
 		schema.contactAcknowledgmentSchema.safeParse({ success: true, id }).success,
 		true,
@@ -420,7 +460,7 @@ test("form associates every field error/hint, validates acknowledgments and expo
 	);
 });
 
-test("contact opens as an accessible liquid-glass drawer with resilient fallbacks", () => {
+test("contact opens as an accessible glass dialog with multi-select and resilient fallbacks", () => {
 	const source = fs.readFileSync(
 		path.join(root, "components/site/ContactExperience.tsx"),
 		"utf8",
@@ -437,12 +477,51 @@ test("contact opens as an accessible liquid-glass drawer with resilient fallback
 	assert.match(source, /@radix-ui\/react-dialog/);
 	assert.match(source, /a\[href=["']#contacto["']\]/);
 	assert.match(source, /DialogPrimitive\.Content/);
-	assert.match(source, /feDisplacementMap/);
+	assert.match(source, /type="checkbox"/);
+	assert.doesNotMatch(source, /next-step--drawer/);
 	assert.match(shell, /id="button-glass"/);
 	assert.match(shell, /feDisplacementMap/);
-	assert.match(globals, /url\(#button-glass\)/);
+	assert.match(
+		globals,
+		/@media \(min-width: 861px\)[\s\S]*?@supports[\s\S]*?url\(["']?#button-glass["']?\)[\s\S]*?\.header-shell/,
+	);
+	assert.match(globals, /prefers-reduced-motion:\s*reduce[\s\S]*?transform:\s*none/);
 	assert.match(globals, /\.contact-drawer/);
 	assert.match(globals, /prefers-reduced-transparency:\s*reduce/);
+	const chipInput = globals.match(/\.need-chip input\s*\{([^}]*)\}/)?.[1] || "";
+	assert.match(chipInput, /width:\s*1px/);
+	assert.doesNotMatch(chipInput, /inset:\s*0/);
 	assert.match(copy, /cta:\s*"Contacto"/);
 	assert.match(copy, /title:\s*"Hablemos"/);
+});
+
+test("homepage stays limited to the requested sections and footer contact details", () => {
+	const home = fs.readFileSync(
+		path.join(root, "components/site/EnterpriseHome.tsx"),
+		"utf8",
+	);
+	const header = fs.readFileSync(
+		path.join(root, "components/site/SiteHeader.tsx"),
+		"utf8",
+	);
+	const footer = fs.readFileSync(
+		path.join(root, "components/site/SiteFooter.tsx"),
+		"utf8",
+	);
+	for (const id of ["servicios", "faq"])
+		assert.match(home, new RegExp(`id="${id}"`));
+	for (const obsolete of [
+		"PrivateAISection",
+		"MethodAndProof",
+		"ArchitectureMap",
+	])
+		assert.doesNotMatch(home, new RegExp(obsolete));
+	for (const href of ["#inicio", "#servicios", "#faq"])
+		assert.match(header, new RegExp(href));
+	for (const detail of [
+		"contacto@destra.es",
+		"+34 936 940 165",
+		"Via Augusta 125, 2-2",
+	])
+		assert.match(footer, new RegExp(detail.replace("+", "\\+")));
 });

@@ -15,7 +15,13 @@ function ShellContent() {
 				focusable="false"
 			>
 				<defs>
-					<filter id="button-glass" x="-20%" y="-30%" width="140%" height="160%">
+					<filter
+						id="button-glass"
+						x="-20%"
+						y="-30%"
+						width="140%"
+						height="160%"
+					>
 						<feTurbulence
 							type="fractalNoise"
 							baseFrequency="0.018 0.035"

@@ -1,38 +1,39 @@
-# DESTRA
+# Destra Web
 
-Web corporativa de DESTRA construida con Next.js 15, React 19, TypeScript y Tailwind CSS.
+Web corporativa de Destra construida con Next.js App Router.
 
-## Desarrollo
+## Desarrollo local
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
-La aplicación se sirve por defecto en `http://localhost:3000`.
+La aplicación queda disponible en `http://localhost:3000`.
 
-## Verificación
+## Comprobaciones
 
 ```bash
-npm run typecheck
-npm run lint
-npm run build
+pnpm typecheck
+pnpm lint
+pnpm build
 ```
 
 ## Variables de entorno
 
-Parte de `.env.example` y configura los valores confirmados en `.env.local`:
+Copia `.env.example` a `.env.local` y configura:
 
-```bash
-cp .env.example .env.local
-```
+- `RESEND_API_KEY`: clave de Resend utilizada para enviar el correo.
+- `CONTACT_FROM_EMAIL`: remitente válido; puede usar el formato `Destra <correo@dominio>`.
+- `CONTACT_TO_EMAIL`: dirección que recibe las solicitudes.
+- `TURNSTILE_SECRET_KEY`: clave privada para verificar Cloudflare Turnstile en el servidor.
+- `NEXT_PUBLIC_TURNSTILE_SITE_KEY`: clave pública que carga el widget de Turnstile.
+- `CRM_WEBHOOK_URL`: endpoint HTTPS opcional que recibe el lead después de que Resend acepte el correo. No admite credenciales embebidas en la URL.
 
-- `CONTACT_WEBHOOK_URL`: endpoint HTTPS confirmado para recibir el formulario. Es obligatorio para enviar; sin él, la API responde `503` y el formulario conserva los datos.
-
-No existen fallbacks a integraciones heredadas. Reinicia `npm run dev` después de modificar variables de entorno.
+Las cinco primeras variables son obligatorias: si falta alguna, la API de contacto responde `503`. Reinicia `pnpm dev` después de modificar variables de entorno.
 
 ## Pendiente de confirmar antes de publicar
 
-- Confirmar el webhook/CRM y su tratamiento de los nuevos campos cualificados.
+- Confirmar el webhook opcional del CRM y su tratamiento de los campos cualificados.
 - Confirmar información legal, privacidad, cookies, razón social, dominio y datos de contacto.
 - No añadir canonical, `og:url`, clientes, métricas o certificaciones sin información verificada.

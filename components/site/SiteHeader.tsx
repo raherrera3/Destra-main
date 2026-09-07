@@ -1,14 +1,8 @@
 "use client";
 
-import { ChevronDown, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import {
-	type KeyboardEvent as ReactKeyboardEvent,
-	useEffect,
-	useId,
-	useRef,
-	useState,
-} from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import BrandLogo from "./BrandLogo";
 import LanguageToggle from "./LanguageToggle";
 import { useLocale } from "./LocaleProvider";
@@ -16,23 +10,14 @@ import { useLocale } from "./LocaleProvider";
 export default function SiteHeader() {
 	const { copy } = useLocale();
 	const [open, setOpen] = useState(false);
-	const [servicesOpen, setServicesOpen] = useState(false);
 	const id = useId();
-	const servicesId = useId();
 	const toggle = useRef<HTMLButtonElement>(null);
 	const panel = useRef<HTMLDivElement>(null);
-	const servicesMenu = useRef<HTMLDivElement>(null);
-	const servicesTrigger = useRef<HTMLButtonElement>(null);
 	const nav = [
-		["#ia-privada", copy.navLabels.private],
-		["#metodo", copy.navLabels.method],
-		["#casos-de-uso", copy.navLabels.cases],
-		["#destra", copy.navLabels.why],
+		["#inicio", copy.navLabels.home],
+		["#servicios", copy.navLabels.services],
+		["#faq", copy.navLabels.faq],
 	] as const;
-	const serviceLinks = copy.services.items.map((item) => ({
-		href: `#servicio-${item.intent}`,
-		title: item.title,
-	}));
 
 	useEffect(() => {
 		if (!open) return;
@@ -66,48 +51,7 @@ export default function SiteHeader() {
 		};
 	}, [open]);
 
-	useEffect(() => {
-		if (!servicesOpen) return;
-		const closeFromOutside = (event: PointerEvent) => {
-			if (!servicesMenu.current?.contains(event.target as Node)) {
-				setServicesOpen(false);
-			}
-		};
-		const closeFromKeyboard = (event: KeyboardEvent) => {
-			if (event.key !== "Escape") return;
-			setServicesOpen(false);
-			servicesTrigger.current?.focus();
-		};
-		document.addEventListener("pointerdown", closeFromOutside);
-		document.addEventListener("keydown", closeFromKeyboard);
-		return () => {
-			document.removeEventListener("pointerdown", closeFromOutside);
-			document.removeEventListener("keydown", closeFromKeyboard);
-		};
-	}, [servicesOpen]);
-
-	const close = () => {
-		setOpen(false);
-		setServicesOpen(false);
-	};
-	const focusService = (position: "first" | "last") => {
-		const links =
-			servicesMenu.current?.querySelectorAll<HTMLAnchorElement>(
-				"[role='menuitem']",
-			);
-		if (!links?.length) return;
-		links[position === "first" ? 0 : links.length - 1].focus();
-	};
-	const onServicesTriggerKeyDown = (
-		event: ReactKeyboardEvent<HTMLButtonElement>,
-	) => {
-		if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
-		event.preventDefault();
-		setServicesOpen(true);
-		window.requestAnimationFrame(() =>
-			focusService(event.key === "ArrowDown" ? "first" : "last"),
-		);
-	};
+	const close = () => setOpen(false);
 
 	return (
 		<header className="site-header" id="inicio">
@@ -125,41 +69,8 @@ export default function SiteHeader() {
 					/>
 				</Link>
 				<nav className="desktop-nav" aria-label={copy.header.nav}>
-					<div className="services-menu" ref={servicesMenu}>
-						<button
-							ref={servicesTrigger}
-							type="button"
-							className="services-menu__trigger"
-							aria-expanded={servicesOpen}
-							aria-controls={servicesId}
-							aria-haspopup="menu"
-							onClick={() => setServicesOpen((value) => !value)}
-							onKeyDown={onServicesTriggerKeyDown}
-						>
-							{copy.navLabels.services}
-							<ChevronDown aria-hidden="true" />
-						</button>
-						<div
-							id={servicesId}
-							className="services-menu__panel glass-surface"
-							role="menu"
-							hidden={!servicesOpen}
-							aria-label={copy.header.servicesMenu}
-						>
-							{serviceLinks.map((service) => (
-								<Link
-									key={service.href}
-									href={service.href}
-									role="menuitem"
-									onClick={() => setServicesOpen(false)}
-								>
-									{service.title}
-								</Link>
-							))}
-						</div>
-					</div>
 					{nav.map(([href, label]) => (
-						<Link key={href} href={href} onClick={() => setServicesOpen(false)}>
+						<Link key={href} href={href}>
 							{label}
 						</Link>
 					))}
@@ -190,20 +101,6 @@ export default function SiteHeader() {
 			>
 				<nav aria-label={copy.header.mobileNav}>
 					<LanguageToggle onChange={close} />
-					<Link
-						className="mobile-services-heading"
-						href="#servicios"
-						onClick={close}
-					>
-						{copy.navLabels.services}
-					</Link>
-					<div className="mobile-service-links">
-						{serviceLinks.map((service) => (
-							<Link key={service.href} href={service.href} onClick={close}>
-								{service.title}
-							</Link>
-						))}
-					</div>
 					{nav.map(([href, label]) => (
 						<Link key={href} href={href} onClick={close}>
 							{label}

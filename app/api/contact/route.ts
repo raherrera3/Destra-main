@@ -1,4 +1,7 @@
-import { contactRequestSchema } from "@/components/site/contactSchema";
+import {
+	contactRequestSchema,
+	type NeedValue,
+} from "@/components/site/contactSchema";
 import type { ContactErrorCode } from "@/components/site/siteCopy";
 import { siteUrl } from "@/lib/site";
 import { NextResponse, after } from "next/server";
@@ -13,6 +16,16 @@ const turnstileAcknowledgment = z.object({
 	hostname: z.string(),
 	action: z.literal("contact"),
 });
+/* El correo lo lee una persona: enviar las claves internas ("fde, private")
+ * obliga a traducirlas mentalmente en cada lead. */
+const needLabels: Record<NeedValue, string> = {
+	fde: "Forward Deployed Engineer",
+	solution: "Plataformas y soluciones",
+	architecture: "Arquitectura e infraestructura",
+	private: "IA privada u on-premise",
+	unclear: "Aún no lo tiene claro",
+};
+
 const hostname = new URL(siteUrl).hostname;
 const allowedHostnames = new Set([hostname, hostname.replace(/^www\./, "")]);
 
@@ -73,7 +86,6 @@ export async function POST(request: Request) {
 	if (isRateLimited(clientKey))
 		return failure("rate_limited", 429, { "Retry-After": "600" });
 
-
 	if (
 		!(request.headers.get("content-type") ?? "")
 			.toLowerCase()
@@ -108,7 +120,6 @@ export async function POST(request: Request) {
 	const elapsed = Date.now() - values.startedAt;
 	if (elapsed < 1200 || elapsed > 2 * 60 * 60 * 1000)
 		return failure("invalid_session", 400);
-
 
 	const key = process.env.RESEND_API_KEY?.trim();
 	const from = process.env.CONTACT_FROM_EMAIL?.trim();
@@ -169,7 +180,7 @@ export async function POST(request: Request) {
 		`Correo: ${lead.email}`,
 		`Empresa: ${lead.company}`,
 		`Cargo: ${lead.role || "(vacío)"}`,
-		`Necesidad: ${lead.need}`,
+		`Necesidades: ${lead.need.map((value) => needLabels[value]).join(", ")}`,
 		`Tamaño: ${lead.size || "(vacío)"}`,
 		`Contexto: ${lead.context}`,
 		`Fecha (UTC): ${lead.submittedAt}`,
@@ -187,7 +198,7 @@ export async function POST(request: Request) {
 				from,
 				to: [to],
 				reply_to: lead.email,
-				subject: `Estudio sin compromiso — ${lead.company.replace(/[\r\n]+/g, " ")} — ${lead.need}`,
+				subject: `Estudio sin compromiso — ${lead.company.replace(/[\r\n]+/g, " ")} — ${lead.need.map((value) => needLabels[value]).join(", ")}`,
 				text,
 			}),
 			signal: AbortSignal.timeout(12_000),

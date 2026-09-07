@@ -25,14 +25,11 @@ type SiteCopy = {
 		close: string;
 		cta: string;
 		language: string;
-		servicesMenu: string;
 	};
 	navLabels: {
+		home: string;
 		services: string;
-		private: string;
-		method: string;
-		cases: string;
-		why: string;
+		faq: string;
 	};
 	hero: {
 		kicker: string;
@@ -41,71 +38,26 @@ type SiteCopy = {
 		primary: string;
 		secondary: string;
 		reassurance: string;
-		band: string;
-		capabilities: string[];
-	};
-	map: {
-		caption: string;
-		sources: string;
-		sourceNodes: string[];
-		core: string;
-		coreItems: string[];
-		outcomes: string;
-		outcomeNodes: string[];
-		control: string;
-		controlValues: string;
-	};
-	problem: {
-		title: string;
-		lead: string;
-		items: Item[];
-		statement: string;
-		emphasis: string;
-	};
-	proposal: {
-		title: string;
-		lead: string;
-		center: string;
-		dimensions: Item[];
-		cta: string;
 	};
 	services: {
 		title: string;
 		lead: string;
+		labels: { solution: string; audience: string; model: string };
 		items: Array<
-			Item & { stage: string; tags: string[]; cta: string; intent: NeedValue }
+			Item & {
+				audience: string;
+				model: string;
+				cta: string;
+				intent: NeedValue;
+			}
 		>;
 	};
-	privateAi: {
-		title: string;
-		lead: string;
-		sectors: string;
-		benefits: Item[];
-		cta: string;
-		visual: string;
-		perimeter: string;
-		nodes: string[];
-		monitor: string[];
-		noteTitle: string;
-		note: string;
-	};
-	method: { title: string; lead: string; cta: string; steps: Item[] };
-	cases: {
-		title: string;
-		lead: string;
-		disclaimer: string;
-		items: Array<Item & { cta: string; intent: NeedValue }>;
-	};
-	why: { title: string; items: Item[] };
 	faq: { title: string; items: Item[] };
 	contact: {
-		eyebrow: string;
 		title: string;
 		lead: string;
 		open: string;
 		close: string;
-		includes: string;
-		points: string[];
 		privacy: string;
 		successTitle: string;
 		success: string;
@@ -128,7 +80,6 @@ type SiteCopy = {
 		errorSummary: string;
 		retry: string;
 		labels: Record<string, string>;
-		groups: { about: string; project: string };
 		hints: Record<string, string>;
 		placeholder: string;
 		needs: Record<NeedValue, string>;
@@ -146,12 +97,13 @@ type SiteCopy = {
 	};
 	footer: {
 		summary: string;
-		capabilities: string;
 		explore: string;
 		links: string[];
 		privacy: string;
 		terms: string;
 		cookies: string;
+		contact: string;
+		office: string;
 		legalEntity: string;
 		copyright: string;
 	};
@@ -168,217 +120,79 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			close: "Cerrar menú",
 			cta: "Contacto",
 			language: "Idioma",
-			servicesMenu: "Ver servicios",
 		},
 		navLabels: {
+			home: "Inicio",
 			services: "Servicios",
-			private: "IA privada",
-			method: "Método",
-			cases: "Casos de uso",
-			why: "DESTRA",
+			faq: "FAQ",
 		},
 		hero: {
 			kicker: "Partner de IA para organizaciones",
 			title: "Convierte la IA en una capacidad que tu empresa puede operar.",
 			lead: "Definimos la prioridad, construimos la solución y la integramos en tus sistemas, datos y equipos.",
 			primary: "Solicitar estudio sin compromiso",
-			secondary: "Ver cómo trabajamos",
+			secondary: "Ver servicios",
 			reassurance:
 				"Sin coste ni compromiso. Revisamos tu caso y proponemos el siguiente paso.",
-			band: "Estrategia, sistemas y adopción en un mismo equipo.",
-			capabilities: ["Estrategia", "Sistemas", "Datos", "Infraestructura"],
-		},
-		map: {
-			caption: "De las fuentes internas a una operación de IA gobernada.",
-			sources: "Fuentes",
-			sourceNodes: ["Sistemas", "Documentación", "Datos"],
-			core: "Núcleo de IA",
-			coreItems: ["Contexto", "Orquestación", "Integración"],
-			outcomes: "Operación",
-			outcomeNodes: ["Equipos", "Procesos", "Aplicaciones"],
-			control: "Control",
-			controlValues: "Accesos · Trazabilidad · Calidad",
-		},
-		problem: {
-			title: "La IA se bloquea antes de llegar a la operación.",
-			lead: "El problema rara vez es un modelo. Suele ser decidir dónde aporta valor, integrarlo bien y mantener el control.",
-			items: [
-				{
-					title: "Prioridad",
-					body: "Casos de uso que no conectan valor, viabilidad y adopción.",
-				},
-				{
-					title: "Integración",
-					body: "Herramientas aisladas de sistemas, permisos y procesos.",
-				},
-				{
-					title: "Control",
-					body: "Datos, costes y trazabilidad sin un diseño operativo claro.",
-				},
-			],
-			statement: "El reto no es añadir más IA.",
-			emphasis: "Es construir una capacidad que encaje en la organización.",
-		},
-		proposal: {
-			title: "De la decisión a la operación.",
-			lead: "Conectamos negocio, proceso, datos, tecnología e implantación para que la IA llegue a producción.",
-			center: "IA en operación",
-			dimensions: [
-				{ title: "Estrategia", body: "Prioridad y hoja de ruta" },
-				{ title: "Procesos", body: "Flujos y responsables" },
-				{ title: "Datos", body: "Fuentes y permisos" },
-				{ title: "Tecnología", body: "Modelos e integración" },
-				{ title: "Infraestructura", body: "Despliegue y control" },
-				{ title: "Personas", body: "Uso y adopción" },
-			],
-			cta: "Ver cómo trabajamos",
 		},
 		services: {
-			title: "Cuatro capacidades, una visión de conjunto.",
-			lead: "Empezamos donde esté la necesidad y diseñamos cada paso pensando en el siguiente.",
+			title: "Servicios",
+			lead: "Cuatro formas de trabajar con nosotros. La mayoría empieza por la primera.",
+			labels: {
+				solution: "Qué resuelve",
+				audience: "Para quién",
+				model: "Modelo comercial",
+			},
 			items: [
 				{
-					stage: "Decidir",
-					title: "Estrategia y adopción de IA",
-					body: "Priorizamos oportunidades con valor, viabilidad y adopción.",
-					tags: ["Procesos", "Roadmap", "Equipos"],
-					cta: "Estudiar este caso",
-					intent: "strategy",
+					title: "Forward Deployed Engineer (FDE)",
+					body: "Acompañamiento continuo. Un experto en inteligencia artificial se incorpora a la empresa y trabaja desde el primer día, mes a mes, en automatizaciones, formación en IA, infraestructura o lo que la organización necesite.",
+					audience:
+						"Cualquier empresa que quiera empezar con IA sin arriesgar. Es la puerta de entrada por defecto.",
+					model:
+						"Bono de horas semanal o mensual a 80 €/hora (+IVA). Las primeras 6 horas de diagnóstico son gratuitas.",
+					cta: "Hablar sobre FDE",
+					intent: "fde",
 				},
 				{
-					stage: "Construir",
-					title: "Plataformas y soluciones",
-					body: "Creamos herramientas conectadas con los procesos que ya utilizas.",
-					tags: ["Aplicaciones", "Agentes", "Integración"],
-					cta: "Estudiar este caso",
+					title: "Plataformas y Soluciones",
+					body: "Desarrollo de software y automatizaciones a medida.",
+					audience:
+						"Empresas con un proceso o proyecto concreto ya identificado, a menudo tras un FDE.",
+					model:
+						"Presupuesto cerrado por proyecto, facturado por fases o hitos.",
+					cta: "Hablar sobre una solución",
 					intent: "solution",
 				},
 				{
-					stage: "Operar",
-					title: "Arquitectura e infraestructura",
-					body: "Definimos modelos, datos, permisos y operación para cada solución.",
-					tags: ["RAG", "APIs", "Observabilidad"],
-					cta: "Estudiar este caso",
+					title: "Arquitectura e Infraestructura de IA",
+					body: "Optimizamos el uso de la IA que ya existe y reducimos la factura sin perder calidad.",
+					audience:
+						"Empresas que ya usan APIs frontera en producción y donde el gasto supone un problema.",
+					model:
+						"Fee ligado al ahorro medido sobre un baseline firmado, con posible fee base.",
+					cta: "Hablar sobre infraestructura",
 					intent: "architecture",
 				},
 				{
-					stage: "Controlar",
-					title: "IA privada y on-premise",
-					body: "Evaluamos dónde procesar los datos y cómo gobernar el acceso.",
-					tags: ["Local", "Híbrido", "Trazabilidad"],
-					cta: "Evaluar la arquitectura",
+					title: "Despliegue de IA Privada / On-Premise",
+					body: "Infraestructura de IA local, sin salir nunca de la empresa o de una zona controlada, por ejemplo Europa.",
+					audience:
+						"Sectores regulados o con datos privilegiados, como hospitales, family offices, bancos o bufetes.",
+					model:
+						"Proyecto de infraestructura, con hardware o colocation y despliegue, más acompañamiento posterior.",
+					cta: "Hablar sobre IA privada",
 					intent: "private",
-				},
-			],
-		},
-		privateAi: {
-			title: "IA bajo las reglas de tu organización.",
-			lead: "Para contextos que requieren más control, diseñamos entornos privados, locales o híbridos adaptados a tus sistemas y políticas.",
-			sectors:
-				"Relevante en salud, legal, finanzas, industria y administración.",
-			benefits: [
-				{
-					title: "Control del dato",
-					body: "Define dónde se procesa y almacena la información.",
-				},
-				{
-					title: "Arquitectura adaptada",
-					body: "Combina infraestructura local, privada o híbrida.",
-				},
-				{
-					title: "Integración interna",
-					body: "Conecta documentación y aplicaciones corporativas.",
-				},
-				{
-					title: "Gobernanza",
-					body: "Incorpora accesos, evaluación y monitorización.",
-				},
-			],
-			cta: "Evaluar una arquitectura privada",
-			visual: "Flujo de IA en un perímetro definido por el cliente",
-			perimeter: "Perímetro definido por el cliente",
-			nodes: [
-				"Fuentes internas",
-				"Acceso y permisos",
-				"Modelos privados",
-				"Aplicaciones",
-			],
-			monitor: ["Calidad", "Coste", "Trazabilidad"],
-			noteTitle: "Más control técnico. No una garantía de cumplimiento.",
-			note: "Una arquitectura privada puede facilitar el control y la trazabilidad. El cumplimiento depende también del uso, los datos, los riesgos y la evaluación aplicable.",
-		},
-		method: {
-			title: "Un proceso claro, desde el primer estudio.",
-			lead: "Alineamos oportunidad, arquitectura, integración y adopción desde el inicio.",
-			cta: "Empezar con un estudio sin compromiso",
-			steps: [
-				{
-					title: "Diagnosticar",
-					body: "Proceso, sistemas, datos y restricciones.",
-				},
-				{ title: "Priorizar", body: "Valor, viabilidad, riesgo y esfuerzo." },
-				{ title: "Diseñar", body: "Experiencia, arquitectura y controles." },
-				{ title: "Construir", body: "Desarrollo e integración por fases." },
-				{ title: "Desplegar", body: "Producción, formación y adopción." },
-				{ title: "Mejorar", body: "Calidad, uso, coste y evolución." },
-			],
-		},
-		cases: {
-			title: "Procesos que merece la pena evaluar.",
-			lead: "Ejemplos de ámbitos donde la IA puede aportar contexto, velocidad y control.",
-			disclaimer:
-				"Son áreas para estudiar; no son resultados ni casos de clientes.",
-			items: [
-				{
-					title: "Operaciones",
-					body: "Incidencias, información y decisiones con supervisión humana.",
-					cta: "Estudiar el proceso",
-					intent: "solution",
-				},
-				{
-					title: "Conocimiento documental",
-					body: "Búsqueda con permisos y síntesis sobre repositorios internos.",
-					cta: "Explorar el sistema",
-					intent: "solution",
-				},
-				{
-					title: "Legal, riesgo y finanzas",
-					body: "Revisión asistida y trazabilidad en contextos sensibles.",
-					cta: "Evaluar el caso",
-					intent: "private",
-				},
-				{
-					title: "Atención y servicio",
-					body: "Respuestas y tareas conectadas con el CRM.",
-					cta: "Analizar el flujo",
-					intent: "integration",
-				},
-			],
-		},
-		why: {
-			title: "Estrategia y ejecución, sin soluciones parciales.",
-			items: [
-				{
-					title: "De la prioridad al sistema",
-					body: "Una decisión puede convertirse en una solución operable.",
-				},
-				{
-					title: "Integración desde el diseño",
-					body: "Datos, permisos y experiencia forman parte del proyecto.",
-				},
-				{
-					title: "Arquitectura según el caso",
-					body: "Elegimos modelos y entorno por necesidad, no por moda.",
-				},
-				{
-					title: "Mejora continua",
-					body: "Medimos calidad, uso y coste tras el despliegue.",
 				},
 			],
 		},
 		faq: {
 			title: "Preguntas antes de empezar.",
 			items: [
+				{
+					title: "¿Qué es exactamente un Forward Deployed Engineer?",
+					body: "Un ingeniero de IA que se incorpora a tu equipo y trabaja desde dentro: automatiza procesos, forma a las personas y monta la infraestructura que haga falta. Lo que entrega son cosas funcionando, no un informe. Las primeras 6 horas de diagnóstico no se facturan.",
+				},
 				{
 					title: "¿Necesitamos un caso de uso definido?",
 					body: "No. Podemos empezar por un proceso, necesidad o restricción y ordenar las oportunidades en el estudio sin compromiso.",
@@ -398,17 +212,10 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			],
 		},
 		contact: {
-			eyebrow: "Contacto",
 			title: "Hablemos",
 			lead: "Cuéntanos el reto. Prepararemos una primera evaluación con prioridad, viabilidad y siguiente paso.",
 			open: "Abrir formulario",
 			close: "Cerrar formulario",
-			includes: "Qué incluye",
-			points: [
-				"Un punto de partida bien encuadrado.",
-				"Preguntas técnicas y de negocio relevantes.",
-				"Un siguiente paso adecuado al contexto.",
-			],
 			privacy:
 				"No incluyas información confidencial. Los datos se transmitirán al canal de contacto configurado de DESTRA.",
 			successTitle: "Solicitud enviada",
@@ -435,7 +242,6 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			errorSummary: "Revisa los campos indicados.",
 			retry:
 				"Los datos permanecen en el formulario para que puedas intentarlo de nuevo.",
-			groups: { about: "Sobre ti", project: "Sobre el proyecto" },
 			labels: {
 				name: "Nombre y apellidos",
 				email: "Correo profesional",
@@ -450,15 +256,13 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 				context:
 					"Proceso, objetivo, restricciones o plazo. No incluyas información confidencial.",
 			},
-			placeholder: "Selecciona una opción",
+			placeholder: "Selecciona una o varias opciones",
 			needs: {
-				strategy: "Definir estrategia o roadmap",
-				solution: "Desarrollar una solución",
+				fde: "Forward Deployed Engineer",
+				solution: "Plataformas y soluciones",
 				architecture: "Arquitectura e infraestructura",
-				integration: "Integrar IA con sistemas",
-				private: "Evaluar IA privada u on-premise",
-				improve: "Mejorar un proyecto iniciado",
-				unclear: "Aún no lo tenemos claro",
+				private: "IA privada u on-premise",
+				unclear: "Aún no lo tengo claro",
 			},
 			sizes: [
 				"Prefiero no indicarlo",
@@ -473,7 +277,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 				name: "Indica tu nombre y apellidos",
 				email: "Introduce un correo válido",
 				company: "Indica la empresa u organización",
-				need: "Selecciona la necesidad principal",
+				need: "Selecciona al menos una necesidad",
 				context: "Añade al menos 20 caracteres de contexto",
 			},
 			errors: {
@@ -492,21 +296,13 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 		},
 		footer: {
 			summary: "IA útil, integrada y gobernada.",
-			capabilities: "Capacidades",
 			explore: "Explorar",
-			links: [
-				"Estrategia y adopción",
-				"Soluciones de IA",
-				"Arquitectura",
-				"IA privada",
-				"Método",
-				"Casos de uso",
-				"Por qué DESTRA",
-				"Estudio sin compromiso",
-			],
+			links: ["Inicio", "Servicios", "FAQ", "Contacto"],
 			privacy: "Política de privacidad",
 			terms: "Términos y condiciones",
 			cookies: "Configurar cookies",
+			contact: "Contacto",
+			office: "Oficinas",
 			legalEntity:
 				"Responsable del sitio: MAJOIRA S.A. · C/Valencia nº 318, 08009 Barcelona · contacto@destra.es",
 			copyright: "Todos los derechos reservados.",
@@ -525,213 +321,78 @@ siteCopy.en = {
 		close: "Close menu",
 		cta: "Contact",
 		language: "Language",
-		servicesMenu: "View services",
 	},
 	navLabels: {
+		home: "Home",
 		services: "Services",
-		private: "Private AI",
-		method: "Method",
-		cases: "Use cases",
-		why: "DESTRA",
+		faq: "FAQ",
 	},
 	hero: {
 		kicker: "AI partner for organisations",
 		title: "Turn AI into a capability your business can run.",
 		lead: "We define the priority, build the solution and integrate it with your systems, data and teams.",
 		primary: "Let’s discuss your project",
-		secondary: "See how we work",
+		secondary: "View services",
 		reassurance:
 			"No cost, no commitment. We review your case and recommend the next step.",
-		band: "Strategy, systems and adoption in one team.",
-		capabilities: ["Strategy", "Systems", "Data", "Infrastructure"],
-	},
-	map: {
-		caption: "From internal sources to governed AI operations.",
-		sources: "Sources",
-		sourceNodes: ["Systems", "Documents", "Data"],
-		core: "AI core",
-		coreItems: ["Context", "Orchestration", "Integration"],
-		outcomes: "Operation",
-		outcomeNodes: ["Teams", "Processes", "Applications"],
-		control: "Control",
-		controlValues: "Access · Traceability · Quality",
-	},
-	problem: {
-		title: "AI stalls before it reaches operations.",
-		lead: "The issue is rarely a model. It is usually deciding where it adds value, integrating it well and keeping control.",
-		items: [
-			{
-				title: "Priority",
-				body: "Use cases disconnected from value, feasibility and adoption.",
-			},
-			{
-				title: "Integration",
-				body: "Tools isolated from systems, permissions and processes.",
-			},
-			{
-				title: "Control",
-				body: "Data, cost and traceability without a clear operating design.",
-			},
-		],
-		statement: "The challenge is not adding more AI.",
-		emphasis: "It is building a capability that fits the organisation.",
-	},
-	proposal: {
-		title: "From decision to operation.",
-		lead: "We connect business, process, data, technology and delivery so AI reaches production.",
-		center: "AI in operation",
-		dimensions: [
-			{ title: "Strategy", body: "Priority and roadmap" },
-			{ title: "Processes", body: "Flows and ownership" },
-			{ title: "Data", body: "Sources and permissions" },
-			{ title: "Technology", body: "Models and integration" },
-			{ title: "Infrastructure", body: "Deployment and control" },
-			{ title: "People", body: "Use and adoption" },
-		],
-		cta: "See how we work",
 	},
 	services: {
-		title: "Four capabilities, one joined-up view.",
-		lead: "We start where the need is and design each step with the next one in mind.",
+		title: "Services",
+		lead: "Four ways to work with us. Most companies start with the first.",
+		labels: {
+			solution: "What it solves",
+			audience: "Who it is for",
+			model: "Commercial model",
+		},
 		items: [
 			{
-				stage: "Decide",
-				title: "AI strategy and adoption",
-				body: "We prioritise opportunities by value, feasibility and adoption.",
-				tags: ["Processes", "Roadmap", "Teams"],
-				cta: "Assess this use case",
-				intent: "strategy",
+				title: "Forward Deployed Engineer (FDE)",
+				body: "Ongoing support. We embed an artificial intelligence expert in your company to work from day one, month by month, on automations, AI training, infrastructure or whatever the organisation needs.",
+				audience:
+					"Any company that wants to start with AI without taking unnecessary risk. This is the default entry point.",
+				model:
+					"Weekly or monthly hour bundle at €80/hour plus VAT. The first 6 diagnostic hours are free.",
+				cta: "Discuss FDE",
+				intent: "fde",
 			},
 			{
-				stage: "Build",
-				title: "Platforms and solutions",
-				body: "We create tools connected to the processes you already use.",
-				tags: ["Applications", "Agents", "Integration"],
-				cta: "Assess this use case",
+				title: "Platforms and Solutions",
+				body: "Custom software development and automation.",
+				audience:
+					"Companies with a specific process or project already identified, often after an FDE engagement.",
+				model: "Fixed project budget, billed by phase or milestone.",
+				cta: "Discuss a solution",
 				intent: "solution",
 			},
 			{
-				stage: "Operate",
-				title: "Architecture and infrastructure",
-				body: "We define models, data, permissions and operations for each solution.",
-				tags: ["RAG", "APIs", "Observability"],
-				cta: "Assess this use case",
+				title: "AI Architecture and Infrastructure",
+				body: "We optimise existing AI usage and reduce the bill without sacrificing quality.",
+				audience:
+					"Companies already using frontier APIs in production where the cost has become a problem.",
+				model:
+					"Fee linked to measured savings against a signed baseline, with a possible base fee.",
+				cta: "Discuss infrastructure",
 				intent: "architecture",
 			},
 			{
-				stage: "Control",
-				title: "Private and on-premise AI",
-				body: "We assess where to process data and how to govern access.",
-				tags: ["Local", "Hybrid", "Traceability"],
-				cta: "Assess the architecture",
+				title: "Private / On-Premise AI Deployment",
+				body: "Local AI infrastructure that never leaves the company or a controlled region such as Europe.",
+				audience:
+					"Regulated or privileged-data sectors such as hospitals, family offices, banks and law firms.",
+				model:
+					"Infrastructure project covering hardware or colocation and deployment, followed by ongoing support.",
+				cta: "Discuss private AI",
 				intent: "private",
-			},
-		],
-	},
-	privateAi: {
-		title: "AI under your organisation’s rules.",
-		lead: "For contexts that require more control, we design private, local or hybrid environments adapted to your systems and policies.",
-		sectors: "Relevant to healthcare, legal, finance, industry and government.",
-		benefits: [
-			{
-				title: "Data control",
-				body: "Define where information is processed and stored.",
-			},
-			{
-				title: "Fit-for-purpose architecture",
-				body: "Combine local, private or hybrid infrastructure.",
-			},
-			{
-				title: "Internal integration",
-				body: "Connect corporate documents and applications.",
-			},
-			{
-				title: "Governance",
-				body: "Include access, evaluation and monitoring.",
-			},
-		],
-		cta: "Assess a private architecture",
-		visual: "AI flow within a client-defined perimeter",
-		perimeter: "Client-defined perimeter",
-		nodes: [
-			"Internal sources",
-			"Access and permissions",
-			"Private models",
-			"Applications",
-		],
-		monitor: ["Quality", "Cost", "Traceability"],
-		noteTitle: "More technical control. Not a compliance guarantee.",
-		note: "A private architecture can facilitate control and traceability. Compliance also depends on use, data, risks and the relevant assessment.",
-	},
-	method: {
-		title: "A clear process, from the first assessment.",
-		lead: "We align opportunity, architecture, integration and adoption from the outset.",
-		cta: "Let’s discuss your project",
-		steps: [
-			{ title: "Diagnose", body: "Process, systems, data and constraints." },
-			{ title: "Prioritise", body: "Value, feasibility, risk and effort." },
-			{ title: "Design", body: "Experience, architecture and controls." },
-			{ title: "Build", body: "Phased development and integration." },
-			{ title: "Deploy", body: "Production, training and adoption." },
-			{ title: "Improve", body: "Quality, use, cost and evolution." },
-		],
-	},
-	cases: {
-		title: "Processes worth assessing.",
-		lead: "Examples of areas where AI can add context, speed and control.",
-		disclaimer:
-			"These are areas to assess, not client results or case studies.",
-		items: [
-			{
-				title: "Operations",
-				body: "Incidents, information and decisions with human oversight.",
-				cta: "Assess the process",
-				intent: "solution",
-			},
-			{
-				title: "Document knowledge",
-				body: "Permissioned search and synthesis across internal repositories.",
-				cta: "Explore the system",
-				intent: "solution",
-			},
-			{
-				title: "Legal, risk and finance",
-				body: "Assisted review and traceability in sensitive contexts.",
-				cta: "Assess the use case",
-				intent: "private",
-			},
-			{
-				title: "Service and support",
-				body: "Responses and tasks connected to the CRM.",
-				cta: "Assess the flow",
-				intent: "integration",
-			},
-		],
-	},
-	why: {
-		title: "Strategy and delivery, without partial solutions.",
-		items: [
-			{
-				title: "From priority to system",
-				body: "A decision can become an operable solution.",
-			},
-			{
-				title: "Integration by design",
-				body: "Data, permissions and experience are part of the project.",
-			},
-			{
-				title: "Architecture for the case",
-				body: "We choose models and environment by need, not fashion.",
-			},
-			{
-				title: "Continuous improvement",
-				body: "We measure quality, use and cost after deployment.",
 			},
 		],
 	},
 	faq: {
 		title: "Questions to resolve first.",
 		items: [
+			{
+				title: "What exactly is a Forward Deployed Engineer?",
+				body: "An AI engineer who joins your team and works from the inside: automating processes, training people and building whatever infrastructure is needed. The output is working software, not a report. The first 6 diagnostic hours are not billed.",
+			},
 			{
 				title: "Do we need a defined use case?",
 				body: "No. We can start with a process, need or constraint and prioritise opportunities in an initial assessment, with no commitment required.",
@@ -751,17 +412,10 @@ siteCopy.en = {
 		],
 	},
 	contact: {
-		eyebrow: "Contact",
 		title: "Let’s talk",
 		lead: "An initial assessment, with no commitment required. Tell us about the challenge so we can explore priorities, feasibility and the next step.",
 		open: "Open contact form",
 		close: "Close contact form",
-		includes: "What it includes",
-		points: [
-			"A well-framed starting point.",
-			"Relevant business and technical questions.",
-			"A next step suited to the context.",
-		],
 		privacy:
 			"Do not include confidential information. Your data will be sent to DESTRA’s configured contact channel.",
 		successTitle: "Request sent",
@@ -787,7 +441,6 @@ siteCopy.en = {
 	form: {
 		errorSummary: "Review the highlighted fields.",
 		retry: "Your details remain in the form so you can try again.",
-		groups: { about: "About you", project: "About the project" },
 		labels: {
 			name: "Full name",
 			email: "Work email",
@@ -802,15 +455,13 @@ siteCopy.en = {
 			context:
 				"Process, objective, constraints or timeframe. Do not include confidential information.",
 		},
-		placeholder: "Select an option",
+		placeholder: "Select one or more options",
 		needs: {
-			strategy: "Define strategy or roadmap",
-			solution: "Build a solution",
-			architecture: "AI architecture and infrastructure",
-			integration: "Integrate AI with systems",
-			private: "Assess private or on-premise AI",
-			improve: "Improve an existing project",
-			unclear: "We are not sure yet",
+			fde: "Forward Deployed Engineer",
+			solution: "Platforms and solutions",
+			architecture: "Architecture and infrastructure",
+			private: "Private or on-premise AI",
+			unclear: "Not sure yet",
 		},
 		sizes: ["Prefer not to say", "1–49", "50–249", "250–999", "1,000+"],
 		submit: "Let’s discuss your project",
@@ -819,7 +470,7 @@ siteCopy.en = {
 			name: "Enter your full name",
 			email: "Enter a valid email address",
 			company: "Enter your company or organisation",
-			need: "Select your main need",
+			need: "Select at least one need",
 			context: "Add at least 20 characters of context",
 		},
 		errors: {
@@ -839,21 +490,13 @@ siteCopy.en = {
 	},
 	footer: {
 		summary: "Useful, integrated, governed AI.",
-		capabilities: "Capabilities",
 		explore: "Explore",
-		links: [
-			"Strategy and adoption",
-			"AI solutions",
-			"Architecture",
-			"Private AI",
-			"Method",
-			"Use cases",
-			"Why DESTRA",
-			"Let’s discuss your project",
-		],
+		links: ["Home", "Services", "FAQ", "Contact"],
 		privacy: "Privacy policy",
 		terms: "Terms and conditions",
 		cookies: "Configure cookies",
+		contact: "Contact",
+		office: "Office",
 		legalEntity:
 			"Website controller: MAJOIRA S.A. · C/Valencia nº 318, 08009 Barcelona · contacto@destra.es",
 		copyright: "All rights reserved.",

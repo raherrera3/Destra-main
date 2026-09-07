@@ -3,11 +3,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { ArrowUpRight, CheckCircle2, X } from "lucide-react";
 import Script from "next/script";
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocale } from "./LocaleProvider";
 import {
 	type ContactRequest,
+	type NeedValue,
 	contactAcknowledgmentSchema,
 	createContactRequestSchema,
 	needValues,
@@ -45,6 +46,7 @@ function Field({
 	error,
 	children,
 	required,
+	wide,
 }: {
 	id: string;
 	label: string;
@@ -52,9 +54,10 @@ function Field({
 	error?: string;
 	children: React.ReactNode;
 	required?: boolean;
+	wide?: boolean;
 }) {
 	return (
-		<label className="field" htmlFor={id}>
+		<label className={wide ? "field field--wide" : "field"} htmlFor={id}>
 			<span>
 				{label}
 				{required && <em> *</em>}
@@ -82,7 +85,6 @@ export default function ContactExperience() {
 	const [verificationError, setVerificationError] = useState(false);
 	const previousLocale = useRef(locale);
 	const startedAt = useRef(Date.now());
-	const glassFilterId = useId().replaceAll(":", "");
 	const schema = useMemo(
 		() => createContactRequestSchema(copy.form.validation, locale),
 		[copy, locale],
@@ -90,6 +92,7 @@ export default function ContactExperience() {
 	const {
 		register,
 		handleSubmit,
+		getValues,
 		setValue,
 		reset,
 		trigger,
@@ -101,7 +104,7 @@ export default function ContactExperience() {
 			email: "",
 			company: "",
 			role: "",
-			need: undefined,
+			need: [],
 			size: "",
 			context: "",
 			website: "",
@@ -181,11 +184,12 @@ export default function ContactExperience() {
 		const choose = (event: MouseEvent) => {
 			const element = event.target as HTMLElement;
 			const target = element.closest<HTMLElement>("[data-intent]");
-			const intent = target?.dataset.intent as
-				| ContactRequest["need"]
-				| undefined;
-			if (intent && needValues.includes(intent))
-				setValue("need", intent, { shouldValidate: false });
+			const intent = target?.dataset.intent as NeedValue | undefined;
+			if (intent && needValues.includes(intent)) {
+				const selected = getValues("need");
+				if (!selected.includes(intent))
+					setValue("need", [...selected, intent], { shouldValidate: false });
+			}
 			const opener = element.closest<HTMLElement>(
 				'a[href="#contacto"], [data-contact-open]',
 			);
@@ -196,7 +200,7 @@ export default function ContactExperience() {
 		document.addEventListener("click", choose);
 		if (window.location.hash === "#contacto") setDrawerOpen(true);
 		return () => document.removeEventListener("click", choose);
-	}, [setValue]);
+	}, [getValues, setValue]);
 	useEffect(() => {
 		if (submitCount && Object.keys(errors).length) summary.current?.focus();
 	}, [errors, submitCount]);
@@ -239,7 +243,7 @@ export default function ContactExperience() {
 				email: "",
 				company: "",
 				role: "",
-				need: undefined,
+				need: [],
 				size: "",
 				context: "",
 				website: "",
@@ -274,7 +278,6 @@ export default function ContactExperience() {
 			>
 				<div className="container contact-intro">
 					<div className="contact-copy">
-						<span className="contact-eyebrow">{copy.contact.eyebrow}</span>
 						<h2 id="contact-title">{copy.contact.title}</h2>
 						<p>{copy.contact.lead}</p>
 						<button
@@ -285,48 +288,12 @@ export default function ContactExperience() {
 							{copy.contact.open} <ArrowUpRight aria-hidden />
 						</button>
 					</div>
-					<div className="contact-preview" aria-hidden="true">
-						<span />
-						<span />
-						<span />
-						<i />
-					</div>
 				</div>
 			</section>
 
 			<DialogPrimitive.Portal>
 				<DialogPrimitive.Overlay className="contact-drawer-overlay" />
-				<DialogPrimitive.Content
-					className="contact-drawer"
-					style={{
-						backdropFilter: `url(#${glassFilterId}) blur(24px) saturate(155%)`,
-					}}
-				>
-					<svg className="contact-drawer__filter" aria-hidden="true">
-						<filter
-							id={glassFilterId}
-							x="-20%"
-							y="-20%"
-							width="140%"
-							height="140%"
-						>
-							<feTurbulence
-								type="fractalNoise"
-								baseFrequency="0.008 0.015"
-								numOctaves="2"
-								seed="7"
-								result="noise"
-							/>
-							<feGaussianBlur in="noise" stdDeviation="2" result="softNoise" />
-							<feDisplacementMap
-								in="SourceGraphic"
-								in2="softNoise"
-								scale="26"
-								xChannelSelector="R"
-								yChannelSelector="G"
-							/>
-						</filter>
-					</svg>
+				<DialogPrimitive.Content className="contact-drawer">
 					<div className="contact-drawer__shell">
 						<DialogPrimitive.Close
 							className="contact-drawer__close"
@@ -335,21 +302,12 @@ export default function ContactExperience() {
 							<X aria-hidden />
 						</DialogPrimitive.Close>
 						<header className="contact-drawer__header">
-							<span className="contact-eyebrow">{copy.contact.eyebrow}</span>
 							<DialogPrimitive.Title className="contact-drawer__title">
 								{copy.contact.title}
 							</DialogPrimitive.Title>
 							<DialogPrimitive.Description className="contact-drawer__lead">
 								{copy.contact.lead}
 							</DialogPrimitive.Description>
-							<div className="next-step next-step--drawer">
-								<strong>{copy.contact.includes}</strong>
-								<ul>
-									{copy.contact.points.map((point) => (
-										<li key={point}>{point}</li>
-									))}
-								</ul>
-							</div>
 						</header>
 						<div className="form-panel">
 							{sent ? (
@@ -394,9 +352,9 @@ export default function ContactExperience() {
 									)}
 									<fieldset className="need-choice">
 										<legend className="form-group-label">
-											{l.need}{" "}
+											{l.need}
 											<span className="form-group-label__hint">
-												[{copy.form.placeholder}]
+												{copy.form.placeholder}
 											</span>
 										</legend>
 										<div
@@ -406,7 +364,7 @@ export default function ContactExperience() {
 											{needValues.map((value) => (
 												<span className="need-chip" key={value}>
 													<input
-														type="radio"
+														type="checkbox"
 														id={`need-${value}`}
 														value={value}
 														aria-invalid={!!errors.need}
@@ -425,99 +383,88 @@ export default function ContactExperience() {
 											</small>
 										)}
 									</fieldset>
-									<p className="form-group-label">{copy.form.groups.about}</p>
-									<div className="field-row">
-										<Field
+									<Field
+										id="name"
+										label={l.name}
+										required
+										error={errors.name?.message}
+									>
+										<input
 											id="name"
-											label={l.name}
-											required
-											error={errors.name?.message}
-										>
-											<input
-												id="name"
-												autoComplete="name"
-												aria-invalid={!!errors.name}
-												aria-describedby={describedBy("name")}
-												{...register("name")}
-											/>
-										</Field>
-										<Field
+											autoComplete="name"
+											aria-invalid={!!errors.name}
+											aria-describedby={describedBy("name")}
+											{...register("name")}
+										/>
+									</Field>
+									<Field
+										id="email"
+										label={l.email}
+										required
+										error={errors.email?.message}
+									>
+										<input
 											id="email"
-											label={l.email}
-											required
-											error={errors.email?.message}
-										>
-											<input
-												id="email"
-												type="email"
-												autoComplete="email"
-												aria-invalid={!!errors.email}
-												aria-describedby={describedBy("email")}
-												{...register("email")}
-											/>
-										</Field>
-									</div>
-									<div className="field-row">
-										<Field
+											type="email"
+											autoComplete="email"
+											aria-invalid={!!errors.email}
+											aria-describedby={describedBy("email")}
+											{...register("email")}
+										/>
+									</Field>
+									<Field
+										id="company"
+										label={l.company}
+										required
+										error={errors.company?.message}
+									>
+										<input
 											id="company"
-											label={l.company}
-											required
-											error={errors.company?.message}
-										>
-											<input
-												id="company"
-												autoComplete="organization"
-												aria-invalid={!!errors.company}
-												aria-describedby={describedBy("company")}
-												{...register("company")}
-											/>
-										</Field>
-										<Field
+											autoComplete="organization"
+											aria-invalid={!!errors.company}
+											aria-describedby={describedBy("company")}
+											{...register("company")}
+										/>
+									</Field>
+									<Field
+										id="role"
+										label={l.role}
+										hint={copy.form.hints.role}
+										error={errors.role?.message}
+									>
+										<input
 											id="role"
-											label={l.role}
-											hint={copy.form.hints.role}
-											error={errors.role?.message}
-										>
-											<input
-												id="role"
-												autoComplete="organization-title"
-												aria-invalid={!!errors.role}
-												aria-describedby={describedBy("role", true)}
-												{...register("role")}
-											/>
-										</Field>
-									</div>
-									<p className="form-group-label">{copy.form.groups.project}</p>
-									<div className="field-row">
-										<Field
+											autoComplete="organization-title"
+											aria-invalid={!!errors.role}
+											aria-describedby={describedBy("role", true)}
+											{...register("role")}
+										/>
+									</Field>
+									<Field id="size" label={l.size} error={errors.size?.message}>
+										<select
 											id="size"
-											label={l.size}
-											error={errors.size?.message}
+											aria-invalid={!!errors.size}
+											aria-describedby={describedBy("size")}
+											{...register("size")}
 										>
-											<select
-												id="size"
-												aria-invalid={!!errors.size}
-												aria-describedby={describedBy("size")}
-												{...register("size")}
-											>
-												{copy.form.sizes.map((value, index) => (
-													<option key={value} value={index ? value : ""}>
-														{value}
-													</option>
-												))}
-											</select>
-										</Field>
-									</div>
+											{copy.form.sizes.map((value, index) => (
+												<option key={value} value={index ? value : ""}>
+													{value}
+												</option>
+											))}
+										</select>
+									</Field>
 									<Field
 										id="context"
 										label={l.context}
 										required
+										wide
 										hint={copy.form.hints.context}
 										error={errors.context?.message}
 									>
 										<textarea
 											id="context"
-											rows={5}
+											rows={3}
 											aria-invalid={!!errors.context}
 											aria-describedby={describedBy("context", true)}
 											{...register("context")}
@@ -545,7 +492,10 @@ export default function ContactExperience() {
 												onReady={() => setVerificationReady(true)}
 												onError={() => setVerificationError(true)}
 											/>
-											<div ref={verificationContainer} />
+											<div
+												className="turnstile-slot"
+												ref={verificationContainer}
+											/>
 											{verificationError && (
 												<p role="alert">
 													{copy.form.errors.verification_failed}{" "}
@@ -567,12 +517,12 @@ export default function ContactExperience() {
 										{isSubmitting ? copy.form.sending : copy.form.submit}{" "}
 										<ArrowUpRight aria-hidden />
 									</button>
+									<p className="contact-drawer__privacy">
+										{copy.contact.privacy}
+									</p>
 								</form>
 							)}
 						</div>
-						<p className="privacy-note contact-drawer__privacy">
-							{copy.contact.privacy}
-						</p>
 					</div>
 				</DialogPrimitive.Content>
 			</DialogPrimitive.Portal>

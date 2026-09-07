@@ -1,11 +1,9 @@
 import { z } from "zod";
 export const needValues = [
-	"strategy",
+	"fde",
 	"solution",
 	"architecture",
-	"integration",
 	"private",
-	"improve",
 	"unclear",
 ] as const;
 export type NeedValue = (typeof needValues)[number];
@@ -29,7 +27,10 @@ export function createContactRequestSchema(
 		email: z.string().trim().email(messages.email).max(180, maximum(180)),
 		company: z.string().trim().min(2, messages.company).max(180, maximum(180)),
 		role: z.string().trim().max(120, maximum(120)).optional().default(""),
-		need: z.enum(needValues, { errorMap: () => ({ message: messages.need }) }),
+		need: z
+			.array(z.enum(needValues))
+			.min(1, messages.need)
+			.max(needValues.length, messages.need),
 		size: z.string().trim().max(40, maximum(40)).optional().default(""),
 		context: z
 			.string()
