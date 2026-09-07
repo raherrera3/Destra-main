@@ -23,7 +23,7 @@ function accentWord(text: string, word: string) {
 	return (
 		<>
 			{text.slice(0, index)}
-			<span className="accent-text accent-text--cyan">{word}</span>
+			<span className="accent-text">{word}</span>
 			{text.slice(index + word.length)}
 		</>
 	);
@@ -70,7 +70,7 @@ export default function EnterpriseHome() {
 				<div className="container">
 					<header className="section-heading section-heading--wide">
 						<h2 id="services-title">
-							<span className="accent-text accent-text--cyan">
+							<span className="accent-text">
 								{copy.services.title}
 							</span>
 						</h2>

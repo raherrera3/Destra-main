@@ -23,12 +23,12 @@ export default function ParticlesBackground() {
 			fullScreen: { enable: false },
 			fpsLimit: 30,
 			particles: {
-				color: { value: "#002FC1" },
+				color: { value: "#FFFBF9" },
 				links: {
 					enable: true,
-					color: "#8CFCFF",
+					color: "#FFFBF9",
 					distance: 165,
-					opacity: 0.13,
+					opacity: 0.08,
 					width: 1,
 				},
 				move: {
@@ -39,7 +39,7 @@ export default function ParticlesBackground() {
 					speed: 0.3,
 				},
 				number: { density: { enable: true, area: 950 }, value: 38 },
-				opacity: { value: { min: 0.15, max: 0.25 } },
+				opacity: { value: { min: 0.1, max: 0.18 } },
 				shape: { type: "circle" },
 				size: { value: { min: 1.2, max: 2.15 } },
 			},
@@ -51,7 +51,7 @@ export default function ParticlesBackground() {
 				modes: {
 					grab: {
 						distance: 140,
-						links: { color: "#8CFCFF", opacity: 0.3 },
+						links: { color: "#FFFBF9", opacity: 0.2 },
 					},
 				},
 			},

@@ -1,12 +1,11 @@
 import { readFile, readdir } from "node:fs/promises";
 import { extname, join, relative } from "node:path";
 
-const palette = new Set(["002fc1", "051062", "fffbf9", "8cfcff", "000000"]);
+const palette = new Set(["002fc1", "051062", "fffbf9", "000000"]);
 const paletteRgb = new Set([
 	"0,47,193",
 	"5,16,98",
 	"255,251,249",
-	"140,252,255",
 	"0,0,0",
 ]);
 const allowedNames = new Set(["black", "transparent", "currentcolor"]);

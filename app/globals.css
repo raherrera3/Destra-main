@@ -62,24 +62,26 @@
 	--blue: #002fc1;
 	--navy: #051062;
 	--paper: #fffbf9;
-	--cyan: #8cfcff;
 
 	/* Texto y superficies semánticas. */
 	--ink: var(--paper);
 	--ink-soft: color-mix(in srgb, var(--paper) 84%, transparent);
 	--ink-muted: color-mix(in srgb, var(--paper) 66%, transparent);
 	--navy-2: var(--navy);
-	--blue-3: var(--cyan);
+	/* Único tono de énfasis. Sobre el navy, el azul de marca sólo da 1,73:1 de
+	 * contraste, así que no puede ser texto; aclarado con papel llega a 6,5:1 y
+	 * sigue siendo una mezcla de dos colores de la paleta. */
+	--accent: color-mix(in srgb, var(--blue) 50%, var(--paper));
 	--blue-pale: color-mix(in srgb, var(--blue) 16%, transparent);
 	--surface: var(--navy);
-	--glass: color-mix(in srgb, var(--cyan) 10%, transparent);
-	--edge: color-mix(in srgb, var(--cyan) 34%, transparent);
-	--line: color-mix(in srgb, var(--cyan) 14%, transparent);
-	--line-strong: color-mix(in srgb, var(--cyan) 25%, transparent);
+	--glass: color-mix(in srgb, var(--paper) 10%, transparent);
+	--edge: color-mix(in srgb, var(--paper) 34%, transparent);
+	--line: color-mix(in srgb, var(--paper) 14%, transparent);
+	--line-strong: color-mix(in srgb, var(--paper) 25%, transparent);
 	--success: var(--blue);
 	--error: var(--blue);
 	--error-bg: color-mix(in srgb, var(--blue) 10%, var(--paper));
-	--focus-ring: color-mix(in srgb, var(--cyan) 95%, transparent);
+	--focus-ring: var(--paper);
 
 	--container: 73.75rem;
 	--shell: 80rem;
@@ -138,17 +140,17 @@ body::before {
 	pointer-events: none;
 	background: radial-gradient(
 			54rem 34rem at 12% -4%,
-			color-mix(in srgb, var(--cyan) 38%, transparent),
+			color-mix(in srgb, var(--paper) 38%, transparent),
 			transparent 62%
 		),
 		radial-gradient(
 			42rem 28rem at 94% 12%,
-			color-mix(in srgb, var(--cyan) 24%, transparent),
+			color-mix(in srgb, var(--paper) 24%, transparent),
 			transparent 64%
 		),
 		radial-gradient(
 			50rem 40rem at 50% 106%,
-			color-mix(in srgb, var(--cyan) 14%, transparent),
+			color-mix(in srgb, var(--paper) 14%, transparent),
 			transparent 60%
 		);
 }
@@ -294,8 +296,8 @@ main,
 	line-height: 1.7;
 }
 
-.accent-text--cyan {
-	color: var(--cyan);
+.accent-text {
+	color: var(--accent);
 }
 
 /* Un único lienzo fijo mantiene la atmósfera continua mientras el documento
@@ -324,7 +326,7 @@ main,
 			145deg,
 			color-mix(in srgb, var(--paper) 16%, transparent),
 			color-mix(in srgb, var(--paper) 5%, transparent) 46%,
-			color-mix(in srgb, var(--cyan) 9%, transparent)
+			color-mix(in srgb, var(--paper) 9%, transparent)
 		), color-mix(in srgb, var(--navy) 42%, transparent);
 	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 32%, transparent), 0
 		1rem 2.5rem color-mix(in srgb, var(--navy) 18%, transparent);
@@ -346,7 +348,7 @@ main,
 		linear-gradient(
 			105deg,
 			transparent 62%,
-			color-mix(in srgb, var(--cyan) 10%, transparent)
+			color-mix(in srgb, var(--paper) 10%, transparent)
 		);
 }
 
@@ -374,10 +376,10 @@ main,
 		145deg,
 		color-mix(in srgb, var(--paper) 28%, transparent),
 		color-mix(in srgb, var(--paper) 11%, transparent) 48%,
-		color-mix(in srgb, var(--cyan) 13%, transparent)
+		color-mix(in srgb, var(--paper) 13%, transparent)
 	);
 	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 60%, transparent),
-		inset 0 -1px 0 color-mix(in srgb, var(--cyan) 20%, transparent);
+		inset 0 -1px 0 color-mix(in srgb, var(--paper) 20%, transparent);
 	-webkit-backdrop-filter: blur(16px) saturate(165%);
 	backdrop-filter: blur(16px) saturate(165%);
 	transition: transform 360ms var(--ease-out), background 180ms ease,
@@ -399,7 +401,7 @@ main,
 		color-mix(in srgb, var(--paper) 32%, transparent),
 		transparent 28%,
 		transparent 70%,
-		color-mix(in srgb, var(--cyan) 18%, transparent)
+		color-mix(in srgb, var(--paper) 18%, transparent)
 	);
 	opacity: 0.52;
 	transform: translateX(-8%);
@@ -417,7 +419,7 @@ main,
 	font-size: 0.92rem;
 	font-weight: 700;
 	line-height: 1.2;
-	border: 1px solid var(--cyan);
+	border: 1px solid transparent;
 	color: var(--navy);
 	background: var(--paper);
 	box-shadow: none;
@@ -433,12 +435,13 @@ main,
 }
 
 .button--primary {
-	border-color: var(--cyan);
+	border-color: color-mix(in srgb, var(--navy) 14%, transparent);
 	color: var(--navy);
 	background: var(--paper);
 }
 
 .button--secondary {
+	border-color: color-mix(in srgb, var(--paper) 45%, transparent);
 	color: var(--paper);
 	background: transparent;
 }
@@ -450,17 +453,17 @@ main,
 	background: linear-gradient(
 		145deg,
 		color-mix(in srgb, var(--paper) 38%, transparent),
-		color-mix(in srgb, var(--cyan) 18%, transparent) 52%,
-		color-mix(in srgb, var(--cyan) 22%, transparent)
+		color-mix(in srgb, var(--paper) 18%, transparent) 52%,
+		color-mix(in srgb, var(--paper) 22%, transparent)
 	);
 }
 
 .button:hover,
 .button--primary:hover,
 .button--secondary:hover {
-	border-color: var(--cyan);
-	color: var(--navy);
-	background: var(--cyan);
+	border-color: var(--blue);
+	color: var(--paper);
+	background: var(--blue);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -690,17 +693,17 @@ main,
 	pointer-events: none;
 	background: radial-gradient(
 			circle at 50% 6%,
-			color-mix(in srgb, var(--cyan) 26%, transparent),
+			color-mix(in srgb, var(--paper) 26%, transparent),
 			transparent 38%
 		),
 		radial-gradient(
 			circle at 4% 42%,
-			color-mix(in srgb, var(--cyan) 12%, transparent),
+			color-mix(in srgb, var(--paper) 12%, transparent),
 			transparent 28%
 		),
 		radial-gradient(
 			circle at 96% 52%,
-			color-mix(in srgb, var(--cyan) 10%, transparent),
+			color-mix(in srgb, var(--paper) 10%, transparent),
 			transparent 30%
 		);
 }
@@ -724,7 +727,7 @@ main,
 	border: 1px solid var(--line-strong);
 	border-radius: 999px;
 	background: var(--glass);
-	color: var(--blue-3);
+	color: var(--accent);
 	font: 650 0.7rem / 1.4 var(--font-mono-stack);
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
@@ -805,7 +808,7 @@ main,
 	overflow: hidden;
 	border: 1px solid var(--line-strong);
 	border-radius: var(--radius-lg);
-	background: color-mix(in srgb, var(--cyan) 6.5%, transparent);
+	background: color-mix(in srgb, var(--paper) 6.5%, transparent);
 	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 8%, transparent);
 	transition: border-color 260ms ease, background-color 260ms ease;
 }
@@ -820,7 +823,7 @@ main,
 	pointer-events: none;
 	background: linear-gradient(
 		100deg,
-		color-mix(in srgb, var(--cyan) 11%, transparent),
+		color-mix(in srgb, var(--paper) 11%, transparent),
 		transparent 46%
 	);
 	opacity: 0;
@@ -834,8 +837,8 @@ main,
 
 .service-row:hover,
 .service-row:focus-within {
-	border-color: color-mix(in srgb, var(--cyan) 42%, transparent);
-	background: color-mix(in srgb, var(--cyan) 8.5%, transparent);
+	border-color: color-mix(in srgb, var(--paper) 42%, transparent);
+	background: color-mix(in srgb, var(--paper) 8.5%, transparent);
 }
 
 .service-row > * {
@@ -861,10 +864,10 @@ main,
 	height: 2rem;
 	flex: 0 0 auto;
 	place-items: center;
-	border: 1px solid color-mix(in srgb, var(--cyan) 46%, transparent);
+	border: 1px solid color-mix(in srgb, var(--paper) 46%, transparent);
 	border-radius: 999px;
-	color: var(--cyan);
-	background: color-mix(in srgb, var(--cyan) 10%, transparent);
+	color: var(--accent);
+	background: color-mix(in srgb, var(--paper) 10%, transparent);
 }
 
 .service-bullet svg {
@@ -883,7 +886,7 @@ main,
 .service-detail strong {
 	display: block;
 	margin-bottom: 0.6rem;
-	color: var(--blue-3);
+	color: var(--accent);
 	font-family: var(--font-mono-stack);
 	font-size: 0.68rem;
 	font-weight: 500;
@@ -969,13 +972,13 @@ main,
 }
 
 .faq-list summary:hover {
-	color: var(--blue-3);
+	color: var(--accent);
 }
 
 .faq-list summary svg {
 	width: 1.1rem;
 	height: 1.1rem;
-	color: var(--blue-3);
+	color: var(--accent);
 	transition: transform 300ms var(--ease-out);
 }
 
@@ -1072,7 +1075,7 @@ main,
 	overflow-y: auto;
 	outline: none;
 	color: var(--ink);
-	border: 1px solid color-mix(in srgb, var(--cyan) 24%, transparent);
+	border: 1px solid color-mix(in srgb, var(--paper) 24%, transparent);
 	border-left: 0;
 	border-radius: 0 2rem 2rem 0;
 	background: linear-gradient(
@@ -1111,7 +1114,7 @@ main,
 	pointer-events: none;
 	background: linear-gradient(
 		transparent,
-		color-mix(in srgb, var(--cyan) 75%, transparent),
+		color-mix(in srgb, var(--paper) 75%, transparent),
 		transparent
 	);
 }
@@ -1264,7 +1267,7 @@ main,
 }
 
 .field:focus-within > span {
-	color: var(--blue-3);
+	color: var(--accent);
 }
 
 .field small {
@@ -1330,7 +1333,7 @@ main,
 .field input:focus-visible,
 .field select:focus-visible,
 .field textarea:focus-visible {
-	border-bottom-color: var(--blue-3);
+	border-bottom-color: var(--accent);
 	outline: none;
 	box-shadow: none;
 }
@@ -1360,7 +1363,7 @@ main,
 .form-group-label__hint {
 	display: block;
 	margin-top: 0.3rem;
-	color: var(--blue-3);
+	color: var(--accent);
 	font-family: var(--font-sans), system-ui, sans-serif;
 	font-size: 0.76rem;
 	letter-spacing: 0;
@@ -1408,7 +1411,7 @@ main,
 	padding: 0.55rem 0.95rem;
 	border: 1px solid color-mix(in srgb, var(--paper) 16%, transparent);
 	border-radius: 999px;
-	background: color-mix(in srgb, var(--cyan) 7%, transparent);
+	background: color-mix(in srgb, var(--paper) 7%, transparent);
 	color: var(--ink-soft);
 	font-size: 0.8125rem;
 	font-weight: 500;
@@ -1447,7 +1450,7 @@ main,
 
 .need-chip input:checked + label .need-chip__tick {
 	opacity: 1;
-	background: var(--blue-3);
+	background: var(--accent);
 	transform: rotate(45deg) scale(1.15);
 }
 
@@ -1531,7 +1534,7 @@ main,
 }
 
 .form-panel .need-chip input:checked + label .need-chip__tick {
-	background: var(--cyan);
+	background: var(--paper);
 }
 
 .form-panel .form-success h3 {
@@ -1810,7 +1813,7 @@ main,
 	gap: 2rem;
 	margin-top: 3.25rem;
 	padding-top: 1.5rem;
-	border-top: 1px solid color-mix(in srgb, var(--cyan) 17%, transparent);
+	border-top: 1px solid color-mix(in srgb, var(--paper) 17%, transparent);
 	color: color-mix(in srgb, var(--paper) 58%, transparent);
 	font-size: 0.76rem;
 }
@@ -1902,7 +1905,7 @@ main,
 }
 
 .cookie-banner a {
-	color: var(--blue-3);
+	color: var(--accent);
 	font-weight: 700;
 	text-decoration: underline;
 	text-underline-offset: 0.18em;
@@ -1992,7 +1995,7 @@ main,
 	flex: 0 0 auto;
 	padding: 0.3rem 0.5rem;
 	border-radius: 999px;
-	color: var(--blue-3);
+	color: var(--accent);
 	background: var(--blue-pale);
 	font-size: 0.68rem;
 	font-weight: 750;
@@ -2057,7 +2060,7 @@ main,
 }
 
 .breadcrumbs a {
-	color: var(--blue-3);
+	color: var(--accent);
 	font-weight: 650;
 	text-decoration: underline;
 	text-underline-offset: 0.18em;
@@ -2102,7 +2105,7 @@ main,
 }
 
 .legal-page__content a {
-	color: var(--blue-3);
+	color: var(--accent);
 	font-weight: 650;
 	text-decoration: underline;
 	text-underline-offset: 0.18em;
@@ -2127,7 +2130,7 @@ main,
 
 .not-found-page__code {
 	margin: 0 0 1.25rem;
-	color: var(--blue-3);
+	color: var(--accent);
 	font: 650 0.72rem / 1.4 var(--font-mono-stack);
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
@@ -2287,7 +2290,7 @@ main,
 
 	.button--primary {
 		color: var(--navy);
-		background: var(--cyan);
+		background: var(--paper);
 	}
 
 	.form-panel {
