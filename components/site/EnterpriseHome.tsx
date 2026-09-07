@@ -4,12 +4,26 @@ import {
 	ArrowDown,
 	ArrowRight,
 	ArrowUpRight,
-	CircleDot,
+	Blocks,
+	Bot,
+	CircleHelp,
+	type LucideIcon,
+	Network,
 	Plus,
+	ShieldCheck,
 } from "lucide-react";
 import Link from "next/link";
 import ContactExperience from "./ContactExperience";
+import type { NeedValue } from "./contactSchema";
 import { useLocale } from "./LocaleProvider";
+
+const serviceIcons: Record<NeedValue, LucideIcon> = {
+	fde: Bot,
+	solution: Blocks,
+	architecture: Network,
+	private: ShieldCheck,
+	unclear: CircleHelp,
+};
 
 export default function EnterpriseHome() {
 	const { copy } = useLocale();
@@ -42,46 +56,50 @@ export default function EnterpriseHome() {
 				<div className="container">
 					<header className="section-heading section-heading--wide">
 						<h2 id="services-title">
-							<span className="accent-underline accent-underline--aqua">
+							<span className="accent-text accent-text--sky">
 								{copy.services.title}
 							</span>
 						</h2>
 						<p>{copy.services.lead}</p>
 					</header>
 					<div className="service-list">
-						{copy.services.items.map((item) => (
-							<article
-								className="service-row"
-								id={`servicio-${item.intent}`}
-								key={item.title}
-							>
-								<h3>
-									<span className="service-bullet" aria-hidden="true">
-										<CircleDot />
-									</span>
-									{item.title}
-								</h3>
-								<div className="service-detail">
-									<strong>{copy.services.labels.solution}</strong>
-									<p>{item.body}</p>
-								</div>
-								<div className="service-detail">
-									<strong>{copy.services.labels.audience}</strong>
-									<p>{item.audience}</p>
-								</div>
-								<div className="service-detail service-detail--model">
-									<strong>{copy.services.labels.model}</strong>
-									<p>{item.model}</p>
-								</div>
-								<Link
-									className="service-cta"
-									href="#contacto"
-									data-intent={item.intent}
+						{copy.services.items.map((item) => {
+							const ServiceIcon = serviceIcons[item.intent];
+
+							return (
+								<article
+									className="service-row"
+									id={`servicio-${item.intent}`}
+									key={item.title}
 								>
-									{item.cta} <ArrowRight aria-hidden />
-								</Link>
-							</article>
-						))}
+									<h3>
+										<span className="service-bullet" aria-hidden="true">
+											<ServiceIcon />
+										</span>
+										{item.title}
+									</h3>
+									<div className="service-detail">
+										<strong>{copy.services.labels.solution}</strong>
+										<p>{item.body}</p>
+									</div>
+									<div className="service-detail">
+										<strong>{copy.services.labels.audience}</strong>
+										<p>{item.audience}</p>
+									</div>
+									<div className="service-detail service-detail--model">
+										<strong>{copy.services.labels.model}</strong>
+										<p>{item.model}</p>
+									</div>
+									<Link
+										className="service-cta"
+										href="#contacto"
+										data-intent={item.intent}
+									>
+										{item.cta} <ArrowRight aria-hidden />
+									</Link>
+								</article>
+							);
+						})}
 					</div>
 				</div>
 			</section>
@@ -90,7 +108,7 @@ export default function EnterpriseHome() {
 				<div className="container faq-grid">
 					<header className="section-heading">
 						<h2 id="faq-title">
-							<span className="accent-underline accent-underline--violet">
+							<span className="accent-text accent-text--violet">
 								{copy.faq.title}
 							</span>
 						</h2>

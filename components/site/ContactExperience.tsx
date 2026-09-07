@@ -279,7 +279,7 @@ export default function ContactExperience() {
 				<div className="container contact-intro">
 					<div className="contact-copy">
 						<h2 id="contact-title">
-							<span className="accent-underline accent-underline--coral">
+							<span className="accent-text accent-text--coral">
 								{copy.contact.title}
 							</span>
 						</h2>

@@ -29,7 +29,7 @@
 	--blue: #3f8cff;
 	--blue-3: #a9ceff;
 	--blue-pale: rgba(29, 112, 242, 0.16);
-	--accent-aqua: #79e2d0;
+	--accent-sky: #80bdff;
 	--accent-coral: #ffac91;
 	--accent-violet: #b9a7ff;
 
@@ -269,23 +269,16 @@ main,
 	line-height: 1.7;
 }
 
-.accent-underline {
-	background-repeat: no-repeat;
-	background-position: 0 94%;
-	background-size: 100% 0.14em;
-	padding-bottom: 0.03em;
+.accent-text--sky {
+	color: var(--accent-sky);
 }
 
-.accent-underline--aqua {
-	background-image: linear-gradient(var(--accent-aqua), var(--accent-aqua));
+.accent-text--coral {
+	color: var(--accent-coral);
 }
 
-.accent-underline--coral {
-	background-image: linear-gradient(var(--accent-coral), var(--accent-coral));
-}
-
-.accent-underline--violet {
-	background-image: linear-gradient(var(--accent-violet), var(--accent-violet));
+.accent-text--violet {
+	color: var(--accent-violet);
 }
 
 /* Un único lienzo fijo mantiene la atmósfera continua mientras el documento
@@ -414,12 +407,12 @@ main,
 }
 
 .button--primary {
-	border-color: rgba(203, 255, 247, 0.72);
+	border-color: rgba(194, 222, 255, 0.78);
 	color: #071f3d;
 	background: linear-gradient(
 		135deg,
-		rgba(167, 216, 255, 0.96),
-		rgba(121, 226, 208, 0.92)
+		rgba(169, 206, 255, 0.98),
+		rgba(93, 158, 247, 0.94)
 	);
 }
 
@@ -446,9 +439,9 @@ main,
 }
 
 .button--primary:hover {
-	border-color: rgba(235, 255, 252, 0.95);
+	border-color: rgba(232, 244, 255, 0.96);
 	color: #04192f;
-	background: linear-gradient(135deg, #b9e2ff, #8eeddd);
+	background: linear-gradient(135deg, #c0ddff, #78adf6);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -848,10 +841,10 @@ main,
 	height: 2rem;
 	flex: 0 0 auto;
 	place-items: center;
-	border: 1px solid rgba(121, 226, 208, 0.42);
+	border: 1px solid rgba(128, 189, 255, 0.46);
 	border-radius: 999px;
-	color: var(--accent-aqua);
-	background: rgba(121, 226, 208, 0.1);
+	color: var(--accent-sky);
+	background: rgba(128, 189, 255, 0.1);
 }
 
 .service-bullet svg {
@@ -1519,7 +1512,7 @@ main,
 }
 
 .form-panel .need-chip input:checked + label .need-chip__tick {
-	background: var(--accent-aqua);
+	background: var(--accent-sky);
 }
 
 .form-panel .form-success h3 {
@@ -2222,7 +2215,7 @@ main,
 
 	.button--primary {
 		color: #071f3d;
-		background: #8fdecf;
+		background: #80b6f5;
 	}
 
 	.form-panel {
