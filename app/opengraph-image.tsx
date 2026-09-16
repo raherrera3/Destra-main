@@ -12,7 +12,7 @@ export default function OpenGraphImage() {
 				height: "100%",
 				width: "100%",
 				background:
-					"radial-gradient(circle at 78% 22%, #002FC1 0, transparent 34%), linear-gradient(135deg, #FFFBF9 0%, #FFFBF9 52%, #002FC1 100%)",
+					"radial-gradient(circle at 78% 22%, #216DF3 0, transparent 34%), linear-gradient(135deg, #FFFBF9 0%, #FFFBF9 52%, #216DF3 100%)",
 				color: "#051062",
 				padding: "82px 96px",
 				flexDirection: "column",
@@ -38,7 +38,7 @@ export default function OpenGraphImage() {
 				}}
 			>
 				<div
-					style={{ color: "#002FC1", fontSize: 25, letterSpacing: "0.08em" }}
+					style={{ color: "#216DF3", fontSize: 25, letterSpacing: "0.08em" }}
 				>
 					PARTNER DE IA PARA ORGANIZACIONES
 				</div>

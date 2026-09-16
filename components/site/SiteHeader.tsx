@@ -6,6 +6,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import BrandLogo from "./BrandLogo";
 import LanguageToggle from "./LanguageToggle";
 import { useLocale } from "./LocaleProvider";
+import ThemeToggle from "./ThemeToggle";
 
 export default function SiteHeader() {
 	const { copy } = useLocale();
@@ -72,6 +73,7 @@ export default function SiteHeader() {
 					))}
 				</nav>
 				<div className="header-actions">
+					<ThemeToggle />
 					<LanguageToggle />
 					<Link className="button button--primary header-cta" href="#contacto">
 						{copy.header.cta}
@@ -96,7 +98,10 @@ export default function SiteHeader() {
 				hidden={!open}
 			>
 				<nav aria-label={copy.header.mobileNav}>
-					<LanguageToggle onChange={close} />
+					<div className="mobile-menu__prefs">
+						<ThemeToggle />
+						<LanguageToggle onChange={close} />
+					</div>
 					{nav.map(([href, label]) => (
 						<Link key={href} href={href} onClick={close}>
 							{label}

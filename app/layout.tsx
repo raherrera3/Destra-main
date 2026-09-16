@@ -14,6 +14,9 @@ const mono = Azeret_Mono({
 	variable: "--font-mono",
 });
 
+// Preferencia guardada; si no hay, la del sistema. Corre antes del primer pintado.
+const themeScript = `try{var t=localStorage.getItem("destra-theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.dataset.theme=t}catch(e){}`;
+
 export const metadata: Metadata = {
 	metadataBase: new URL(siteUrl),
 	title: "Consultoría y soluciones de IA para empresas | DESTRA",
@@ -65,7 +68,10 @@ export const viewport: Viewport = {
 	width: "device-width",
 	initialScale: 1,
 	viewportFit: "cover",
-	themeColor: "#051062",
+	themeColor: [
+		{ media: "(prefers-color-scheme: light)", color: "#fffbf9" },
+		{ media: "(prefers-color-scheme: dark)", color: "#000000" },
+	],
 };
 
 export default function RootLayout({
@@ -74,7 +80,15 @@ export default function RootLayout({
 	return (
 		// La variable de next/font va en <html>: --font-mono-stack se declara en
 		// :root y necesita que --font-mono exista ya en ese ámbito.
-		<html lang="es" className={mono.variable}>
+		// suppressHydrationWarning: el script de abajo fija data-theme antes de que
+		// React hidrate, así que el atributo difiere a propósito del HTML servido.
+		<html lang="es" className={mono.variable} suppressHydrationWarning>
+			<head>
+				<script
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: script estático, sin datos externos; evita el destello del tema equivocado.
+					dangerouslySetInnerHTML={{ __html: themeScript }}
+				/>
+			</head>
 			<body>
 				<CookieConsentProvider>{children}</CookieConsentProvider>
 			</body>

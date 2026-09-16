@@ -1,9 +1,9 @@
 import { readFile, readdir } from "node:fs/promises";
 import { extname, join, relative } from "node:path";
 
-const palette = new Set(["002fc1", "051062", "fffbf9", "000000"]);
+const palette = new Set(["216df3", "051062", "fffbf9", "000000"]);
 const paletteRgb = new Set([
-	"0,47,193",
+	"33,109,243",
 	"5,16,98",
 	"255,251,249",
 	"0,0,0",

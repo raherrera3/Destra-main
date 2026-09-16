@@ -3,11 +3,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import ParticlesCanvas from "react-particles";
 import type { Engine, ISourceOptions } from "tsparticles-engine";
 import { loadSlim } from "tsparticles-slim";
+import { useTheme } from "./site/ThemeToggle";
 export default function ParticlesBackground() {
 	// Start with the standard experience. Starting in reduced mode meant the
 	// canvas was initialised as static and, depending on the engine lifecycle,
 	// could remain static after the media-query effect ran.
 	const [reduced, setReduced] = useState(false);
+	const dot = useTheme() === "light" ? "#216DF3" : "#FFFBF9";
 	useEffect(() => {
 		const media = window.matchMedia("(prefers-reduced-motion: reduce)");
 		const update = () => setReduced(media.matches);
@@ -23,10 +25,10 @@ export default function ParticlesBackground() {
 			fullScreen: { enable: false },
 			fpsLimit: 30,
 			particles: {
-				color: { value: "#FFFBF9" },
+				color: { value: dot },
 				links: {
 					enable: true,
-					color: "#FFFBF9",
+					color: dot,
 					distance: 165,
 					opacity: 0.08,
 					width: 1,
@@ -51,13 +53,13 @@ export default function ParticlesBackground() {
 				modes: {
 					grab: {
 						distance: 140,
-						links: { color: "#FFFBF9", opacity: 0.2 },
+						links: { color: dot, opacity: 0.2 },
 					},
 				},
 			},
 			detectRetina: false,
 		}),
-		[reduced],
+		[reduced, dot],
 	);
 	return (
 		<ParticlesCanvas

@@ -25,6 +25,8 @@ type SiteCopy = {
 		close: string;
 		cta: string;
 		language: string;
+		themeLight: string;
+		themeDark: string;
 	};
 	navLabels: {
 		home: string;
@@ -120,6 +122,8 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			close: "Cerrar menú",
 			cta: "Contacto",
 			language: "Idioma",
+			themeLight: "Cambiar a tema claro",
+			themeDark: "Cambiar a tema oscuro",
 		},
 		navLabels: {
 			home: "Inicio",
@@ -321,6 +325,8 @@ siteCopy.en = {
 		close: "Close menu",
 		cta: "Contact",
 		language: "Language",
+		themeLight: "Switch to light theme",
+		themeDark: "Switch to dark theme",
 	},
 	navLabels: {
 		home: "Home",

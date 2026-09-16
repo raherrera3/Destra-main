@@ -59,29 +59,48 @@
 		monospace;
 
 	/* Paleta cerrada DESTRA. El resto de colores deriva sólo de estos cuatro. */
-	--blue: #002fc1;
+	--blue: #216df3;
 	--navy: #051062;
 	--paper: #fffbf9;
 
+	/* Roles de tema. Por defecto, oscuro: negro y azul. `data-theme="light"`
+	 * (ver más abajo) los reasigna a papel y azul; el resto de la hoja sólo
+	 * habla en roles y no sabe en qué tema está.
+	 *   --fg     texto, líneas y tintes sobre el fondo
+	 *   --bg     suelo y bases opacas
+	 *   --shade  sombras proyectadas
+	 *   --haze   luz ambiental de los degradados radiales */
+	--fg: var(--paper);
+	--bg: #000000;
+	--shade: #000000;
+	--haze: var(--blue);
+	--ground: linear-gradient(
+		180deg,
+		color-mix(in srgb, var(--blue) 55%, var(--bg)) 0%,
+		var(--bg) 52%,
+		color-mix(in srgb, var(--blue) 36%, var(--bg)) 100%
+	);
+	color-scheme: dark;
+
 	/* Texto y superficies semánticas. */
-	--ink: var(--paper);
-	--ink-soft: color-mix(in srgb, var(--paper) 84%, transparent);
-	--ink-muted: color-mix(in srgb, var(--paper) 66%, transparent);
+	--ink: var(--fg);
+	--ink-soft: color-mix(in srgb, var(--fg) 84%, transparent);
+	--ink-muted: color-mix(in srgb, var(--fg) 66%, transparent);
 	--navy-2: var(--navy);
-	/* Único tono de énfasis. Sobre el navy, el azul de marca sólo da 1,73:1 de
-	 * contraste, así que no puede ser texto; aclarado con papel llega a 6,5:1 y
-	 * sigue siendo una mezcla de dos colores de la paleta. */
-	--accent: color-mix(in srgb, var(--blue) 50%, var(--paper));
+	/* Único tono de énfasis: azul eléctrico. Sobre negro, aclarado un poco con
+	 * papel para que brille (≈7:1). En claro basta el azul puro (≈4,6:1 sobre
+	 * papel, válido para texto). */
+	--accent: color-mix(in srgb, var(--blue) 72%, var(--paper));
 	--blue-pale: color-mix(in srgb, var(--blue) 16%, transparent);
-	--surface: var(--navy);
-	--glass: color-mix(in srgb, var(--paper) 10%, transparent);
-	--edge: color-mix(in srgb, var(--paper) 34%, transparent);
-	--line: color-mix(in srgb, var(--paper) 14%, transparent);
-	--line-strong: color-mix(in srgb, var(--paper) 25%, transparent);
+	--surface: var(--bg);
+	--glass: color-mix(in srgb, var(--fg) 10%, transparent);
+	--edge: color-mix(in srgb, var(--fg) 34%, transparent);
+	--line: color-mix(in srgb, var(--fg) 14%, transparent);
+	--line-strong: color-mix(in srgb, var(--fg) 25%, transparent);
 	--success: var(--blue);
 	--error: var(--blue);
 	--error-bg: color-mix(in srgb, var(--blue) 10%, var(--paper));
-	--focus-ring: var(--paper);
+	--focus-ring: var(--fg);
 
 	--container: 73.75rem;
 	--shell: 80rem;
@@ -104,6 +123,32 @@
 	--ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Tema claro: papel y azul. Las custom properties que derivan de --fg/--bg
+ * se recalculan aquí porque var() se resuelve en el elemento que las declara. */
+:root[data-theme="light"] {
+	--fg: var(--navy);
+	--bg: var(--paper);
+	--shade: var(--navy);
+	--haze: color-mix(in srgb, var(--blue) 62%, var(--paper));
+	--ground: linear-gradient(
+		180deg,
+		color-mix(in srgb, var(--blue) 24%, var(--bg)) 0%,
+		var(--bg) 50%,
+		color-mix(in srgb, var(--blue) 16%, var(--bg)) 100%
+	);
+	color-scheme: light;
+	--ink: var(--fg);
+	--ink-soft: color-mix(in srgb, var(--fg) 86%, transparent);
+	--ink-muted: color-mix(in srgb, var(--fg) 72%, transparent);
+	--accent: var(--blue);
+	--surface: var(--bg);
+	--glass: color-mix(in srgb, var(--paper) 45%, transparent);
+	--edge: color-mix(in srgb, var(--fg) 34%, transparent);
+	--line: color-mix(in srgb, var(--fg) 14%, transparent);
+	--line-strong: color-mix(in srgb, var(--fg) 22%, transparent);
+	--focus-ring: var(--blue);
+}
+
 /* ── Base ─────────────────────────────────────────────────────────────── */
 
 * {
@@ -118,12 +163,8 @@ html {
 body {
 	margin: 0;
 	color: var(--ink);
-	background: linear-gradient(
-		180deg,
-		color-mix(in srgb, var(--blue) 25%, var(--navy)) 0%,
-		var(--surface) 48%,
-		var(--navy) 100%
-	);
+	background: var(--ground);
+	transition: color 240ms ease;
 	background-attachment: fixed;
 	font-family: var(--font-sans);
 	-webkit-font-smoothing: antialiased;
@@ -140,17 +181,17 @@ body::before {
 	pointer-events: none;
 	background: radial-gradient(
 			54rem 34rem at 12% -4%,
-			color-mix(in srgb, var(--paper) 38%, transparent),
+			color-mix(in srgb, var(--haze) 38%, transparent),
 			transparent 62%
 		),
 		radial-gradient(
 			42rem 28rem at 94% 12%,
-			color-mix(in srgb, var(--paper) 24%, transparent),
+			color-mix(in srgb, var(--haze) 24%, transparent),
 			transparent 64%
 		),
 		radial-gradient(
 			50rem 40rem at 50% 106%,
-			color-mix(in srgb, var(--paper) 14%, transparent),
+			color-mix(in srgb, var(--haze) 14%, transparent),
 			transparent 60%
 		);
 }
@@ -243,8 +284,8 @@ p {
 	z-index: var(--z-skip);
 	padding: 0.75rem 1rem;
 	border-radius: var(--radius-sm);
-	color: var(--paper);
-	background: var(--navy);
+	color: var(--fg);
+	background: var(--bg);
 	font-weight: 700;
 	transform: translateY(-180%);
 	transition: transform 150ms ease;
@@ -327,9 +368,9 @@ main,
 			color-mix(in srgb, var(--paper) 16%, transparent),
 			color-mix(in srgb, var(--paper) 5%, transparent) 46%,
 			color-mix(in srgb, var(--paper) 9%, transparent)
-		), color-mix(in srgb, var(--navy) 42%, transparent);
+		), color-mix(in srgb, var(--bg) 42%, transparent);
 	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 32%, transparent), 0
-		1rem 2.5rem color-mix(in srgb, var(--navy) 18%, transparent);
+		1rem 2.5rem color-mix(in srgb, var(--shade) 18%, transparent);
 	-webkit-backdrop-filter: blur(22px) saturate(155%);
 	backdrop-filter: blur(22px) saturate(155%);
 }
@@ -370,8 +411,8 @@ main,
 	position: relative;
 	overflow: hidden;
 	isolation: isolate;
-	border: 1px solid color-mix(in srgb, var(--paper) 34%, transparent);
-	color: var(--paper);
+	border: 1px solid color-mix(in srgb, var(--fg) 34%, transparent);
+	color: var(--fg);
 	background: linear-gradient(
 		145deg,
 		color-mix(in srgb, var(--paper) 28%, transparent),
@@ -420,8 +461,8 @@ main,
 	font-weight: 700;
 	line-height: 1.2;
 	border: 1px solid transparent;
-	color: var(--navy);
-	background: var(--paper);
+	color: var(--bg);
+	background: var(--fg);
 	box-shadow: none;
 	cursor: pointer;
 	transition: transform 360ms var(--ease-out), background 180ms ease,
@@ -435,21 +476,21 @@ main,
 }
 
 .button--primary {
-	border-color: color-mix(in srgb, var(--navy) 14%, transparent);
-	color: var(--navy);
-	background: var(--paper);
+	border-color: color-mix(in srgb, var(--bg) 14%, transparent);
+	color: var(--bg);
+	background: var(--fg);
 }
 
 .button--secondary {
-	border-color: color-mix(in srgb, var(--paper) 45%, transparent);
-	color: var(--paper);
+	border-color: color-mix(in srgb, var(--fg) 45%, transparent);
+	color: var(--fg);
 	background: transparent;
 }
 
 .menu-toggle:hover,
 .language-toggle button[aria-pressed="true"]:hover,
 .need-chip input:checked + label:hover {
-	border-color: color-mix(in srgb, var(--paper) 55%, transparent);
+	border-color: color-mix(in srgb, var(--fg) 55%, transparent);
 	background: linear-gradient(
 		145deg,
 		color-mix(in srgb, var(--paper) 38%, transparent),
@@ -553,7 +594,7 @@ main,
 	display: block;
 	width: 9.5rem;
 	aspect-ratio: 833 / 313;
-	background: var(--paper);
+	background: var(--fg);
 	-webkit-mask: url("/destra-logo-light.png") center / contain no-repeat;
 	mask: url("/destra-logo-light.png") center / contain no-repeat;
 }
@@ -579,8 +620,8 @@ main,
 
 .desktop-nav a:hover,
 .desktop-nav a:focus-visible {
-	color: var(--paper);
-	background: color-mix(in srgb, var(--paper) 13%, transparent);
+	color: var(--fg);
+	background: color-mix(in srgb, var(--fg) 13%, transparent);
 }
 
 .header-actions {
@@ -615,6 +656,65 @@ main,
 
 .language-toggle button:hover {
 	color: var(--ink);
+}
+
+/* Mismo contorno que el toggle de idioma para que ambos lean como una pareja
+ * de preferencias. Los dos iconos se apilan y se cruzan girando: el que se
+ * muestra es el tema al que se cambiará. */
+.theme-toggle {
+	position: relative;
+	display: inline-grid;
+	width: 2.6rem;
+	height: 2.6rem;
+	place-items: center;
+	padding: 0;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	color: var(--ink-soft);
+	background: transparent;
+	cursor: pointer;
+	transition: color 160ms ease, border-color 160ms ease,
+		background-color 160ms ease, transform 360ms var(--ease-out);
+}
+
+.theme-toggle:hover {
+	border-color: var(--edge);
+	color: var(--ink);
+	background: color-mix(in srgb, var(--fg) 8%, transparent);
+}
+
+.theme-toggle svg {
+	grid-area: 1 / 1;
+	width: 1.05rem;
+	height: 1.05rem;
+	transition: opacity 240ms ease, transform 480ms var(--ease-out);
+}
+
+:root:not([data-theme="light"]) .theme-toggle [data-icon="moon"],
+:root[data-theme="light"] .theme-toggle [data-icon="sun"] {
+	opacity: 0;
+	transform: rotate(-90deg) scale(0.6);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.theme-toggle:active {
+		transform: scale(0.94);
+		transition-duration: 90ms;
+	}
+}
+
+.mobile-menu__prefs {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6rem;
+	margin-bottom: 0.35rem;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: 320ms;
+	animation-timing-function: ease;
 }
 
 .menu-toggle {
@@ -665,12 +765,7 @@ main,
 }
 
 .mobile-menu nav > a:not(.button):hover {
-	background: color-mix(in srgb, var(--paper) 13%, transparent);
-}
-
-.mobile-menu .language-toggle {
-	justify-content: center;
-	margin-bottom: 0.35rem;
+	background: color-mix(in srgb, var(--fg) 13%, transparent);
 }
 
 /* ── Portada ──────────────────────────────────────────────────────────── */
@@ -692,17 +787,17 @@ main,
 	pointer-events: none;
 	background: radial-gradient(
 			circle at 50% 6%,
-			color-mix(in srgb, var(--paper) 26%, transparent),
+			color-mix(in srgb, var(--haze) 26%, transparent),
 			transparent 38%
 		),
 		radial-gradient(
 			circle at 4% 42%,
-			color-mix(in srgb, var(--paper) 12%, transparent),
+			color-mix(in srgb, var(--haze) 12%, transparent),
 			transparent 28%
 		),
 		radial-gradient(
 			circle at 96% 52%,
-			color-mix(in srgb, var(--paper) 10%, transparent),
+			color-mix(in srgb, var(--haze) 10%, transparent),
 			transparent 30%
 		);
 }
@@ -788,7 +883,7 @@ main,
  * delimitan con claridad dónde empieza y termina cada servicio. */
 
 .services {
-	background: color-mix(in srgb, var(--navy) 26%, transparent);
+	background: color-mix(in srgb, var(--bg) 26%, transparent);
 	border-block: 1px solid var(--line);
 }
 
@@ -836,7 +931,7 @@ main,
 
 .service-row:hover,
 .service-row:focus-within {
-	border-color: color-mix(in srgb, var(--paper) 42%, transparent);
+	border-color: color-mix(in srgb, var(--fg) 42%, transparent);
 	background: color-mix(in srgb, var(--paper) 8.5%, transparent);
 }
 
@@ -863,7 +958,7 @@ main,
 	height: 2rem;
 	flex: 0 0 auto;
 	place-items: center;
-	border: 1px solid color-mix(in srgb, var(--paper) 46%, transparent);
+	border: 1px solid color-mix(in srgb, var(--fg) 46%, transparent);
 	border-radius: 999px;
 	color: var(--accent);
 	background: color-mix(in srgb, var(--paper) 10%, transparent);
@@ -913,7 +1008,7 @@ main,
 	justify-self: start;
 	gap: 0.45rem;
 	min-height: 2.75rem;
-	color: var(--paper);
+	color: var(--fg);
 	font-size: 0.86rem;
 	font-weight: 700;
 }
@@ -934,7 +1029,7 @@ main,
 	background: linear-gradient(
 		180deg,
 		transparent,
-		color-mix(in srgb, var(--navy) 30%, transparent)
+		color-mix(in srgb, var(--bg) 30%, transparent)
 	);
 }
 
@@ -1016,8 +1111,17 @@ main,
 .contact {
 	background: linear-gradient(
 		145deg,
-		color-mix(in srgb, var(--blue) 18%, var(--navy)),
-		color-mix(in srgb, var(--blue) 34%, var(--navy))
+		color-mix(in srgb, var(--blue) 18%, var(--bg)),
+		color-mix(in srgb, var(--blue) 34%, var(--bg))
+	);
+}
+
+/* Sobre negro el azul eléctrico necesita más carga para leerse como azul. */
+:root:not([data-theme="light"]) .contact {
+	background: linear-gradient(
+		145deg,
+		color-mix(in srgb, var(--blue) 26%, var(--bg)),
+		color-mix(in srgb, var(--blue) 50%, var(--bg))
 	);
 }
 
@@ -1709,7 +1813,11 @@ main,
 .site-footer {
 	padding: clamp(3.5rem, 6vw, 4.75rem) 0 1.5rem;
 	color: var(--ink-soft);
-	background: var(--navy);
+	background: linear-gradient(
+		180deg,
+		var(--bg) 0%,
+		color-mix(in srgb, var(--blue) 18%, var(--bg)) 100%
+	);
 }
 
 .footer-grid {
@@ -1728,7 +1836,7 @@ main,
 .footer-brand .footer-legal-entity {
 	max-width: 32rem;
 	margin-top: 0.85rem;
-	color: color-mix(in srgb, var(--paper) 58%, transparent);
+	color: color-mix(in srgb, var(--fg) 58%, transparent);
 	font-size: 0.74rem;
 	line-height: 1.55;
 }
@@ -1745,7 +1853,7 @@ main,
 .site-footer nav strong,
 .footer-contact strong {
 	margin-bottom: 0.35rem;
-	color: var(--paper);
+	color: var(--fg);
 	font-family: var(--font-mono-stack);
 	font-size: 0.7rem;
 	font-weight: 500;
@@ -1765,7 +1873,7 @@ main,
 
 .site-footer nav a:hover,
 .footer-contact a:hover {
-	color: var(--paper);
+	color: var(--fg);
 }
 
 /* Teléfono y correo son la conversión de reserva del pie: merecen peso. */
@@ -1779,8 +1887,8 @@ main,
 	gap: 2rem;
 	margin-top: 3.25rem;
 	padding-top: 1.5rem;
-	border-top: 1px solid color-mix(in srgb, var(--paper) 17%, transparent);
-	color: color-mix(in srgb, var(--paper) 58%, transparent);
+	border-top: 1px solid color-mix(in srgb, var(--fg) 17%, transparent);
+	color: color-mix(in srgb, var(--fg) 58%, transparent);
 	font-size: 0.76rem;
 }
 
@@ -1814,7 +1922,7 @@ main,
 
 .footer-legal a:hover,
 .footer-cookie-button:hover {
-	color: var(--paper);
+	color: var(--fg);
 }
 
 .mobile-cta {
@@ -1849,8 +1957,8 @@ main,
 	border: 1px solid var(--line-strong);
 	border-radius: 1rem;
 	color: var(--ink);
-	background: color-mix(in srgb, var(--navy) 92%, transparent);
-	box-shadow: 0 1.2rem 3rem color-mix(in srgb, var(--navy) 34%, transparent);
+	background: color-mix(in srgb, var(--bg) 92%, transparent);
+	box-shadow: 0 1.2rem 3rem color-mix(in srgb, var(--shade) 34%, transparent);
 	-webkit-backdrop-filter: blur(18px) saturate(150%);
 	backdrop-filter: blur(18px) saturate(150%);
 }
@@ -1898,7 +2006,7 @@ main,
 	display: grid;
 	place-items: center;
 	padding: 1rem;
-	background: color-mix(in srgb, var(--navy) 66%, transparent);
+	background: color-mix(in srgb, var(--shade) 66%, transparent);
 }
 
 .cookie-dialog {
@@ -1909,7 +2017,7 @@ main,
 	padding: clamp(1.25rem, 4vw, 2rem);
 	border: 1px solid var(--line-strong);
 	border-radius: 1.15rem;
-	background: color-mix(in srgb, var(--navy) 96%, transparent);
+	background: color-mix(in srgb, var(--bg) 96%, transparent);
 	box-shadow: 0 1.5rem 4rem color-mix(in srgb, black 40%, transparent);
 }
 
@@ -2007,7 +2115,7 @@ main,
 
 .legal-page__back:hover {
 	border-color: var(--edge);
-	background: color-mix(in srgb, var(--paper) 14%, transparent);
+	background: color-mix(in srgb, var(--fg) 14%, transparent);
 }
 
 .breadcrumbs {
@@ -2039,7 +2147,7 @@ main,
 	border: 1px solid var(--line);
 	border-radius: var(--radius-lg);
 	background: color-mix(in srgb, var(--paper) 6%, transparent);
-	box-shadow: 0 1.5rem 4rem color-mix(in srgb, var(--navy) 22%, transparent);
+	box-shadow: 0 1.5rem 4rem color-mix(in srgb, var(--shade) 22%, transparent);
 }
 
 .legal-page__content h1 {
@@ -2247,14 +2355,14 @@ main,
 	.menu-toggle,
 	.language-toggle button[aria-pressed="true"],
 	.need-chip input:checked + label {
-		background: color-mix(in srgb, var(--blue) 30%, var(--navy));
+		background: color-mix(in srgb, var(--blue) 30%, var(--bg));
 		-webkit-backdrop-filter: none;
 		backdrop-filter: none;
 	}
 
 	.button--primary {
-		color: var(--navy);
-		background: var(--paper);
+		color: var(--bg);
+		background: var(--fg);
 	}
 }
 
