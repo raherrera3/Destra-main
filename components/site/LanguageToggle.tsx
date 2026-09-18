@@ -6,7 +6,7 @@ export default function LanguageToggle({
 	const { locale, setLocale, copy } = useLocale();
 	return (
 		<div className="language-toggle" aria-label={copy.header.language}>
-			{(["es", "en"] as const).map((item) => (
+			{(["en", "es"] as const).map((item) => (
 				<button
 					type="button"
 					key={item}
@@ -16,6 +16,9 @@ export default function LanguageToggle({
 						onChange?.();
 					}}
 				>
+					<span className="language-toggle__flag" aria-hidden="true">
+						{item === "es" ? "🇪🇸" : "🇬🇧"}
+					</span>
 					{item.toUpperCase()}
 				</button>
 			))}

@@ -19,9 +19,9 @@ const themeScript = `try{var t=localStorage.getItem("destra-theme");if(t!=="ligh
 
 export const metadata: Metadata = {
 	metadataBase: new URL(siteUrl),
-	title: "Consultoría y soluciones de IA para empresas | DESTRA",
+	title: "AI consulting and solutions for companies | DESTRA",
 	description:
-		"Estrategia, desarrollo, integración e infraestructura de IA para empresas. Soluciones a medida, IA privada y despliegues on-premise con DESTRA.",
+		"AI strategy, development, integration and infrastructure for companies. Custom solutions, private AI and on-premise deployments with DESTRA.",
 	applicationName: "DESTRA",
 	alternates: {
 		canonical: "/",
@@ -36,26 +36,27 @@ export const metadata: Metadata = {
 	],
 	openGraph: {
 		type: "website",
-		locale: "es_ES",
+		locale: "en_GB",
+		alternateLocale: ["es_ES"],
 		siteName: "DESTRA",
 		url: "/",
-		title: "DESTRA | IA diseñada para operar en tu empresa",
+		title: "DESTRA | AI built to run inside your company",
 		description:
-			"De la estrategia a la infraestructura: diseñamos, integramos y desplegamos soluciones de inteligencia artificial para organizaciones.",
+			"From strategy to infrastructure: we design, integrate and deploy artificial intelligence solutions for organisations.",
 		images: [
 			{
 				url: "/opengraph-image",
 				width: 1200,
 				height: 630,
-				alt: "DESTRA — IA diseñada para operar en tu empresa",
+				alt: "DESTRA — AI built to run inside your company",
 			},
 		],
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "DESTRA | IA diseñada para operar en tu empresa",
+		title: "DESTRA | AI built to run inside your company",
 		description:
-			"Estrategia, desarrollo, integración e infraestructura de IA para empresas.",
+			"AI strategy, development, integration and infrastructure for companies.",
 		images: ["/opengraph-image"],
 	},
 	robots: {
@@ -82,7 +83,7 @@ export default function RootLayout({
 		// :root y necesita que --font-mono exista ya en ese ámbito.
 		// suppressHydrationWarning: el script de abajo fija data-theme antes de que
 		// React hidrate, así que el atributo difiere a propósito del HTML servido.
-		<html lang="es" className={mono.variable} suppressHydrationWarning>
+		<html lang="en" className={mono.variable} suppressHydrationWarning>
 			<head>
 				<script
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: script estático, sin datos externos; evita el destello del tema equivocado.

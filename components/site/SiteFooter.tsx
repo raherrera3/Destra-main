@@ -39,6 +39,9 @@ export default function SiteFooter() {
 					</span>
 				</address>
 			</div>
+			<p className="footer-wordmark" aria-hidden="true">
+				DESTRA
+			</p>
 			<div className="container footer-bottom">
 				<p>
 					© {new Date().getFullYear()} DESTRA. {copy.footer.copyright}

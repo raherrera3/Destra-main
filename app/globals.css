@@ -129,12 +129,12 @@
 	--fg: var(--navy);
 	--bg: var(--paper);
 	--shade: var(--navy);
-	--haze: color-mix(in srgb, var(--blue) 62%, var(--paper));
+	--haze: color-mix(in srgb, var(--blue) 55%, var(--paper));
 	--ground: linear-gradient(
 		180deg,
-		color-mix(in srgb, var(--blue) 24%, var(--bg)) 0%,
-		var(--bg) 50%,
-		color-mix(in srgb, var(--blue) 16%, var(--bg)) 100%
+		color-mix(in srgb, var(--blue) 14%, var(--bg)) 0%,
+		var(--bg) 46%,
+		color-mix(in srgb, var(--blue) 10%, var(--bg)) 100%
 	);
 	color-scheme: light;
 	--ink: var(--fg);
@@ -238,12 +238,12 @@ h4 {
 }
 
 h1 {
-	max-width: 18ch;
+	max-width: 13ch;
 	margin-bottom: 1.4rem;
-	font-size: clamp(2.5rem, 1.5rem + 4.15vw, 5.25rem);
-	font-weight: 650;
-	line-height: 1;
-	letter-spacing: -0.035em;
+	font-size: clamp(2.75rem, 7vw, 6.5rem);
+	font-weight: 500;
+	line-height: 0.94;
+	letter-spacing: -0.045em;
 }
 
 h4 {
@@ -324,9 +324,10 @@ main,
 
 .section-heading h2 {
 	margin-bottom: 1.15rem;
-	font-size: clamp(2.1rem, 3.6vw, 3.6rem);
-	font-weight: 620;
-	line-height: 1.05;
+	font-size: clamp(2.4rem, 5vw, 4.75rem);
+	font-weight: 500;
+	line-height: 0.98;
+	letter-spacing: -0.04em;
 }
 
 .section-heading > p:last-child {
@@ -654,6 +655,17 @@ main,
 	transition: color 160ms ease, background-color 160ms ease;
 }
 
+.language-toggle button {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+}
+
+.language-toggle__flag {
+	font-size: 0.95rem;
+	line-height: 1;
+}
+
 .language-toggle button:hover {
 	color: var(--ink);
 }
@@ -768,16 +780,15 @@ main,
 	background: color-mix(in srgb, var(--fg) 13%, transparent);
 }
 
-/* ── Portada ──────────────────────────────────────────────────────────── */
+/* ── Portada ──────────────────────────────────────────────────────────────
+ * Editorial: el titular ocupa el ancho entero y manda; debajo, dos columnas
+ * (entradilla y datos). Cierra una marquesina con los cuatro servicios. */
 
 .hero {
 	position: relative;
 	isolation: isolate;
-	display: grid;
-	place-items: center;
-	min-height: min(46rem, 92svh);
-	padding-top: clamp(8.5rem, 12vw, 11rem);
-	padding-bottom: clamp(4rem, 7vw, 6.5rem);
+	padding-top: clamp(8.5rem, 14vw, 13rem);
+	padding-bottom: 0;
 }
 
 .hero-glow {
@@ -786,61 +797,90 @@ main,
 	z-index: 0;
 	pointer-events: none;
 	background: radial-gradient(
-			circle at 50% 6%,
-			color-mix(in srgb, var(--haze) 26%, transparent),
-			transparent 38%
+			60rem 30rem at 50% -10%,
+			color-mix(in srgb, var(--haze) 30%, transparent),
+			transparent 60%
 		),
 		radial-gradient(
-			circle at 4% 42%,
-			color-mix(in srgb, var(--haze) 12%, transparent),
-			transparent 28%
-		),
-		radial-gradient(
-			circle at 96% 52%,
+			circle at 92% 70%,
 			color-mix(in srgb, var(--haze) 10%, transparent),
-			transparent 30%
+			transparent 28%
 		);
 }
 
-.hero-copy {
+.hero-grid {
 	position: relative;
 	z-index: 2;
 	display: grid;
-	justify-items: center;
-	max-width: 58rem;
-	text-align: center;
+	grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
+	column-gap: clamp(2rem, 6vw, 6rem);
+	row-gap: clamp(2rem, 4vw, 3.5rem);
+	align-items: end;
 }
 
-/* Un único kicker en toda la web: es el saludo de marca, no una rejilla de
- * etiquetas repetidas encima de cada sección. */
+.hero-grid > h1,
+.hero-kicker {
+	grid-column: 1 / -1;
+}
+
 .hero-kicker {
 	display: inline-flex;
 	align-items: center;
-	margin: 0 0 1.5rem;
-	padding: 0.45rem 0.95rem;
-	border: 1px solid var(--line-strong);
-	border-radius: 999px;
-	background: var(--glass);
+	gap: 0.65rem;
+	margin: 0;
 	color: var(--accent);
-	font: 650 0.7rem / 1.4 var(--font-mono-stack);
-	letter-spacing: 0.14em;
+	font: 500 0.72rem / 1.4 var(--font-mono-stack);
+	letter-spacing: 0.16em;
 	text-transform: uppercase;
 }
 
+.hero-kicker__dot {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 999px;
+	background: var(--blue);
+	box-shadow: 0 0 0 0 color-mix(in srgb, var(--blue) 60%, transparent);
+	animation: kicker-pulse 2.4s var(--ease-out) infinite;
+}
+
+@keyframes kicker-pulse {
+	0% {
+		box-shadow: 0 0 0 0 color-mix(in srgb, var(--blue) 60%, transparent);
+	}
+	70% {
+		box-shadow: 0 0 0 0.7rem transparent;
+	}
+	100% {
+		box-shadow: 0 0 0 0 transparent;
+	}
+}
+
+.hero-grid h1 {
+	max-width: 14ch;
+	margin: 0;
+	font-size: clamp(3rem, 7.4vw, 7.25rem);
+	font-weight: 500;
+	line-height: 0.94;
+	letter-spacing: -0.045em;
+}
+
+.hero-aside {
+	max-width: 34rem;
+}
+
 .hero-lead {
-	max-width: 42rem;
 	margin: 0;
 	color: var(--ink-soft);
-	font-size: clamp(1.05rem, 1.5vw, 1.22rem);
-	line-height: 1.7;
+	font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+	line-height: 1.55;
+	text-wrap: pretty;
 }
 
 .button-group {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.75rem;
-	justify-content: center;
-	margin-top: 2.15rem;
+	margin-top: 1.75rem;
 }
 
 .microcopy {
@@ -849,8 +889,42 @@ main,
 	font-size: 0.82rem;
 }
 
-/* Una sola entrada orquestada al cargar, escalonada de arriba abajo. Los
- * retardos son cortos a propósito: la página nunca queda en blanco esperando. */
+/* Los tres datos que un director financiero quiere ver antes de leer nada. */
+.hero-facts {
+	display: grid;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--line-strong);
+}
+
+.hero-facts li {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: baseline;
+	gap: 1rem;
+	padding: 0.9rem 0;
+	border-bottom: 1px solid var(--line);
+}
+
+.hero-facts strong {
+	font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+	font-weight: 500;
+	letter-spacing: -0.03em;
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+}
+
+.hero-facts span {
+	color: var(--ink-muted);
+	font-family: var(--font-mono-stack);
+	font-size: 0.7rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	text-align: right;
+}
+
+/* Entrada orquestada al cargar. Retardos cortos: la página nunca espera. */
 @keyframes hero-rise {
 	from {
 		opacity: 0;
@@ -858,189 +932,385 @@ main,
 	}
 }
 
-.hero-copy > * {
-	animation: hero-rise 780ms var(--ease-out) backwards;
+.hero-grid > * {
+	animation: hero-rise 820ms var(--ease-out) backwards;
 }
 
-.hero-copy > :nth-child(2) {
-	animation-delay: 80ms;
+.hero-grid > :nth-child(2) {
+	animation-delay: 90ms;
 }
 
-.hero-copy > :nth-child(3) {
-	animation-delay: 160ms;
+.hero-grid > :nth-child(3) {
+	animation-delay: 220ms;
 }
 
-.hero-copy > :nth-child(4) {
-	animation-delay: 240ms;
-}
-
-.hero-copy > :nth-child(5) {
+.hero-grid > :nth-child(4) {
 	animation-delay: 300ms;
 }
 
-/* ── Servicios ────────────────────────────────────────────────────────────
- * Cuatro piezas independientes, sin numeración: el icono y la superficie
- * delimitan con claridad dónde empieza y termina cada servicio. */
-
-.services {
-	background: color-mix(in srgb, var(--bg) 26%, transparent);
-	border-block: 1px solid var(--line);
+/* Empresas. Marquesina de logos: duplicamos la lista en el marcado y
+ * desplazamos la mitad. Los logos se pintan en monocromo; el hover les
+ * devuelve la opacidad plena. */
+.clients {
+	position: relative;
+	z-index: 2;
+	margin-top: clamp(3.5rem, 7vw, 6.5rem);
 }
 
-.service-list {
+.clients__title {
+	margin: 0 auto 1.25rem;
+	color: var(--ink-muted);
+	font-family: var(--font-mono-stack);
+	font-size: 0.72rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.marquee {
+	padding-block: 1.5rem;
+	overflow: hidden;
+	border-block: 1px solid var(--line-strong);
+	-webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+	mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee__track {
+	display: flex;
+	width: max-content;
+	gap: clamp(3rem, 6vw, 5.5rem);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	animation: marquee 45s linear infinite;
+}
+
+.client {
+	display: flex;
+	align-items: center;
+	height: 3.5rem;
+	opacity: 0.7;
+	transition: opacity 200ms ease;
+}
+
+.client:hover {
+	opacity: 1;
+}
+
+/* ponytail: monocromo por filtro; vale para logos de tinta oscura sobre
+ * fondo transparente. Un logo claro o en JPG hay que pasarlo a PNG/SVG con
+ * alfa y tinta oscura antes de dejarlo en public/logos. */
+.client img {
+	height: 100%;
+	width: auto;
+	max-width: 12rem;
+	object-fit: contain;
+	filter: grayscale(1) contrast(1.1);
+}
+
+:root:not([data-theme="light"]) .client img {
+	filter: grayscale(1) contrast(1.1) invert(1);
+}
+
+.client span {
+	color: var(--ink);
+	font-size: 1.35rem;
+	font-weight: 500;
+	letter-spacing: -0.03em;
+	white-space: nowrap;
+}
+
+@keyframes marquee {
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+.marquee:hover .marquee__track {
+	animation-play-state: paused;
+}
+
+/* ── Secciones: índice y aparición ───────────────────────────────────────
+ * Cada bloque lleva un índice mono ("01 — Servicios"). Las piezas aparecen al
+ * entrar en el viewport con animaciones ligadas al scroll, sin JavaScript;
+ * donde el motor no las soporta, simplemente ya están visibles. */
+
+.section-index {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 1.5rem;
+	color: var(--accent);
+	font-family: var(--font-mono-stack);
+	font-size: 0.72rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.section-index::before {
+	content: "";
+	width: 2rem;
+	height: 1px;
+	background: currentColor;
+}
+
+.section-heading--split {
 	display: grid;
+	grid-template-columns: 1fr;
+	max-width: none;
+}
+
+@media (min-width: 861px) {
+	.section-heading--split {
+		grid-template-columns: 1.1fr 0.9fr;
+		column-gap: clamp(2rem, 6vw, 6rem);
+		align-items: end;
+	}
+
+	.section-heading--split .section-index {
+		grid-column: 1 / -1;
+	}
+
+	.section-heading--split > p:last-child {
+		margin-bottom: 0.4rem;
+	}
+}
+
+@keyframes reveal-up {
+	from {
+		opacity: 0;
+		transform: translateY(2rem);
+	}
+}
+
+@supports (animation-timeline: view()) {
+	.reveal {
+		animation: reveal-up 1s var(--ease-out) both;
+		animation-timeline: view();
+		animation-range: entry 0% entry 35%;
+	}
+}
+
+/* ── Servicios (bento) ──────────────────────────────────────────────────
+ * El FDE es la puerta de entrada y se lleva la tarjeta grande en azul sólido.
+ * Los otros tres comparten fila en tarjetas de cristal. */
+
+.bento {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 1rem;
 	margin-top: clamp(2.5rem, 5vw, 4rem);
 }
 
-.service-row {
+.bento-card {
 	position: relative;
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 1.35rem clamp(1.25rem, 3vw, 2.75rem);
-	padding: clamp(1.75rem, 4vw, 3rem) clamp(1.25rem, 3vw, 2.25rem);
-	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	gap: 1.1rem;
+	min-height: 24rem;
+	padding: clamp(1.5rem, 3vw, 2.5rem);
 	border: 1px solid var(--line-strong);
 	border-radius: var(--radius-lg);
-	background: color-mix(in srgb, var(--paper) 6.5%, transparent);
-	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 8%, transparent);
-	transition: border-color 260ms ease, background-color 260ms ease;
+	background: color-mix(in srgb, var(--fg) 4%, transparent);
+	transition: transform 420ms var(--ease-out), border-color 260ms ease,
+		background-color 260ms ease;
 }
 
-.service-row::before {
+.bento-card::after {
 	content: "";
 	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+	inset: 0;
+	border-radius: inherit;
 	pointer-events: none;
-	background: linear-gradient(
-		100deg,
-		color-mix(in srgb, var(--paper) 11%, transparent),
-		transparent 46%
+	background: radial-gradient(
+		30rem 14rem at var(--mx, 50%) var(--my, 0%),
+		color-mix(in srgb, var(--blue) 18%, transparent),
+		transparent 70%
 	);
 	opacity: 0;
 	transition: opacity 320ms ease;
 }
 
-.service-row:hover::before,
-.service-row:focus-within::before {
+.bento-card:hover,
+.bento-card:focus-within {
+	border-color: color-mix(in srgb, var(--fg) 40%, transparent);
+}
+
+.bento-card:hover::after,
+.bento-card:focus-within::after {
 	opacity: 1;
 }
 
-.service-row:hover,
-.service-row:focus-within {
-	border-color: color-mix(in srgb, var(--fg) 42%, transparent);
-	background: color-mix(in srgb, var(--paper) 8.5%, transparent);
+@media (hover: hover) and (pointer: fine) {
+	.bento-card:hover {
+		transform: translateY(-4px);
+	}
 }
 
-.service-row > * {
+.bento-card > * {
 	position: relative;
 	z-index: 1;
 }
 
-.service-row h3 {
-	grid-column: 1 / -1;
+.bento-card__top {
 	display: flex;
-	align-items: flex-start;
-	gap: 0.75rem;
-	margin: 0;
-	max-width: 22ch;
-	font-size: clamp(1.55rem, 2.7vw, 2.45rem);
-	font-weight: 620;
-	line-height: 1.08;
+	align-items: center;
+	justify-content: space-between;
 }
 
-.service-bullet {
+.bento-card__index {
+	color: var(--accent);
+	font-family: var(--font-mono-stack);
+	font-size: 0.72rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+}
+
+.bento-card__icon {
 	display: grid;
-	width: 2rem;
-	height: 2rem;
-	flex: 0 0 auto;
+	width: 2.5rem;
+	height: 2.5rem;
 	place-items: center;
-	border: 1px solid color-mix(in srgb, var(--fg) 46%, transparent);
+	border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent);
 	border-radius: 999px;
 	color: var(--accent);
-	background: color-mix(in srgb, var(--paper) 10%, transparent);
 }
 
-.service-bullet svg {
-	width: 0.95rem;
-	height: 0.95rem;
+.bento-card__icon svg {
+	width: 1.05rem;
+	height: 1.05rem;
 }
 
+.bento-card h3 {
+	margin: 0;
+	max-width: 18ch;
+	font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+	font-weight: 500;
+	line-height: 1.08;
+	letter-spacing: -0.03em;
+}
 
+.bento-card__body {
+	margin: 0;
+	max-width: 34rem;
+	color: var(--ink-soft);
+	font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+	line-height: 1.6;
+}
 
-
-.service-detail {
-	padding-top: 1rem;
+.bento-card__meta {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem 1.5rem;
+	margin: auto 0 0;
+	padding-top: 1.1rem;
 	border-top: 1px solid var(--line);
 }
 
-.service-detail strong {
-	display: block;
-	margin-bottom: 0.6rem;
+.bento-card__meta dt {
+	margin-bottom: 0.3rem;
 	color: var(--accent);
 	font-family: var(--font-mono-stack);
-	font-size: 0.68rem;
+	font-size: 0.66rem;
 	font-weight: 500;
-	letter-spacing: 0.11em;
+	letter-spacing: 0.12em;
 	text-transform: uppercase;
 }
 
-.service-detail p {
+.bento-card__meta dd {
 	margin: 0;
 	color: var(--ink-soft);
-	font-size: 0.92rem;
-	line-height: 1.65;
+	font-size: 0.88rem;
+	line-height: 1.55;
 }
 
-/* El modelo comercial es la información por la que se lee esta sección. */
-.service-detail--model p {
+.bento-card__meta div:last-child dd {
 	color: var(--ink);
-	font-weight: 560;
+	font-weight: 500;
 }
 
-.service-cta {
-	grid-column: 1 / -1;
+.bento-card__cta {
 	display: inline-flex;
 	align-items: center;
-	justify-self: start;
+	align-self: flex-start;
 	gap: 0.45rem;
-	min-height: 2.75rem;
+	min-height: 2.5rem;
 	color: var(--fg);
 	font-size: 0.86rem;
 	font-weight: 700;
 }
 
-.service-cta svg {
+.bento-card__cta svg {
 	width: 1rem;
 	height: 1rem;
 	transition: transform 280ms var(--ease-out);
 }
 
-.service-cta:hover svg {
-	transform: translateX(0.3rem);
+.bento-card__cta:hover svg {
+	transform: translate(0.2rem, -0.2rem);
+}
+
+/* ── Método ───────────────────────────────────────────────────────────── */
+
+.process-steps {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1rem;
+	margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: step;
+}
+
+.process-steps li {
+	position: relative;
+	padding: 2rem 0 0;
+	border-top: 1px solid var(--line-strong);
+}
+
+.process-step__num {
+	display: block;
+	margin-bottom: clamp(2rem, 5vw, 4rem);
+	color: var(--accent);
+	font-size: clamp(3rem, 6vw, 5.5rem);
+	font-weight: 500;
+	line-height: 0.85;
+	letter-spacing: -0.05em;
+	font-variant-numeric: tabular-nums;
+}
+
+.process-steps h3 {
+	margin: 0 0 0.6rem;
+	font-size: clamp(1.35rem, 2vw, 1.75rem);
+	font-weight: 500;
+	letter-spacing: -0.03em;
+}
+
+.process-steps p {
+	max-width: 28rem;
+	margin: 0;
+	color: var(--ink-soft);
+	line-height: 1.6;
 }
 
 /* ── Preguntas ────────────────────────────────────────────────────────── */
 
-.faq {
-	background: linear-gradient(
-		180deg,
-		transparent,
-		color-mix(in srgb, var(--bg) 30%, transparent)
-	);
-}
-
 .faq-grid {
 	display: grid;
-	grid-template-columns: 0.72fr 1.28fr;
+	grid-template-columns: 0.8fr 1.2fr;
 	gap: clamp(2.5rem, 7vw, 7rem);
+	align-items: start;
+}
+
+.faq-grid .section-heading {
+	position: sticky;
+	top: 7rem;
 }
 
 .faq-list {
 	border-top: 1px solid var(--line-strong);
+	counter-reset: faq;
 }
 
 .faq-list details {
@@ -1049,16 +1319,27 @@ main,
 
 .faq-list summary {
 	display: grid;
-	grid-template-columns: 1fr auto;
+	grid-template-columns: auto 1fr auto;
 	gap: 1.5rem;
 	align-items: center;
-	min-height: 4.25rem;
-	padding: 1rem 0;
-	font-size: 1.02rem;
-	font-weight: 640;
+	min-height: 4.5rem;
+	padding: 1.1rem 0;
+	font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+	font-weight: 500;
+	letter-spacing: -0.015em;
 	list-style: none;
 	cursor: pointer;
 	transition: color 180ms ease;
+}
+
+.faq-list summary::before {
+	counter-increment: faq;
+	content: "0" counter(faq);
+	color: var(--accent);
+	font-family: var(--font-mono-stack);
+	font-size: 0.72rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
 }
 
 .faq-list summary::-webkit-details-marker {
@@ -1082,7 +1363,8 @@ main,
 
 .faq-list details p {
 	max-width: 62ch;
-	margin: -0.25rem 0 1.35rem;
+	margin: -0.25rem 0 1.5rem;
+	padding-left: calc(1.35rem + 1.5rem);
 	color: var(--ink-soft);
 	line-height: 1.7;
 }
@@ -1111,8 +1393,8 @@ main,
 .contact {
 	background: linear-gradient(
 		145deg,
-		color-mix(in srgb, var(--blue) 18%, var(--bg)),
-		color-mix(in srgb, var(--blue) 34%, var(--bg))
+		color-mix(in srgb, var(--blue) 10%, var(--bg)),
+		color-mix(in srgb, var(--blue) 20%, var(--bg))
 	);
 }
 
@@ -1131,10 +1413,10 @@ main,
 
 .contact-copy h2 {
 	margin-bottom: 1.35rem;
-	font-size: clamp(2.6rem, 5vw, 5rem);
-	font-weight: 610;
-	line-height: 0.98;
-	letter-spacing: -0.045em;
+	font-size: clamp(3.25rem, 9vw, 8.5rem);
+	font-weight: 500;
+	line-height: 0.92;
+	letter-spacing: -0.05em;
 }
 
 .contact-copy > p {
@@ -1280,6 +1562,41 @@ main,
 	color: color-mix(in srgb, var(--navy) 72%, var(--paper));
 	font-size: 0.96rem;
 	line-height: 1.6;
+}
+
+.contact-drawer__eta {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0.9rem 0 0;
+	color: var(--blue);
+	font-family: var(--font-mono-stack);
+	font-size: 0.68rem;
+	font-weight: 500;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.contact-drawer__eta::before {
+	content: "";
+	width: 0.45rem;
+	height: 0.45rem;
+	border-radius: 999px;
+	background: currentColor;
+}
+
+.field-counter {
+	align-self: flex-end;
+	color: var(--ink-muted);
+	font-family: var(--font-mono-stack);
+	font-size: 0.64rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	transition: color 160ms ease;
+}
+
+.field-counter[data-ok] {
+	color: var(--blue);
 }
 
 .contact-drawer__privacy {
@@ -1533,7 +1850,42 @@ main,
 .form-panel .form-group-label,
 .form-panel .field small,
 .form-panel .field em,
-.form-panel .contact-drawer__privacy {
+.form-panel .contact-drawer__eta {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0.9rem 0 0;
+	color: var(--blue);
+	font-family: var(--font-mono-stack);
+	font-size: 0.68rem;
+	font-weight: 500;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.contact-drawer__eta::before {
+	content: "";
+	width: 0.45rem;
+	height: 0.45rem;
+	border-radius: 999px;
+	background: currentColor;
+}
+
+.field-counter {
+	align-self: flex-end;
+	color: var(--ink-muted);
+	font-family: var(--font-mono-stack);
+	font-size: 0.64rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	transition: color 160ms ease;
+}
+
+.field-counter[data-ok] {
+	color: var(--blue);
+}
+
+.contact-drawer__privacy {
 	color: color-mix(in srgb, var(--navy) 68%, var(--paper));
 }
 
@@ -1803,7 +2155,42 @@ main,
 		padding: 0.9rem;
 	}
 
-	.contact-drawer__privacy {
+	.contact-drawer__eta {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0.9rem 0 0;
+	color: var(--blue);
+	font-family: var(--font-mono-stack);
+	font-size: 0.68rem;
+	font-weight: 500;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.contact-drawer__eta::before {
+	content: "";
+	width: 0.45rem;
+	height: 0.45rem;
+	border-radius: 999px;
+	background: currentColor;
+}
+
+.field-counter {
+	align-self: flex-end;
+	color: var(--ink-muted);
+	font-family: var(--font-mono-stack);
+	font-size: 0.64rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	transition: color 160ms ease;
+}
+
+.field-counter[data-ok] {
+	color: var(--blue);
+}
+
+.contact-drawer__privacy {
 		font-size: 0.68rem;
 	}
 }
@@ -1813,6 +2200,14 @@ main,
 .site-footer {
 	padding: clamp(3.5rem, 6vw, 4.75rem) 0 1.5rem;
 	color: var(--ink-soft);
+	background: linear-gradient(
+		180deg,
+		var(--bg) 0%,
+		color-mix(in srgb, var(--blue) 12%, var(--bg)) 100%
+	);
+}
+
+:root:not([data-theme="light"]) .site-footer {
 	background: linear-gradient(
 		180deg,
 		var(--bg) 0%,
@@ -1881,11 +2276,30 @@ main,
 	font-weight: 620;
 }
 
+/* El nombre a página completa, fundido hacia el suelo. */
+.footer-wordmark {
+	margin: clamp(3rem, 8vw, 6rem) 0 0;
+	font-size: clamp(4.5rem, 19.5vw, 19rem);
+	font-weight: 500;
+	line-height: 0.78;
+	letter-spacing: -0.06em;
+	text-align: center;
+	color: transparent;
+	background: linear-gradient(
+		180deg,
+		color-mix(in srgb, var(--fg) 34%, transparent),
+		color-mix(in srgb, var(--fg) 4%, transparent)
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	user-select: none;
+}
+
 .footer-bottom {
 	display: flex;
 	justify-content: space-between;
 	gap: 2rem;
-	margin-top: 3.25rem;
+	margin-top: 1.5rem;
 	padding-top: 1.5rem;
 	border-top: 1px solid color-mix(in srgb, var(--fg) 17%, transparent);
 	color: color-mix(in srgb, var(--fg) 58%, transparent);
@@ -2260,13 +2674,33 @@ main,
 		scroll-padding-top: 6rem;
 	}
 
-	.hero {
-		min-height: auto;
+	.hero-grid {
+		grid-template-columns: 1fr;
 	}
 
-	.service-row {
+	.hero-facts span {
+		text-align: left;
+	}
+
+	.bento,
+	.process-steps {
 		grid-template-columns: 1fr;
-		gap: 1.1rem;
+	}
+
+	.bento-card {
+		min-height: 0;
+	}
+
+	.bento-card__meta {
+		grid-template-columns: 1fr;
+	}
+
+	.faq-grid .section-heading {
+		position: static;
+	}
+
+	.faq-list details p {
+		padding-left: 0;
 	}
 
 	.contact-drawer {
@@ -2380,7 +2814,10 @@ main,
 		scroll-behavior: auto !important;
 	}
 
-	.hero-copy > * {
+	.hero-grid > *,
+	.hero-kicker__dot,
+	.marquee__track,
+	.reveal {
 		animation: none;
 	}
 
@@ -2389,7 +2826,8 @@ main,
 	.menu-toggle:hover,
 	.contact-drawer__close:hover,
 	.need-chip input:active + label,
-	.service-cta:hover svg {
+	.bento-card:hover,
+	.bento-card__cta:hover svg {
 		transform: none;
 	}
 

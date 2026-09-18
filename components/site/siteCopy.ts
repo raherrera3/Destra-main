@@ -40,9 +40,12 @@ type SiteCopy = {
 		primary: string;
 		secondary: string;
 		reassurance: string;
+		facts: Array<{ value: string; label: string }>;
 	};
+	clients: string;
 	services: {
 		title: string;
+		headline: string;
 		lead: string;
 		labels: { solution: string; audience: string; model: string };
 		items: Array<
@@ -54,6 +57,7 @@ type SiteCopy = {
 			}
 		>;
 	};
+	process: { title: string; headline: string; lead: string; steps: Item[] };
 	faq: { title: string; items: Item[] };
 	contact: {
 		title: string;
@@ -84,6 +88,9 @@ type SiteCopy = {
 		labels: Record<string, string>;
 		hints: Record<string, string>;
 		placeholder: string;
+		eta: string;
+		counter: string;
+		counterMin: string;
 		needs: Record<NeedValue, string>;
 		sizes: string[];
 		submit: string;
@@ -138,10 +145,16 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			secondary: "Ver servicios",
 			reassurance:
 				"Sin coste ni compromiso. Revisamos tu caso y proponemos el siguiente paso.",
+			facts: [
+				{ value: "6 h", label: "de diagnóstico sin coste" },
+				{ value: "UE", label: "datos en zona controlada" },
+			],
 		},
+		clients: "Empresas que ya confían en nosotros",
 		services: {
 			title: "Servicios",
-			lead: "Cuatro formas de trabajar con nosotros. La mayoría empieza por la primera.",
+			headline: "Cuatro formas de trabajar con nosotros.",
+			lead: "Elige la que encaje con el momento de tu empresa. Todas empiezan con un diagnóstico sin coste.",
 			labels: {
 				solution: "Qué resuelve",
 				audience: "Para quién",
@@ -150,19 +163,19 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			items: [
 				{
 					title: "Forward Deployed Engineer (FDE)",
-					body: "Acompañamiento continuo. Un experto en inteligencia artificial se incorpora a la empresa y trabaja desde el primer día, mes a mes, en automatizaciones, formación en IA, infraestructura o lo que la organización necesite.",
+					body: "Un ingeniero de IA se incorpora a tu equipo y trabaja desde dentro, mes a mes: automatizaciones, formación, infraestructura o lo que la empresa necesite.",
 					audience:
-						"Cualquier empresa que quiera empezar con IA sin arriesgar. Es la puerta de entrada por defecto.",
+						"Empresas que quieren empezar con IA sin arriesgar y ver resultados desde la primera semana.",
 					model:
-						"Bono de horas semanal o mensual a 80 €/hora (+IVA). Las primeras 6 horas de diagnóstico son gratuitas.",
+						"Bono de horas semanal o mensual. Las primeras 6 horas de diagnóstico son gratuitas.",
 					cta: "Hablar sobre FDE",
 					intent: "fde",
 				},
 				{
 					title: "Plataformas y Soluciones",
-					body: "Desarrollo de software y automatizaciones a medida.",
+					body: "Software y automatizaciones a medida, integrados en tus sistemas y datos.",
 					audience:
-						"Empresas con un proceso o proyecto concreto ya identificado, a menudo tras un FDE.",
+						"Empresas con un proceso o proyecto concreto ya identificado.",
 					model:
 						"Presupuesto cerrado por proyecto, facturado por fases o hitos.",
 					cta: "Hablar sobre una solución",
@@ -170,7 +183,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 				},
 				{
 					title: "Arquitectura e Infraestructura de IA",
-					body: "Optimizamos el uso de la IA que ya existe y reducimos la factura sin perder calidad.",
+					body: "Optimizamos la IA que ya usas en producción y reducimos la factura sin perder calidad.",
 					audience:
 						"Empresas que ya usan APIs frontera en producción y donde el gasto supone un problema.",
 					model:
@@ -180,13 +193,32 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 				},
 				{
 					title: "Despliegue de IA Privada / On-Premise",
-					body: "Infraestructura de IA local, sin salir nunca de la empresa o de una zona controlada, por ejemplo Europa.",
+					body: "Modelos e infraestructura de IA que no salen de tu empresa ni de una zona controlada, como Europa.",
 					audience:
 						"Sectores regulados o con datos privilegiados, como hospitales, family offices, bancos o bufetes.",
 					model:
 						"Proyecto de infraestructura, con hardware o colocation y despliegue, más acompañamiento posterior.",
 					cta: "Hablar sobre IA privada",
 					intent: "private",
+				},
+			],
+		},
+		process: {
+			title: "Método",
+			headline: "Definir, construir, integrar.",
+			lead: "Sin informes de cien páginas. Cada fase termina con algo funcionando dentro de la empresa.",
+			steps: [
+				{
+					title: "Definir la prioridad",
+					body: "Seis horas de diagnóstico gratuitas para entender procesos, datos y restricciones, y elegir el caso con más retorno.",
+				},
+				{
+					title: "Construir la solución",
+					body: "Desarrollo iterativo con entregas semanales. Automatizaciones, plataformas o infraestructura, según el caso.",
+				},
+				{
+					title: "Integrar y operar",
+					body: "Conectamos la solución con tus sistemas, formamos a las personas y dejamos la operación gobernada y medible.",
 				},
 			],
 		},
@@ -261,6 +293,9 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 					"Proceso, objetivo, restricciones o plazo. No incluyas información confidencial.",
 			},
 			placeholder: "Selecciona una o varias opciones",
+			eta: "2 minutos · 4 campos obligatorios",
+			counter: "caracteres",
+			counterMin: "mínimo 20",
 			needs: {
 				fde: "Forward Deployed Engineer",
 				solution: "Plataformas y soluciones",
@@ -341,10 +376,16 @@ siteCopy.en = {
 		secondary: "View services",
 		reassurance:
 			"No cost, no commitment. We review your case and recommend the next step.",
+		facts: [
+			{ value: "6 h", label: "free diagnostic" },
+			{ value: "EU", label: "data in a controlled region" },
+		],
 	},
+	clients: "Companies that already trust us",
 	services: {
 		title: "Services",
-		lead: "Four ways to work with us. Most companies start with the first.",
+		headline: "Four ways to work with us.",
+		lead: "Pick the one that fits where your company is today. All of them start with a free diagnostic.",
 		labels: {
 			solution: "What it solves",
 			audience: "Who it is for",
@@ -353,26 +394,26 @@ siteCopy.en = {
 		items: [
 			{
 				title: "Forward Deployed Engineer (FDE)",
-				body: "Ongoing support. We embed an artificial intelligence expert in your company to work from day one, month by month, on automations, AI training, infrastructure or whatever the organisation needs.",
+				body: "An AI engineer joins your team and works from the inside, month by month: automations, training, infrastructure or whatever the company needs.",
 				audience:
-					"Any company that wants to start with AI without taking unnecessary risk. This is the default entry point.",
+					"Companies that want to start with AI without unnecessary risk and see results from the first week.",
 				model:
-					"Weekly or monthly hour bundle at €80/hour plus VAT. The first 6 diagnostic hours are free.",
+					"Weekly or monthly hour bundle. The first 6 diagnostic hours are free.",
 				cta: "Discuss FDE",
 				intent: "fde",
 			},
 			{
 				title: "Platforms and Solutions",
-				body: "Custom software development and automation.",
+				body: "Custom software and automations, integrated with your systems and data.",
 				audience:
-					"Companies with a specific process or project already identified, often after an FDE engagement.",
+					"Companies with a specific process or project already identified.",
 				model: "Fixed project budget, billed by phase or milestone.",
 				cta: "Discuss a solution",
 				intent: "solution",
 			},
 			{
 				title: "AI Architecture and Infrastructure",
-				body: "We optimise existing AI usage and reduce the bill without sacrificing quality.",
+				body: "We optimise the AI you already run in production and cut the bill without losing quality.",
 				audience:
 					"Companies already using frontier APIs in production where the cost has become a problem.",
 				model:
@@ -382,13 +423,32 @@ siteCopy.en = {
 			},
 			{
 				title: "Private / On-Premise AI Deployment",
-				body: "Local AI infrastructure that never leaves the company or a controlled region such as Europe.",
+				body: "AI models and infrastructure that never leave your company or a controlled region such as Europe.",
 				audience:
 					"Regulated or privileged-data sectors such as hospitals, family offices, banks and law firms.",
 				model:
 					"Infrastructure project covering hardware or colocation and deployment, followed by ongoing support.",
 				cta: "Discuss private AI",
 				intent: "private",
+			},
+		],
+	},
+	process: {
+		title: "Method",
+		headline: "Define, build, integrate.",
+		lead: "No hundred-page reports. Every phase ends with something working inside the company.",
+		steps: [
+			{
+				title: "Define the priority",
+				body: "Six free diagnostic hours to understand processes, data and constraints, and pick the case with the highest return.",
+			},
+			{
+				title: "Build the solution",
+				body: "Iterative development with weekly deliveries. Automations, platforms or infrastructure, depending on the case.",
+			},
+			{
+				title: "Integrate and operate",
+				body: "We connect the solution to your systems, train the people and leave the operation governed and measurable.",
 			},
 		],
 	},
@@ -462,6 +522,9 @@ siteCopy.en = {
 				"Process, objective, constraints or timeframe. Do not include confidential information.",
 		},
 		placeholder: "Select one or more options",
+		eta: "2 minutes · 4 required fields",
+		counter: "characters",
+		counterMin: "minimum 20",
 		needs: {
 			fde: "Forward Deployed Engineer",
 			solution: "Platforms and solutions",

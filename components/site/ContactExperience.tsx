@@ -4,7 +4,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { ArrowUpRight, CheckCircle2, X } from "lucide-react";
 import Script from "next/script";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useLocale } from "./LocaleProvider";
 import {
 	type ContactRequest,
@@ -96,6 +96,7 @@ export default function ContactExperience() {
 		setValue,
 		reset,
 		trigger,
+		control,
 		formState: { errors, isSubmitting, submitCount },
 	} = useForm<ContactRequest>({
 		resolver: zodResolver(schema),
@@ -259,6 +260,7 @@ export default function ContactExperience() {
 				window.turnstile.reset(widget.current);
 		}
 	};
+	const contextLength = (useWatch({ control, name: "context" }) ?? "").length;
 	const describedBy = (name: keyof ContactRequest, hint = false) =>
 		[hint && `${name}-hint`, errors[name] && `${name}-error`]
 			.filter(Boolean)
@@ -279,9 +281,7 @@ export default function ContactExperience() {
 				<div className="container contact-intro">
 					<div className="contact-copy">
 						<h2 id="contact-title">
-							<span className="accent-text">
-								{copy.contact.title}
-							</span>
+							<span className="accent-text">{copy.contact.title}</span>
 						</h2>
 						<p>{copy.contact.lead}</p>
 						<button
@@ -297,7 +297,14 @@ export default function ContactExperience() {
 
 			<DialogPrimitive.Portal>
 				<DialogPrimitive.Overlay className="contact-drawer-overlay" />
-				<DialogPrimitive.Content className="contact-drawer">
+				<DialogPrimitive.Content
+					className="contact-drawer"
+					onOpenAutoFocus={(event) => {
+						// El primer campo útil, no el botón de cerrar.
+						event.preventDefault();
+						document.getElementById("name")?.focus();
+					}}
+				>
 					<div className="contact-drawer__shell">
 						<DialogPrimitive.Close
 							className="contact-drawer__close"
@@ -312,6 +319,7 @@ export default function ContactExperience() {
 							<DialogPrimitive.Description className="contact-drawer__lead">
 								{copy.contact.lead}
 							</DialogPrimitive.Description>
+							<p className="contact-drawer__eta">{copy.form.eta}</p>
 						</header>
 						<div className="form-panel">
 							{sent ? (
@@ -473,6 +481,14 @@ export default function ContactExperience() {
 											aria-describedby={describedBy("context", true)}
 											{...register("context")}
 										/>
+										<span
+											className="field-counter"
+											data-ok={contextLength >= 20 || undefined}
+											aria-hidden="true"
+										>
+											{contextLength} {copy.form.counter}
+											{contextLength < 20 && ` · ${copy.form.counterMin}`}
+										</span>
 									</Field>
 									<div className="honeypot" aria-hidden="true">
 										<label>

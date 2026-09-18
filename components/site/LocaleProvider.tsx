@@ -7,7 +7,7 @@ const LocaleContext = createContext<{
 	setLocale: (locale: Locale) => void;
 } | null>(null);
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
-	const [locale, setLocaleState] = useState<Locale>("es");
+	const [locale, setLocaleState] = useState<Locale>("en");
 	useEffect(() => {
 		const value = localStorage.getItem("destra-locale");
 		if (value && locales.includes(value as Locale))
