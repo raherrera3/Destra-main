@@ -123,12 +123,12 @@
 	--ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Tema claro: papel y azul. Las custom properties que derivan de --fg/--bg
+/* Tema claro: papel y negro (el navy se veía lila). Las custom properties que derivan de --fg/--bg
  * se recalculan aquí porque var() se resuelve en el elemento que las declara. */
 :root[data-theme="light"] {
-	--fg: var(--navy);
+	--fg: #000000;
 	--bg: var(--paper);
-	--shade: var(--navy);
+	--shade: #000000;
 	--haze: color-mix(in srgb, var(--blue) 55%, var(--paper));
 	--ground: linear-gradient(
 		180deg,
