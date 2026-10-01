@@ -595,9 +595,12 @@ main,
 	display: block;
 	width: 9.5rem;
 	aspect-ratio: 833 / 313;
-	background: var(--fg);
-	-webkit-mask: url("/destra-logo-light.png") center / contain no-repeat;
-	mask: url("/destra-logo-light.png") center / contain no-repeat;
+	/* Logo a color: texto blanco en oscuro, negro en claro. */
+	background: url("/destra-logo-light.png") center / contain no-repeat;
+}
+
+:root[data-theme="light"] .brand-logo {
+	background-image: url("/destra-logo-dark.png");
 }
 
 .desktop-nav {
