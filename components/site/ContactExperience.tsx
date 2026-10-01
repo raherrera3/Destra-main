@@ -42,28 +42,30 @@ const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 function Field({
 	id,
 	label,
-	hint,
 	error,
 	children,
 	required,
-	wide,
+	full,
+	aside,
 }: {
 	id: string;
 	label: string;
-	hint?: string;
 	error?: string;
 	children: React.ReactNode;
 	required?: boolean;
-	wide?: boolean;
+	full?: boolean;
+	aside?: React.ReactNode;
 }) {
 	return (
-		<label className={wide ? "field field--wide" : "field"} htmlFor={id}>
-			<span>
-				{label}
-				{required && <em> *</em>}
+		<label className={full ? "field field--full" : "field"} htmlFor={id}>
+			<span className="field__label">
+				<span>
+					{label}
+					{required && <em aria-hidden="true">*</em>}
+				</span>
+				{aside}
 			</span>
 			{children}
-			{hint && <small id={`${id}-hint`}>{hint}</small>}
 			{error && (
 				<small className="field-error" id={`${id}-error`}>
 					{error}
@@ -261,10 +263,8 @@ export default function ContactExperience() {
 		}
 	};
 	const contextLength = (useWatch({ control, name: "context" }) ?? "").length;
-	const describedBy = (name: keyof ContactRequest, hint = false) =>
-		[hint && `${name}-hint`, errors[name] && `${name}-error`]
-			.filter(Boolean)
-			.join(" ") || undefined;
+	const describedBy = (name: keyof ContactRequest) =>
+		errors[name] ? `${name}-error` : undefined;
 	const entries = Object.entries(errors).filter(
 		([key]) =>
 			!["website", "startedAt", "source", "turnstileToken"].includes(key),
@@ -319,7 +319,6 @@ export default function ContactExperience() {
 							<DialogPrimitive.Description className="contact-drawer__lead">
 								{copy.contact.lead}
 							</DialogPrimitive.Description>
-							<p className="contact-drawer__eta">{copy.form.eta}</p>
 						</header>
 						<div className="form-panel">
 							{sent ? (
@@ -337,209 +336,226 @@ export default function ContactExperience() {
 								</div>
 							) : (
 								<form
+									className="contact-form"
 									onSubmit={handleSubmit(submit)}
 									aria-busy={isSubmitting}
 									noValidate
 								>
-									{entries.length > 0 && (
-										<div
-											className="error-summary"
-											ref={summary}
-											role="alert"
-											tabIndex={-1}
-										>
-											<strong>{copy.form.errorSummary}</strong>
-											<ul>
-												{entries.map(([name, error]) => (
-													<li key={name}>{error.message}</li>
-												))}
-											</ul>
-										</div>
-									)}
-									{serverError && (
-										<div className="server-error" role="alert">
-											{serverError} {copy.form.retry}{" "}
-											<a href="mailto:contacto@destra.es">contacto@destra.es</a>
-										</div>
-									)}
-									<fieldset className="need-choice">
-										<legend className="form-group-label">
-											{l.need}
-											<span className="form-group-label__hint">
-												{copy.form.placeholder}
-											</span>
-										</legend>
-										<div
-											className="need-chips"
-											aria-describedby={describedBy("need")}
-										>
-											{needValues.map((value) => (
-												<span className="need-chip" key={value}>
-													<input
-														type="checkbox"
-														id={`need-${value}`}
-														value={value}
-														aria-invalid={!!errors.need}
-														{...register("need")}
-													/>
-													<label htmlFor={`need-${value}`}>
-														<i className="need-chip__tick" />
-														{copy.form.needs[value]}
-													</label>
-												</span>
-											))}
-										</div>
-										{errors.need?.message && (
-											<small className="field-error" id="need-error">
-												{errors.need.message}
-											</small>
-										)}
-									</fieldset>
-									<Field
-										id="name"
-										label={l.name}
-										required
-										error={errors.name?.message}
-									>
-										<input
-											id="name"
-											autoComplete="name"
-											aria-invalid={!!errors.name}
-											aria-describedby={describedBy("name")}
-											{...register("name")}
-										/>
-									</Field>
-									<Field
-										id="email"
-										label={l.email}
-										required
-										error={errors.email?.message}
-									>
-										<input
-											id="email"
-											type="email"
-											autoComplete="email"
-											aria-invalid={!!errors.email}
-											aria-describedby={describedBy("email")}
-											{...register("email")}
-										/>
-									</Field>
-									<Field
-										id="company"
-										label={l.company}
-										required
-										error={errors.company?.message}
-									>
-										<input
-											id="company"
-											autoComplete="organization"
-											aria-invalid={!!errors.company}
-											aria-describedby={describedBy("company")}
-											{...register("company")}
-										/>
-									</Field>
-									<Field
-										id="role"
-										label={l.role}
-										hint={copy.form.hints.role}
-										error={errors.role?.message}
-									>
-										<input
-											id="role"
-											autoComplete="organization-title"
-											aria-invalid={!!errors.role}
-											aria-describedby={describedBy("role", true)}
-											{...register("role")}
-										/>
-									</Field>
-									<Field id="size" label={l.size} error={errors.size?.message}>
-										<select
-											id="size"
-											aria-invalid={!!errors.size}
-											aria-describedby={describedBy("size")}
-											{...register("size")}
-										>
-											{copy.form.sizes.map((value, index) => (
-												<option key={value} value={index ? value : ""}>
-													{value}
-												</option>
-											))}
-										</select>
-									</Field>
-									<Field
-										id="context"
-										label={l.context}
-										required
-										wide
-										hint={copy.form.hints.context}
-										error={errors.context?.message}
-									>
-										<textarea
-											id="context"
-											rows={3}
-											aria-invalid={!!errors.context}
-											aria-describedby={describedBy("context", true)}
-											{...register("context")}
-										/>
-										<span
-											className="field-counter"
-											data-ok={contextLength >= 20 || undefined}
-											aria-hidden="true"
-										>
-											{contextLength} {copy.form.counter}
-											{contextLength < 20 && ` · ${copy.form.counterMin}`}
-										</span>
-									</Field>
-									<div className="honeypot" aria-hidden="true">
-										<label>
-											Website
-											<input
-												tabIndex={-1}
-												autoComplete="off"
-												{...register("website")}
-											/>
-										</label>
-									</div>
-									<input
-										type="hidden"
-										{...register("startedAt", { valueAsNumber: true })}
-									/>
-									{siteKey && (
-										<>
-											<Script
-												src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-												strategy="afterInteractive"
-												onReady={() => setVerificationReady(true)}
-												onError={() => setVerificationError(true)}
-											/>
+									<div className="contact-form__body">
+										{entries.length > 0 && (
+											// Una línea: el detalle ya está junto a cada campo.
 											<div
-												className="turnstile-slot"
-												ref={verificationContainer}
-											/>
-											{verificationError && (
-												<p role="alert">
-													{copy.form.errors.verification_failed}{" "}
-													<a href="mailto:contacto@destra.es">
-														contacto@destra.es
-													</a>
-												</p>
+												className="error-summary"
+												ref={summary}
+												role="alert"
+												tabIndex={-1}
+											>
+												{copy.form.errorSummary}
+											</div>
+										)}
+										{serverError && (
+											<div className="server-error" role="alert">
+												{serverError} {copy.form.retry}{" "}
+												<a href="mailto:contacto@destra.es">
+													contacto@destra.es
+												</a>
+											</div>
+										)}
+										<fieldset className="need-choice">
+											<legend className="form-group-label">
+												{l.need}
+												<span className="form-group-label__hint">
+													{copy.form.placeholder}
+												</span>
+											</legend>
+											<div
+												className="need-chips"
+												aria-describedby={describedBy("need")}
+											>
+												{needValues.map((value) => (
+													<span className="need-chip" key={value}>
+														<input
+															type="checkbox"
+															id={`need-${value}`}
+															value={value}
+															aria-invalid={!!errors.need}
+															{...register("need")}
+														/>
+														<label htmlFor={`need-${value}`}>
+															<i className="need-chip__tick" />
+															{copy.form.needs[value]}
+														</label>
+													</span>
+												))}
+											</div>
+											{errors.need?.message && (
+												<small className="field-error" id="need-error">
+													{errors.need.message}
+												</small>
 											)}
-										</>
-									)}
-									<output aria-live="polite">
-										{isSubmitting ? copy.form.sending : ""}
-									</output>
-									<button
-										className="button button--primary form-submit"
-										type="submit"
-										disabled={isSubmitting}
-									>
-										{isSubmitting ? copy.form.sending : copy.form.submit}{" "}
-										<ArrowUpRight aria-hidden />
-									</button>
-									<p className="contact-drawer__privacy">
-										{copy.contact.privacy}
-									</p>
+										</fieldset>
+										<div className="field-row">
+											<Field
+												id="name"
+												label={l.name}
+												required
+												error={errors.name?.message}
+											>
+												<input
+													id="name"
+													autoComplete="name"
+													placeholder={copy.form.hints.name}
+													aria-invalid={!!errors.name}
+													aria-describedby={describedBy("name")}
+													{...register("name")}
+												/>
+											</Field>
+											<Field
+												id="email"
+												label={l.email}
+												required
+												error={errors.email?.message}
+											>
+												<input
+													id="email"
+													type="email"
+													autoComplete="email"
+													placeholder={copy.form.hints.email}
+													aria-invalid={!!errors.email}
+													aria-describedby={describedBy("email")}
+													{...register("email")}
+												/>
+											</Field>
+										</div>
+										<div className="field-row field-row--3">
+											<Field
+												id="company"
+												label={l.company}
+												required
+												error={errors.company?.message}
+											>
+												<input
+													id="company"
+													autoComplete="organization"
+													placeholder={copy.form.hints.company}
+													aria-invalid={!!errors.company}
+													aria-describedby={describedBy("company")}
+													{...register("company")}
+												/>
+											</Field>
+											<Field
+												id="role"
+												label={l.role}
+												error={errors.role?.message}
+											>
+												<input
+													id="role"
+													placeholder={copy.form.hints.role}
+													autoComplete="organization-title"
+													aria-invalid={!!errors.role}
+													aria-describedby={describedBy("role")}
+													{...register("role")}
+												/>
+											</Field>
+											<Field
+												id="size"
+												label={l.size}
+												error={errors.size?.message}
+											>
+												<select
+													id="size"
+													aria-invalid={!!errors.size}
+													aria-describedby={describedBy("size")}
+													{...register("size")}
+												>
+													{copy.form.sizes.map((value, index) => (
+														<option key={value} value={index ? value : ""}>
+															{value}
+														</option>
+													))}
+												</select>
+											</Field>
+										</div>
+										<Field
+											id="context"
+											label={l.context}
+											required
+											full
+											error={errors.context?.message}
+											aside={
+												<span
+													className="field-counter"
+													data-ok={contextLength >= 20 || undefined}
+													aria-hidden="true"
+												>
+													{contextLength < 20
+														? `${contextLength} / 20 · ${copy.form.counterMin}`
+														: `${contextLength} ${copy.form.counter}`}
+												</span>
+											}
+										>
+											<textarea
+												id="context"
+												rows={3}
+												placeholder={copy.form.hints.context}
+												aria-invalid={!!errors.context}
+												aria-describedby={describedBy("context")}
+												{...register("context")}
+											/>
+										</Field>
+										<div className="honeypot" aria-hidden="true">
+											<label>
+												Website
+												<input
+													tabIndex={-1}
+													autoComplete="off"
+													{...register("website")}
+												/>
+											</label>
+										</div>
+										<input
+											type="hidden"
+											{...register("startedAt", { valueAsNumber: true })}
+										/>
+										{siteKey && (
+											<>
+												<Script
+													src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+													strategy="afterInteractive"
+													onReady={() => setVerificationReady(true)}
+													onError={() => setVerificationError(true)}
+												/>
+												<div
+													className="turnstile-slot"
+													ref={verificationContainer}
+												/>
+												{verificationError && (
+													<p role="alert">
+														{copy.form.errors.verification_failed}{" "}
+														<a href="mailto:contacto@destra.es">
+															contacto@destra.es
+														</a>
+													</p>
+												)}
+											</>
+										)}
+										<output className="sr-only" aria-live="polite">
+											{isSubmitting ? copy.form.sending : ""}
+										</output>
+									</div>
+									<div className="contact-form__footer">
+										<p className="contact-drawer__privacy">
+											{copy.contact.privacy}
+										</p>
+										<button
+											className="button button--primary form-submit"
+											type="submit"
+											disabled={isSubmitting}
+										>
+											{isSubmitting ? copy.form.sending : copy.form.submit}{" "}
+											<ArrowUpRight aria-hidden />
+										</button>
+									</div>
 								</form>
 							)}
 						</div>

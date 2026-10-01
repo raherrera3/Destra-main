@@ -88,7 +88,6 @@ type SiteCopy = {
 		labels: Record<string, string>;
 		hints: Record<string, string>;
 		placeholder: string;
-		eta: string;
 		counter: string;
 		counterMin: string;
 		needs: Record<NeedValue, string>;
@@ -288,12 +287,14 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 				context: "Cuéntanos el contexto",
 			},
 			hints: {
-				role: "Dirección, Tecnología, Operaciones…",
+				name: "Ej.: Laura Martín",
+				email: "nombre@empresa.com",
+				company: "Ej.: Grupo Hospitalario Norte",
+				role: "Ej.: Dirección, Tecnología",
 				context:
 					"Proceso, objetivo, restricciones o plazo. No incluyas información confidencial.",
 			},
 			placeholder: "Selecciona una o varias opciones",
-			eta: "2 minutos · 4 campos obligatorios",
 			counter: "caracteres",
 			counterMin: "mínimo 20",
 			needs: {
@@ -517,12 +518,14 @@ siteCopy.en = {
 			context: "Tell us the context",
 		},
 		hints: {
-			role: "Leadership, Technology, Operations…",
+			name: "e.g. Laura Martin",
+			email: "name@company.com",
+			company: "e.g. Northgate Health Group",
+			role: "e.g. Leadership, IT",
 			context:
 				"Process, objective, constraints or timeframe. Do not include confidential information.",
 		},
 		placeholder: "Select one or more options",
-		eta: "2 minutes · 4 required fields",
 		counter: "characters",
 		counterMin: "minimum 20",
 		needs: {
