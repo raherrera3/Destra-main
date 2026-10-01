@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { ArrowUpRight, CheckCircle2, X } from "lucide-react";
+import { AlertCircle, ArrowUpRight, CheckCircle2, X } from "lucide-react";
 import Script from "next/script";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -353,14 +353,6 @@ export default function ContactExperience() {
 												{copy.form.errorSummary}
 											</div>
 										)}
-										{serverError && (
-											<div className="server-error" role="alert">
-												{serverError} {copy.form.retry}{" "}
-												<a href="mailto:contacto@destra.es">
-													contacto@destra.es
-												</a>
-											</div>
-										)}
 										<fieldset className="need-choice">
 											<legend className="form-group-label">
 												{l.need}
@@ -544,9 +536,23 @@ export default function ContactExperience() {
 										</output>
 									</div>
 									<div className="contact-form__footer">
-										<p className="contact-drawer__privacy">
-											{copy.contact.privacy}
-										</p>
+										{/* El resultado del envío aparece junto al botón, que es
+										 * donde está la mirada al pulsar. */}
+										{serverError ? (
+											<p className="server-error" role="alert">
+												<AlertCircle aria-hidden />
+												<span>
+													{serverError} {copy.form.retry}{" "}
+													<a href="mailto:contacto@destra.es">
+														contacto@destra.es
+													</a>
+												</span>
+											</p>
+										) : (
+											<p className="contact-drawer__privacy">
+												{copy.contact.privacy}
+											</p>
+										)}
 										<button
 											className="button button--primary form-submit"
 											type="submit"

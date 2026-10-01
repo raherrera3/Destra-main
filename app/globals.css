@@ -1933,6 +1933,23 @@ main,
 	line-height: 1.45;
 }
 
+.contact-form__footer .server-error {
+	display: flex;
+	gap: 0.6rem;
+	max-width: 28rem;
+	padding: 0.6rem 0.85rem;
+	font-size: 0.78rem;
+	animation: fade-in 240ms ease-out both;
+}
+
+.contact-form__footer .server-error > svg {
+	width: 1rem;
+	height: 1rem;
+	flex: none;
+	margin-top: 0.1rem;
+	color: var(--blue);
+}
+
 .error-summary:focus {
 	outline: 2px solid var(--blue);
 	outline-offset: 2px;
