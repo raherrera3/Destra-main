@@ -2043,23 +2043,48 @@ main,
 	}
 }
 
-/* Móvil: una columna y desplazamiento dentro del cuerpo; el envío sigue fijo
- * abajo, a mano del pulgar. */
+/* Móvil: el panel entero es una sola página que se desplaza, ajustada al
+ * área que deja libre el teclado (--vv-*, desde visualViewport). Nada fijo
+ * abajo: con el teclado abierto, un pie fijo se comía la mitad del hueco
+ * útil. Sólo el botón de cerrar queda pegado arriba. */
 @media (max-width: 860px) {
 	.contact-drawer {
-		inset: 0;
+		inset: var(--vv-top, 0) 0 auto 0;
 		width: 100vw;
+		height: var(--vv-height, 100dvh);
+		overflow-y: auto;
+		overscroll-behavior: contain;
 		border-radius: 0;
 	}
 
 	.contact-drawer__shell {
+		height: auto;
+		min-height: 100%;
 		padding-inline: 1.25rem;
 	}
 
+	.contact-drawer__close {
+		position: sticky;
+		top: 0.75rem;
+		align-self: flex-end;
+		flex: none;
+		margin-bottom: calc(-2.75rem - var(--d-gap));
+		background: var(--paper);
+		box-shadow: 0 0.25rem 1rem color-mix(in srgb, var(--navy) 10%, transparent);
+	}
+
+	.form-panel,
+	.contact-form,
 	.contact-form__body {
-		margin-inline: -1.25rem;
-		padding-inline: 1.25rem;
-		padding-bottom: 0.25rem;
+		min-height: auto;
+		overflow: visible;
+	}
+
+	/* Al desplazar hacia un campo, que se vea también su etiqueta. */
+	.field input,
+	.field select,
+	.field textarea {
+		scroll-margin-block: 3rem 1rem;
 	}
 
 	.field-row,
@@ -2081,7 +2106,6 @@ main,
 		flex-direction: column;
 		align-items: stretch;
 		gap: 0.75rem;
-		margin-top: 0;
 	}
 
 	.contact-drawer__privacy {

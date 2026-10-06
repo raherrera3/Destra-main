@@ -81,6 +81,9 @@ export default function ContactExperience() {
 	const [serverError, setServerError] = useState("");
 	const summary = useRef<HTMLDivElement>(null);
 	const section = useRef<HTMLElement>(null);
+	// Estado y no ref: el contenido del portal se monta un render después de
+	// abrir, y el efecto del teclado tiene que volver a ejecutarse entonces.
+	const [drawer, setDrawer] = useState<HTMLDivElement | null>(null);
 	const verificationContainer = useRef<HTMLDivElement>(null);
 	const widget = useRef<string | null>(null);
 	const [verificationReady, setVerificationReady] = useState(false);
@@ -204,6 +207,35 @@ export default function ContactExperience() {
 		if (window.location.hash === "#contacto") setDrawerOpen(true);
 		return () => document.removeEventListener("click", choose);
 	}, [getValues, setValue]);
+	// Móvil con teclado: el panel se ajusta al área visible (visualViewport)
+	// en lugar de al alto de la pantalla, que el teclado tapa en iOS. Al
+	// abrirse el teclado, el campo activo vuelve a quedar a la vista.
+	useEffect(() => {
+		const viewport = window.visualViewport;
+		const element = drawer;
+		if (!viewport || !element) return;
+		const sync = () => {
+			element.style.setProperty("--vv-height", `${viewport.height}px`);
+			element.style.setProperty("--vv-top", `${viewport.offsetTop}px`);
+		};
+		const reveal = () => {
+			sync();
+			const active = document.activeElement;
+			if (
+				active instanceof HTMLElement &&
+				element.contains(active) &&
+				active.matches("input, select, textarea")
+			)
+				active.scrollIntoView({ block: "nearest" });
+		};
+		sync();
+		viewport.addEventListener("resize", reveal);
+		viewport.addEventListener("scroll", sync);
+		return () => {
+			viewport.removeEventListener("resize", reveal);
+			viewport.removeEventListener("scroll", sync);
+		};
+	}, [drawer]);
 	useEffect(() => {
 		if (submitCount && Object.keys(errors).length) summary.current?.focus();
 	}, [errors, submitCount]);
@@ -298,11 +330,19 @@ export default function ContactExperience() {
 			<DialogPrimitive.Portal>
 				<DialogPrimitive.Overlay className="contact-drawer-overlay" />
 				<DialogPrimitive.Content
+					ref={setDrawer}
 					className="contact-drawer"
 					onOpenAutoFocus={(event) => {
-						// El primer campo útil, no el botón de cerrar.
+						// Con ratón, el primer campo útil. En pantalla táctil, el
+						// panel: enfocar un campo abriría el teclado sin pedirlo y
+						// desplazaría el panel más allá del título.
 						event.preventDefault();
-						document.getElementById("name")?.focus();
+						if (window.matchMedia("(pointer: fine)").matches)
+							document.getElementById("name")?.focus();
+						else
+							(event.currentTarget as HTMLElement | null)?.focus({
+								preventScroll: true,
+							});
 					}}
 				>
 					<div className="contact-drawer__shell">
@@ -337,6 +377,24 @@ export default function ContactExperience() {
 							) : (
 								<form
 									className="contact-form"
+									// "Intro" en un campo de una línea pasa al siguiente en vez de
+									// enviar el formulario a medio rellenar (teclado móvil).
+									onKeyDown={(event) => {
+										const target = event.target;
+										if (
+											event.key !== "Enter" ||
+											!(target instanceof HTMLInputElement) ||
+											target.type === "checkbox"
+										)
+											return;
+										event.preventDefault();
+										const controls = [
+											...event.currentTarget.querySelectorAll<HTMLElement>(
+												"input:not([type=hidden]):not([type=checkbox]):not([tabindex='-1']), select, textarea",
+											),
+										];
+										controls[controls.indexOf(target) + 1]?.focus();
+									}}
 									onSubmit={handleSubmit(submit)}
 									aria-busy={isSubmitting}
 									noValidate
@@ -397,6 +455,7 @@ export default function ContactExperience() {
 													id="name"
 													autoComplete="name"
 													placeholder={copy.form.hints.name}
+													enterKeyHint="next"
 													aria-invalid={!!errors.name}
 													aria-describedby={describedBy("name")}
 													{...register("name")}
@@ -413,6 +472,7 @@ export default function ContactExperience() {
 													type="email"
 													autoComplete="email"
 													placeholder={copy.form.hints.email}
+													enterKeyHint="next"
 													aria-invalid={!!errors.email}
 													aria-describedby={describedBy("email")}
 													{...register("email")}
@@ -430,6 +490,7 @@ export default function ContactExperience() {
 													id="company"
 													autoComplete="organization"
 													placeholder={copy.form.hints.company}
+													enterKeyHint="next"
 													aria-invalid={!!errors.company}
 													aria-describedby={describedBy("company")}
 													{...register("company")}
@@ -443,6 +504,7 @@ export default function ContactExperience() {
 												<input
 													id="role"
 													placeholder={copy.form.hints.role}
+													enterKeyHint="next"
 													autoComplete="organization-title"
 													aria-invalid={!!errors.role}
 													aria-describedby={describedBy("role")}
