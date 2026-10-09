@@ -6,7 +6,7 @@ import { useCookieConsent } from "./CookieConsent";
 import { useLocale } from "./LocaleProvider";
 
 export default function SiteFooter() {
-	const { copy } = useLocale();
+	const { copy, locale } = useLocale();
 	const { openPreferences } = useCookieConsent();
 	const navigation = ["#inicio", "#servicios", "#faq", "#contacto"];
 
@@ -47,8 +47,10 @@ export default function SiteFooter() {
 					© {new Date().getFullYear()} DESTRA. {copy.footer.copyright}
 				</p>
 				<nav className="footer-legal" aria-label={copy.footer.privacy}>
-					<Link href="/es/privacidad">{copy.footer.privacy}</Link>
-					<Link href="/es/terminos-y-condiciones">{copy.footer.terms}</Link>
+					<Link href={`/${locale}/privacidad`}>{copy.footer.privacy}</Link>
+					<Link href={`/${locale}/terminos-y-condiciones`}>
+						{copy.footer.terms}
+					</Link>
 					<button
 						className="footer-cookie-button"
 						type="button"

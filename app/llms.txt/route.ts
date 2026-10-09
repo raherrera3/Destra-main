@@ -43,8 +43,8 @@ ${section("en")}
 ${section("es")}
 ## Legal
 
-- [Privacidad](${siteUrl}/es/privacidad)
-- [Términos y condiciones](${siteUrl}/es/terminos-y-condiciones)
+- [Privacidad](${siteUrl}/es/privacidad) · [Privacy policy](${siteUrl}/en/privacidad)
+- [Términos y condiciones](${siteUrl}/es/terminos-y-condiciones) · [Terms and conditions](${siteUrl}/en/terminos-y-condiciones)
 `;
 	return new Response(body, {
 		headers: { "Content-Type": "text/markdown; charset=utf-8" },

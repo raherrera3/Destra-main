@@ -85,7 +85,7 @@ export function useCookieConsent() {
 }
 
 export default function CookieConsentBanner() {
-	const { copy } = useLocale();
+	const { copy, locale } = useLocale();
 	const {
 		isInitialized,
 		preferencesOpen,
@@ -122,7 +122,7 @@ export default function CookieConsentBanner() {
 						<strong>{copy.cookies.title}</strong>
 						<p>
 							{copy.cookies.description}{" "}
-							<Link href="/es/privacidad#cookies">
+							<Link href={`/${locale}/privacidad#cookies`}>
 								{copy.cookies.privacyLink}
 							</Link>
 						</p>
