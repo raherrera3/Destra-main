@@ -122,7 +122,9 @@ export default function CookieConsentBanner() {
 						<strong>{copy.cookies.title}</strong>
 						<p>
 							{copy.cookies.description}{" "}
-							<Link href="/privacidad#cookies">{copy.cookies.privacyLink}</Link>
+							<Link href="/es/privacidad#cookies">
+								{copy.cookies.privacyLink}
+							</Link>
 						</p>
 					</div>
 					<div className="cookie-banner__actions">

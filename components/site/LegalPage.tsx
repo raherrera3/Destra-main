@@ -14,19 +14,19 @@ export default function LegalPage({ title, children }: LegalPageProps) {
 				<header className="legal-page__header">
 					<Link
 						className="legal-page__brand"
-						href="/"
+						href="/es"
 						aria-label="DESTRA, volver al inicio"
 					>
 						<BrandLogo />
 					</Link>
-					<Link className="legal-page__back" href="/">
+					<Link className="legal-page__back" href="/es">
 						Volver al inicio
 					</Link>
 				</header>
 				<nav className="breadcrumbs" aria-label="Migas de pan">
 					<ol>
 						<li>
-							<Link href="/">Inicio</Link>
+							<Link href="/es">Inicio</Link>
 						</li>
 						<li aria-hidden="true">/</li>
 						<li aria-current="page">{title}</li>

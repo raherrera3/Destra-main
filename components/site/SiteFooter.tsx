@@ -47,8 +47,8 @@ export default function SiteFooter() {
 					© {new Date().getFullYear()} DESTRA. {copy.footer.copyright}
 				</p>
 				<nav className="footer-legal" aria-label={copy.footer.privacy}>
-					<Link href="/privacidad">{copy.footer.privacy}</Link>
-					<Link href="/terminos-y-condiciones">{copy.footer.terms}</Link>
+					<Link href="/es/privacidad">{copy.footer.privacy}</Link>
+					<Link href="/es/terminos-y-condiciones">{copy.footer.terms}</Link>
 					<button
 						className="footer-cookie-button"
 						type="button"

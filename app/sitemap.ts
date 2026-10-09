@@ -3,21 +3,23 @@ import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	const lastModified = new Date();
+	const languages = { es: `${siteUrl}/es`, en: `${siteUrl}/en` };
 	return [
-		{
-			url: siteUrl,
+		...Object.values(languages).map((url) => ({
+			url,
 			lastModified,
-			changeFrequency: "weekly",
+			changeFrequency: "weekly" as const,
 			priority: 1,
-		},
+			alternates: { languages },
+		})),
 		{
-			url: `${siteUrl}/privacidad`,
+			url: `${siteUrl}/es/privacidad`,
 			lastModified,
 			changeFrequency: "yearly",
 			priority: 0.3,
 		},
 		{
-			url: `${siteUrl}/terminos-y-condiciones`,
+			url: `${siteUrl}/es/terminos-y-condiciones`,
 			lastModified,
 			changeFrequency: "yearly",
 			priority: 0.3,

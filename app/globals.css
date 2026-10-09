@@ -407,7 +407,7 @@ main,
  * es puramente visual: no toca `position` de nada que no sea suyo. */
 
 .menu-toggle,
-.language-toggle button[aria-pressed="true"],
+.language-toggle a[aria-current="page"],
 .need-chip input:checked + label {
 	position: relative;
 	overflow: hidden;
@@ -431,7 +431,7 @@ main,
 /* El reflejo especular que recorre el control al pasar por encima. Es lo que
  * separa un cristal vivo de un rectángulo translúcido. */
 .menu-toggle::after,
-.language-toggle button[aria-pressed="true"]::after,
+.language-toggle a[aria-current="page"]::after,
 .need-chip input:checked + label::after {
 	content: "";
 	position: absolute;
@@ -489,7 +489,7 @@ main,
 }
 
 .menu-toggle:hover,
-.language-toggle button[aria-pressed="true"]:hover,
+.language-toggle a[aria-current="page"]:hover,
 .need-chip input:checked + label:hover {
 	border-color: color-mix(in srgb, var(--fg) 55%, transparent);
 	background: linear-gradient(
@@ -643,7 +643,7 @@ main,
 	border-radius: 999px;
 }
 
-.language-toggle button {
+.language-toggle a {
 	min-width: 2.4rem;
 	min-height: 2.1rem;
 	padding: 0.2rem 0.5rem;
@@ -658,8 +658,9 @@ main,
 	transition: color 160ms ease, background-color 160ms ease;
 }
 
-.language-toggle button {
+.language-toggle a {
 	display: inline-flex;
+	text-decoration: none;
 	align-items: center;
 	gap: 0.35rem;
 }
@@ -669,7 +670,7 @@ main,
 	line-height: 1;
 }
 
-.language-toggle button:hover {
+.language-toggle a:hover {
 	color: var(--ink);
 }
 
@@ -2682,7 +2683,7 @@ main,
 	.header-shell,
 	.button,
 	.menu-toggle,
-	.language-toggle button[aria-pressed="true"],
+	.language-toggle a[aria-current="page"],
 	.need-chip input:checked + label {
 		background: color-mix(in srgb, var(--blue) 30%, var(--bg));
 		-webkit-backdrop-filter: none;

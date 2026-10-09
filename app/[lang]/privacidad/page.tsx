@@ -1,17 +1,21 @@
 import LegalPage from "@/components/site/LegalPage";
 import type { Metadata } from "next";
 
+// Textos legales solo en español: /en/... devuelve 404.
+export const dynamicParams = false;
+export const generateStaticParams = () => [{ lang: "es" }];
+
 export const metadata: Metadata = {
 	title: "Política de privacidad y cookies | DESTRA",
 	description:
 		"Consulta cómo MAJOIRA S.A. trata los datos personales y gestiona las preferencias de privacidad en destra.es.",
-	alternates: { canonical: "/privacidad" },
+	alternates: { canonical: "/es/privacidad" },
 	robots: { index: true, follow: true },
 	openGraph: {
 		title: "Política de privacidad y cookies | DESTRA",
 		description:
 			"Información sobre el tratamiento de datos personales y las preferencias de cookies en destra.es.",
-		url: "/privacidad",
+		url: "/es/privacidad",
 	},
 	twitter: {
 		card: "summary_large_image",

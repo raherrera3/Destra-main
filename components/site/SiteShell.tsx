@@ -5,6 +5,7 @@ import EnterpriseHome from "./EnterpriseHome";
 import { LocaleProvider, useLocale } from "./LocaleProvider";
 import SiteFooter from "./SiteFooter";
 import SiteHeader from "./SiteHeader";
+import type { Locale } from "./siteCopy";
 function ShellContent() {
 	const { copy } = useLocale();
 	return (
@@ -58,9 +59,9 @@ function ShellContent() {
 		</>
 	);
 }
-export default function SiteShell() {
+export default function SiteShell({ locale }: { locale: Locale }) {
 	return (
-		<LocaleProvider>
+		<LocaleProvider locale={locale}>
 			<ShellContent />
 		</LocaleProvider>
 	);

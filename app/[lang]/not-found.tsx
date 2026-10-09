@@ -15,7 +15,7 @@ export default function NotFound() {
 				<nav className="breadcrumbs" aria-label="Migas de pan">
 					<ol>
 						<li>
-							<Link href="/">Inicio</Link>
+							<Link href="/es">Inicio</Link>
 						</li>
 						<li aria-hidden="true">/</li>
 						<li aria-current="page">Página no encontrada</li>
@@ -28,10 +28,10 @@ export default function NotFound() {
 					acompañamos de vuelta a un punto útil.
 				</p>
 				<div className="button-group">
-					<Link className="button button--primary" href="/">
+					<Link className="button button--primary" href="/es">
 						Ir al inicio
 					</Link>
-					<Link className="button button--secondary" href="/#contacto">
+					<Link className="button button--secondary" href="/es#contacto">
 						Solicitar un estudio sin compromiso
 					</Link>
 				</div>

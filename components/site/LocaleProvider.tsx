@@ -1,35 +1,19 @@
 "use client";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { type Locale, locales, siteCopy } from "./siteCopy";
+import { createContext, useContext } from "react";
+import { type Locale, siteCopy } from "./siteCopy";
 const LocaleContext = createContext<{
 	locale: Locale;
 	copy: typeof siteCopy.es;
-	setLocale: (locale: Locale) => void;
 } | null>(null);
-export function LocaleProvider({ children }: { children: React.ReactNode }) {
-	const [locale, setLocaleState] = useState<Locale>("en");
-	useEffect(() => {
-		const value = localStorage.getItem("destra-locale");
-		if (value && locales.includes(value as Locale))
-			setLocaleState(value as Locale);
-	}, []);
-	useEffect(() => {
-		document.documentElement.lang = locale;
-		document.documentElement.dir = "ltr";
-	}, [locale]);
-	const value = useMemo(
-		() => ({
-			locale,
-			copy: siteCopy[locale],
-			setLocale: (next: Locale) => {
-				localStorage.setItem("destra-locale", next);
-				setLocaleState(next);
-			},
-		}),
-		[locale],
-	);
+// El idioma lo fija la URL (/es, /en), no el navegador.
+export function LocaleProvider({
+	locale,
+	children,
+}: { locale: Locale; children: React.ReactNode }) {
 	return (
-		<LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
+		<LocaleContext.Provider value={{ locale, copy: siteCopy[locale] }}>
+			{children}
+		</LocaleContext.Provider>
 	);
 }
 export function useLocale() {
