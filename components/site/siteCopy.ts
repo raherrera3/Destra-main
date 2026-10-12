@@ -138,7 +138,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 		},
 		hero: {
 			kicker: "Partner de IA para organizaciones",
-			title: "Convierte la IA en una capacidad que tu empresa puede operar.",
+			title: "Soluciones de IA para empresas",
 			lead: "Definimos la prioridad, construimos la solución y la integramos en tus sistemas, datos y equipos.",
 			primary: "Solicitar estudio sin compromiso",
 			secondary: "Ver servicios",
@@ -371,7 +371,7 @@ siteCopy.en = {
 	},
 	hero: {
 		kicker: "AI partner for organisations",
-		title: "Turn AI into a capability your business can run.",
+		title: "AI solutions for businesses",
 		lead: "We define the priority, build the solution and integrate it with your systems, data and teams.",
 		primary: "Let’s discuss your project",
 		secondary: "View services",
