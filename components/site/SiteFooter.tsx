@@ -11,7 +11,7 @@ export default function SiteFooter() {
 	const navigation = ["#inicio", "#servicios", "#faq", "#contacto"];
 
 	return (
-		<footer className="site-footer band band--night">
+		<footer className="site-footer">
 			<div className="container footer-grid">
 				<div className="footer-brand">
 					<Link href="#inicio" aria-label={copy.header.home}>
@@ -39,9 +39,9 @@ export default function SiteFooter() {
 					</span>
 				</address>
 			</div>
-			<div className="container footer-wordmark" aria-hidden="true">
-				<BrandLogo solid />
-			</div>
+			<p className="footer-wordmark" aria-hidden="true">
+				DESTRA
+			</p>
 			<div className="container footer-bottom">
 				<p>
 					© {new Date().getFullYear()} DESTRA. {copy.footer.copyright}

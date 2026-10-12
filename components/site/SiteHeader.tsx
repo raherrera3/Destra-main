@@ -1,11 +1,12 @@
 "use client";
 
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import BrandLogo from "./BrandLogo";
 import LanguageToggle from "./LanguageToggle";
 import { useLocale } from "./LocaleProvider";
+import ThemeToggle from "./ThemeToggle";
 
 export default function SiteHeader() {
 	const { copy } = useLocale();
@@ -54,7 +55,7 @@ export default function SiteHeader() {
 	const close = () => setOpen(false);
 
 	return (
-		<header className="site-header band band--night" id="inicio">
+		<header className="site-header" id="inicio">
 			<div className="header-shell glass-surface">
 				<Link
 					className="brand"
@@ -72,12 +73,10 @@ export default function SiteHeader() {
 					))}
 				</nav>
 				<div className="header-actions">
+					<ThemeToggle />
 					<LanguageToggle />
 					<Link className="button button--primary header-cta" href="#contacto">
 						{copy.header.cta}
-						<span className="button__icon">
-							<ArrowUpRight aria-hidden />
-						</span>
 					</Link>
 				</div>
 				<button
@@ -100,6 +99,7 @@ export default function SiteHeader() {
 			>
 				<nav aria-label={copy.header.mobileNav}>
 					<div className="mobile-menu__prefs">
+						<ThemeToggle />
 						<LanguageToggle onChange={close} />
 					</div>
 					{nav.map(([href, label]) => (

@@ -1,8 +1,7 @@
 "use client";
 
-import { ArrowUpRight, Plus } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Plus } from "lucide-react";
 import Link from "next/link";
-import { Isotipo } from "./BrandLogo";
 import ContactExperience from "./ContactExperience";
 import { useLocale } from "./LocaleProvider";
 
@@ -15,15 +14,6 @@ function accentWord(text: string, word: string) {
 			<span className="accent-text">{word}</span>
 			{text.slice(index + word.length)}
 		</>
-	);
-}
-
-function Eyebrow({ index, children }: { index: string; children: string }) {
-	return (
-		<p className="eyebrow">
-			<b>{index}.</b>
-			<span>{children}</span>
-		</p>
 	);
 }
 
@@ -48,45 +38,37 @@ export default function EnterpriseHome() {
 
 	return (
 		<>
-			<section
-				className="hero section band band--night"
-				aria-labelledby="hero-title"
-			>
+			<section className="hero section" aria-labelledby="hero-title">
+				<div className="hero-glow" aria-hidden="true" />
 				<div className="container hero-grid">
-					<div className="hero-copy">
-						<p className="eyebrow">
-							<b className="chev" aria-hidden="true" />
-							<span>{copy.hero.kicker}</span>
-						</p>
-						<h1 id="hero-title">
-							{accentWord(copy.hero.title, copy.hero.titleAccent)}
-						</h1>
+					<p className="hero-kicker">
+						<span className="hero-kicker__dot" aria-hidden="true" />
+						{copy.hero.kicker}
+					</p>
+					<h1 id="hero-title">
+						{accentWord(copy.hero.title, locale === "es" ? "IA" : "AI")}
+					</h1>
+					<div className="hero-aside">
 						<p className="hero-lead">{copy.hero.lead}</p>
 						<div className="button-group">
 							<Link className="button button--primary" href="#contacto">
-								{copy.hero.primary}
-								<span className="button__icon">
-									<ArrowUpRight aria-hidden />
-								</span>
+								{copy.hero.primary} <ArrowUpRight aria-hidden />
 							</Link>
 							<Link className="button button--secondary" href="#servicios">
-								{copy.hero.secondary}
+								{copy.hero.secondary} <ArrowDown aria-hidden />
 							</Link>
 						</div>
 						<p className="microcopy">{copy.hero.reassurance}</p>
 					</div>
-					<div className="hero-mark">
-						<Isotipo className="hero-iso" />
-					</div>
+					<ul className="hero-facts">
+						{copy.hero.facts.map((fact) => (
+							<li key={fact.label}>
+								<strong>{fact.value}</strong>
+								<span>{fact.label}</span>
+							</li>
+						))}
+					</ul>
 				</div>
-				<ul className="container hero-facts">
-					{copy.hero.facts.map((fact) => (
-						<li key={fact.label}>
-							<strong>{fact.value}</strong>
-							<span>{fact.label}</span>
-						</li>
-					))}
-				</ul>
 				<div className="clients">
 					<p className="clients__title container">{copy.clients}</p>
 					<div className="marquee">
@@ -103,7 +85,7 @@ export default function EnterpriseHome() {
 											src={`/logos/${client.logo}`}
 											alt={client.name}
 											loading="lazy"
-											height="52"
+											height="56"
 										/>
 									) : (
 										<span>{client.name}</span>
@@ -116,36 +98,16 @@ export default function EnterpriseHome() {
 			</section>
 
 			<section
-				className="section manifesto band band--deep"
-				aria-labelledby="manifesto-title"
-			>
-				<div className="container manifesto-grid">
-					<Eyebrow index="01">{copy.manifesto.label}</Eyebrow>
-					<div className="reveal">
-						<h2 id="manifesto-title">
-							{accentWord(copy.manifesto.title, copy.manifesto.titleAccent)}
-							<span className="chev" aria-hidden="true" />
-						</h2>
-						<div className="manifesto-body">
-							<p>{copy.manifesto.body}</p>
-							<ul className="values">
-								{copy.manifesto.values.map((value) => (
-									<li key={value}>{value}</li>
-								))}
-							</ul>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			<section
 				className="section services band band--paper"
 				id="servicios"
 				aria-labelledby="services-title"
 			>
 				<div className="container">
-					<header className="section-heading section-heading--split reveal">
-						<Eyebrow index="02">{copy.services.title}</Eyebrow>
+					<header className="services-heading reveal">
+						<p className="eyebrow">
+							<b>01.</b>
+							<span>{copy.services.title}</span>
+						</p>
 						<h2 id="services-title">{copy.services.headline}</h2>
 						<p>{copy.services.lead}</p>
 					</header>
@@ -189,20 +151,20 @@ export default function EnterpriseHome() {
 			</section>
 
 			<section
-				className="section process band band--ice"
+				className="section process"
 				id="metodo"
 				aria-labelledby="process-title"
 			>
 				<div className="container">
 					<header className="section-heading section-heading--split reveal">
-						<Eyebrow index="03">{copy.process.title}</Eyebrow>
+						<span className="section-index">02 — {copy.process.title}</span>
 						<h2 id="process-title">{copy.process.headline}</h2>
 						<p>{copy.process.lead}</p>
 					</header>
-					<ol className="steps">
+					<ol className="process-steps">
 						{copy.process.steps.map((step, index) => (
 							<li className="reveal" key={step.title}>
-								<span className="step__num" aria-hidden="true">
+								<span className="process-step__num" aria-hidden="true">
 									0{index + 1}
 								</span>
 								<h3>{step.title}</h3>
@@ -213,14 +175,10 @@ export default function EnterpriseHome() {
 				</div>
 			</section>
 
-			<section
-				className="section faq band band--snow"
-				id="faq"
-				aria-labelledby="faq-title"
-			>
+			<section className="section faq" id="faq" aria-labelledby="faq-title">
 				<div className="container faq-grid">
 					<header className="section-heading reveal">
-						<Eyebrow index="04">FAQ</Eyebrow>
+						<span className="section-index">03 — FAQ</span>
 						<h2 id="faq-title">
 							{accentWord(
 								copy.faq.title,
