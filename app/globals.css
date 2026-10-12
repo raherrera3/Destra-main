@@ -51,6 +51,15 @@
 	font-display: swap;
 }
 
+@font-face {
+	font-family: "Neue Montreal";
+	src: local("Neue Montreal Light"), local("PPNeueMontreal-Light"),
+		url("/fonts/NeueMontreal-Light.woff2") format("woff2");
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+
 :root {
 	/* Principal: Neue Montreal. Secundaria: Azeret Mono, que next/font inyecta
 	 * como --font-mono desde app/layout.tsx. */
@@ -791,7 +800,7 @@ main,
 .hero {
 	position: relative;
 	isolation: isolate;
-	padding-top: clamp(8.5rem, 14vw, 13rem);
+	padding-top: clamp(7.75rem, 9vw, 8.5rem);
 	padding-bottom: 0;
 }
 
@@ -836,27 +845,6 @@ main,
 	font: 500 0.72rem / 1.4 var(--font-mono-stack);
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
-}
-
-.hero-kicker__dot {
-	width: 0.5rem;
-	height: 0.5rem;
-	border-radius: 999px;
-	background: var(--blue);
-	box-shadow: 0 0 0 0 color-mix(in srgb, var(--blue) 60%, transparent);
-	animation: kicker-pulse 2.4s var(--ease-out) infinite;
-}
-
-@keyframes kicker-pulse {
-	0% {
-		box-shadow: 0 0 0 0 color-mix(in srgb, var(--blue) 60%, transparent);
-	}
-	70% {
-		box-shadow: 0 0 0 0.7rem transparent;
-	}
-	100% {
-		box-shadow: 0 0 0 0 transparent;
-	}
 }
 
 .hero-grid h1 {
@@ -1035,7 +1023,7 @@ main,
 }
 
 /* ── Secciones: índice y aparición ───────────────────────────────────────
- * Cada bloque lleva un índice mono ("01 — Servicios"). Las piezas aparecen al
+ * Cada bloque lleva un índice mono ("01. Servicios"). Las piezas aparecen al
  * entrar en el viewport con animaciones ligadas al scroll, sin JavaScript;
  * donde el motor no las soporta, simplemente ya están visibles. */
 
@@ -1050,13 +1038,6 @@ main,
 	font-weight: 500;
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
-}
-
-.section-index::before {
-	content: "";
-	width: 2rem;
-	height: 1px;
-	background: currentColor;
 }
 
 .section-heading--split {
@@ -1094,165 +1075,6 @@ main,
 		animation-timeline: view();
 		animation-range: entry 0% entry 35%;
 	}
-}
-
-/* ── Servicios (bento) ──────────────────────────────────────────────────
- * El FDE es la puerta de entrada y se lleva la tarjeta grande en azul sólido.
- * Los otros tres comparten fila en tarjetas de cristal. */
-
-.bento {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 1rem;
-	margin-top: clamp(2.5rem, 5vw, 4rem);
-}
-
-.bento-card {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	gap: 1.1rem;
-	min-height: 24rem;
-	padding: clamp(1.5rem, 3vw, 2.5rem);
-	border: 1px solid var(--line-strong);
-	border-radius: var(--radius-lg);
-	background: color-mix(in srgb, var(--fg) 4%, transparent);
-	transition: transform 420ms var(--ease-out), border-color 260ms ease,
-		background-color 260ms ease;
-}
-
-.bento-card::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-	border-radius: inherit;
-	pointer-events: none;
-	background: radial-gradient(
-		30rem 14rem at var(--mx, 50%) var(--my, 0%),
-		color-mix(in srgb, var(--blue) 18%, transparent),
-		transparent 70%
-	);
-	opacity: 0;
-	transition: opacity 320ms ease;
-}
-
-.bento-card:hover,
-.bento-card:focus-within {
-	border-color: color-mix(in srgb, var(--fg) 40%, transparent);
-}
-
-.bento-card:hover::after,
-.bento-card:focus-within::after {
-	opacity: 1;
-}
-
-@media (hover: hover) and (pointer: fine) {
-	.bento-card:hover {
-		transform: translateY(-4px);
-	}
-}
-
-.bento-card > * {
-	position: relative;
-	z-index: 1;
-}
-
-.bento-card__top {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-
-.bento-card__index {
-	color: var(--accent);
-	font-family: var(--font-mono-stack);
-	font-size: 0.72rem;
-	font-weight: 500;
-	letter-spacing: 0.16em;
-}
-
-.bento-card__icon {
-	display: grid;
-	width: 2.5rem;
-	height: 2.5rem;
-	place-items: center;
-	border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent);
-	border-radius: 999px;
-	color: var(--accent);
-}
-
-.bento-card__icon svg {
-	width: 1.05rem;
-	height: 1.05rem;
-}
-
-.bento-card h3 {
-	margin: 0;
-	max-width: 18ch;
-	font-size: clamp(1.6rem, 2.6vw, 2.4rem);
-	font-weight: 500;
-	line-height: 1.08;
-	letter-spacing: -0.03em;
-}
-
-.bento-card__body {
-	margin: 0;
-	max-width: 34rem;
-	color: var(--ink-soft);
-	font-size: clamp(0.98rem, 1.2vw, 1.08rem);
-	line-height: 1.6;
-}
-
-.bento-card__meta {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 1rem 1.5rem;
-	margin: auto 0 0;
-	padding-top: 1.1rem;
-	border-top: 1px solid var(--line);
-}
-
-.bento-card__meta dt {
-	margin-bottom: 0.3rem;
-	color: var(--accent);
-	font-family: var(--font-mono-stack);
-	font-size: 0.66rem;
-	font-weight: 500;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-}
-
-.bento-card__meta dd {
-	margin: 0;
-	color: var(--ink-soft);
-	font-size: 0.88rem;
-	line-height: 1.55;
-}
-
-.bento-card__meta div:last-child dd {
-	color: var(--ink);
-	font-weight: 500;
-}
-
-.bento-card__cta {
-	display: inline-flex;
-	align-items: center;
-	align-self: flex-start;
-	gap: 0.45rem;
-	min-height: 2.5rem;
-	color: var(--fg);
-	font-size: 0.86rem;
-	font-weight: 700;
-}
-
-.bento-card__cta svg {
-	width: 1rem;
-	height: 1rem;
-	transition: transform 280ms var(--ease-out);
-}
-
-.bento-card__cta:hover svg {
-	transform: translate(0.2rem, -0.2rem);
 }
 
 /* ── Método ───────────────────────────────────────────────────────────── */
@@ -1392,47 +1214,242 @@ main,
 	}
 }
 
+/* ── Bandas de marca ──────────────────────────────────────────────────────
+ * Brand Guidelines DESTRA V4, página «Fondos»: una sección o una tarjeta se
+ * apoya en un color de la paleta. Cada banda fija --fg, --bg y --accent y
+ * redeclara los derivados, porque var() se resuelve en el elemento que
+ * declara la propiedad. Fuera de las bandas, el tema de siempre. */
+
+:root {
+	--night: #02082a; /* Azul Noche */
+	--deep: #051062; /* Azul Profundo */
+	--electric: #002fc1; /* Azul Eléctrico */
+	--sky: #67b4fe; /* Azul Cielo */
+	--ice: #c2e4fd; /* Azul Hielo */
+	--snow: #f4f4f5; /* Snow */
+}
+
+.band--night {
+	--fg: var(--paper);
+	--bg: var(--night);
+	--accent: var(--sky);
+}
+
+.band--deep {
+	--fg: var(--paper);
+	--bg: var(--deep);
+	--accent: var(--sky);
+}
+
+.band--electric {
+	--fg: var(--paper);
+	--bg: var(--electric);
+	--accent: var(--ice);
+}
+
+.band--sky {
+	--fg: var(--night);
+	--bg: var(--sky);
+	--accent: var(--deep);
+}
+
+.band {
+	--ink: var(--fg);
+	--ink-soft: color-mix(in srgb, var(--fg) 86%, transparent);
+	--ink-muted: color-mix(in srgb, var(--fg) 70%, transparent);
+	--line: color-mix(in srgb, var(--fg) 14%, transparent);
+	--line-strong: color-mix(in srgb, var(--fg) 26%, transparent);
+	--edge: color-mix(in srgb, var(--fg) 34%, transparent);
+	--focus-ring: var(--accent);
+	position: relative;
+	color: var(--ink);
+	background: var(--bg);
+}
+
+/* Píldora con la flecha en un círculo, como la maqueta digital del manual. */
+.button:has(.button__icon) {
+	padding-right: 0.4rem;
+}
+
+.button__icon {
+	display: inline-grid;
+	width: 2.45rem;
+	height: 2.45rem;
+	place-items: center;
+	border-radius: 999px;
+	color: var(--fg);
+	background: var(--bg);
+	transition: transform 420ms var(--ease-out);
+}
+
+.button > .button__icon svg {
+	width: 1.05rem;
+	height: 1.05rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.button:hover .button__icon {
+		transform: rotate(45deg);
+	}
+}
+
+/* ── Servicios: cuatro fondos de la paleta ───────────────────────────── */
+
+.tiles {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1rem;
+}
+
+.tile {
+	display: flex;
+	min-height: 30rem;
+	flex-direction: column;
+	padding: clamp(1.5rem, 3vw, 2.5rem);
+	border-radius: 1.25rem;
+	transition: transform 520ms var(--ease-out);
+}
+
+.tile__top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-bottom: 3rem;
+	color: var(--ink-muted);
+	font-family: var(--font-mono-stack);
+	font-size: 0.75rem;
+	letter-spacing: 0.1em;
+}
+
+.tile__iso {
+	width: 1.75rem;
+	height: auto;
+}
+
+.tile h3 {
+	max-width: 16ch;
+	margin-bottom: 1rem;
+	font-size: clamp(1.75rem, 2.8vw, 2.6rem);
+	font-weight: 500;
+	line-height: 1;
+	letter-spacing: -0.04em;
+}
+
+.tile__body {
+	max-width: 34rem;
+	margin: 0 0 1.75rem;
+	color: var(--ink-soft);
+	font-size: 1.05rem;
+	line-height: 1.55;
+}
+
+.tile__meta {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1.25rem;
+	margin: auto 0 2rem;
+	padding-top: 1.25rem;
+	border-top: 1px solid var(--line-strong);
+}
+
+.tile__meta dt {
+	margin-bottom: 0.4rem;
+	color: var(--ink-muted);
+	font-family: var(--font-mono-stack);
+	font-size: 0.65rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.tile__meta dd {
+	margin: 0;
+	color: var(--ink-soft);
+	font-size: 0.88rem;
+	line-height: 1.5;
+}
+
+.tile__cta {
+	display: inline-flex;
+	align-self: flex-start;
+	align-items: center;
+	gap: 0.75rem;
+	min-height: 2.75rem;
+	font-weight: 500;
+}
+
+.tile__cta span {
+	display: inline-grid;
+	width: 2.5rem;
+	height: 2.5rem;
+	place-items: center;
+	border: 1px solid var(--line-strong);
+	border-radius: 999px;
+	transition: transform 420ms var(--ease-out), background 180ms ease,
+		color 180ms ease;
+}
+
+.tile__cta svg {
+	width: 1rem;
+	height: 1rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.tile:hover {
+		transform: translateY(-0.35rem);
+	}
+
+	.tile:hover .tile__cta span {
+		color: var(--bg);
+		background: var(--fg);
+		transform: rotate(45deg);
+	}
+}
+
+@media (max-width: 860px) {
+	.tiles,
+	.tile__meta {
+		grid-template-columns: 1fr;
+	}
+
+	.tile {
+		min-height: 0;
+	}
+}
+
+/* En oscuro las tarjetas llevan un filo de luz para que la de Azul Noche no
+ * se pierda contra el fondo. */
+:root:not([data-theme="light"]) .tile {
+	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 14%, transparent),
+		inset 0 0 0 1px color-mix(in srgb, var(--paper) 8%, transparent), 0 1.5rem
+		3rem color-mix(in srgb, #000000 35%, transparent);
+}
+
 /* ── Contacto (sección) ───────────────────────────────────────────────── */
 
-.contact {
-	background: linear-gradient(
-		145deg,
-		color-mix(in srgb, var(--blue) 10%, var(--bg)),
-		color-mix(in srgb, var(--blue) 20%, var(--bg))
-	);
-}
-
-/* Sobre negro el azul eléctrico necesita más carga para leerse como azul. */
-:root:not([data-theme="light"]) .contact {
-	background: linear-gradient(
-		145deg,
-		color-mix(in srgb, var(--blue) 26%, var(--bg)),
-		color-mix(in srgb, var(--blue) 50%, var(--bg))
-	);
-}
-
 .contact-copy {
-	max-width: 46rem;
+	max-width: 52rem;
 }
 
 .contact-copy h2 {
-	margin-bottom: 1.35rem;
-	font-size: clamp(3.25rem, 9vw, 8.5rem);
+	margin-bottom: 1.5rem;
+	font-size: clamp(4rem, 13vw, 12rem);
 	font-weight: 500;
-	line-height: 0.92;
-	letter-spacing: -0.05em;
+	line-height: 0.88;
+	letter-spacing: -0.06em;
 }
 
 .contact-copy > p {
-	max-width: 38rem;
+	max-width: 36rem;
 	margin: 0;
 	color: var(--ink-soft);
-	font-size: clamp(1rem, 1.5vw, 1.18rem);
-	line-height: 1.7;
+	font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+	font-weight: 300;
+	line-height: 1.55;
 }
 
 .contact-open {
-	margin-top: 2rem;
+	margin-top: 2.5rem;
+	font-weight: 500;
 }
 
 /* ── Contacto (panel lateral) ─────────────────────────────────────────────
@@ -1690,7 +1707,7 @@ main,
 	padding: 0;
 	color: var(--d-ink);
 	font-family: var(--font-mono-stack);
-	font-size: 0.6875rem;
+	font-size: 0.75rem;
 	font-weight: 500;
 	line-height: 1.3;
 	letter-spacing: 0.1em;
@@ -1745,14 +1762,14 @@ main,
 }
 
 .field ::placeholder {
-	color: var(--d-muted);
+	color: color-mix(in srgb, var(--navy) 18%, var(--paper));
 	opacity: 1;
 	transition: color 200ms ease-out;
 }
 
 /* Al enfocar, la pista se retira un paso para dejar sitio a lo que se escribe. */
 .field :focus::placeholder {
-	color: color-mix(in srgb, var(--navy) 46%, var(--paper));
+	color: color-mix(in srgb, var(--navy) 12%, var(--paper));
 }
 
 /* El desplegable sin elegir se lee como placeholder, no como respuesta. */
@@ -1805,6 +1822,23 @@ main,
 
 .field-counter[data-ok] {
 	color: var(--blue);
+}
+
+/* En móvil la etiqueta del contexto no cabe junto al contador: el contador
+ * baja a su propia línea en lugar de recortar el texto. */
+@media (max-width: 620px) {
+	.field__label:has(.field-counter) {
+		flex-wrap: wrap;
+		row-gap: 0.35rem;
+	}
+
+	.field__label:has(.field-counter) > span:first-child {
+		flex: 1 0 auto;
+	}
+
+	.field-counter {
+		margin-left: auto;
+	}
 }
 
 /* ── Necesidad (chips) ── */
@@ -2606,16 +2640,7 @@ main,
 		text-align: left;
 	}
 
-	.bento,
 	.process-steps {
-		grid-template-columns: 1fr;
-	}
-
-	.bento-card {
-		min-height: 0;
-	}
-
-	.bento-card__meta {
 		grid-template-columns: 1fr;
 	}
 
@@ -2711,7 +2736,6 @@ main,
 	}
 
 	.hero-grid > *,
-	.hero-kicker__dot,
 	.marquee__track,
 	.reveal {
 		animation: none;
@@ -2722,8 +2746,9 @@ main,
 	.menu-toggle:hover,
 	.contact-drawer__close:hover,
 	.need-chip input:active + label,
-	.bento-card:hover,
-	.bento-card__cta:hover svg {
+	.tile:hover,
+	.tile:hover .tile__cta span,
+	.button:hover .button__icon {
 		transform: none;
 	}
 

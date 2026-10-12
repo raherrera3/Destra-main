@@ -137,8 +137,8 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			faq: "FAQ",
 		},
 		hero: {
-			kicker: "Partner de IA para organizaciones",
-			title: "Convierte la IA en una capacidad que tu empresa puede operar.",
+			kicker: "Somos el partner de IA para empresas",
+			title: "Soluciones de IA para empresas",
 			lead: "Definimos la prioridad, construimos la solución y la integramos en tus sistemas, datos y equipos.",
 			primary: "Solicitar estudio sin compromiso",
 			secondary: "Ver servicios",
@@ -306,9 +306,9 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			},
 			sizes: [
 				"Prefiero no indicarlo",
-				"1–49",
-				"50–249",
-				"250–999",
+				"1-49",
+				"50-249",
+				"250-999",
 				"1.000 o más",
 			],
 			submit: "Solicitar estudio sin compromiso",
@@ -370,8 +370,8 @@ siteCopy.en = {
 		faq: "FAQ",
 	},
 	hero: {
-		kicker: "AI partner for organisations",
-		title: "Turn AI into a capability your business can run.",
+		kicker: "We are the AI partner for businesses",
+		title: "AI solutions for businesses",
 		lead: "We define the priority, build the solution and integrate it with your systems, data and teams.",
 		primary: "Let’s discuss your project",
 		secondary: "View services",
@@ -535,7 +535,7 @@ siteCopy.en = {
 			private: "Private or on-premise AI",
 			unclear: "Not sure yet",
 		},
-		sizes: ["Prefer not to say", "1–49", "50–249", "250–999", "1,000+"],
+		sizes: ["Prefer not to say", "1-49", "50-249", "250-999", "1,000+"],
 		submit: "Let’s discuss your project",
 		sending: "Sending…",
 		validation: {

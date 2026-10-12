@@ -36,3 +36,7 @@ next-env.d.ts
 /.codebase-memory/
 /.audit-phase0/
 /.codex-*.md
+
+# Neue Montreal: licencia demo (Befonts), sólo para ver la propuesta en local.
+# No se versiona ni se despliega hasta tener la licencia web de Pangram Pangram.
+/public/fonts/*.woff2

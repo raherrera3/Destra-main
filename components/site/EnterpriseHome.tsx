@@ -1,20 +1,10 @@
 "use client";
 
-import {
-	ArrowDown,
-	ArrowUpRight,
-	Blocks,
-	Bot,
-	CircleHelp,
-	type LucideIcon,
-	Network,
-	Plus,
-	ShieldCheck,
-} from "lucide-react";
+import { ArrowDown, ArrowUpRight, Plus } from "lucide-react";
 import Link from "next/link";
+import { Isotipo } from "./BrandLogo";
 import ContactExperience from "./ContactExperience";
 import { useLocale } from "./LocaleProvider";
-import type { NeedValue } from "./contactSchema";
 
 function accentWord(text: string, word: string) {
 	const index = text.indexOf(word);
@@ -41,13 +31,8 @@ const clients: Array<{ name: string; logo?: string }> = [
 	{ name: "Larson Martin", logo: "larson-martin.png" },
 ];
 
-const serviceIcons: Record<NeedValue, LucideIcon> = {
-	fde: Bot,
-	solution: Blocks,
-	architecture: Network,
-	private: ShieldCheck,
-	unclear: CircleHelp,
-};
+// Un fondo de la paleta por servicio, como la página «Fondos» del manual.
+const tileTones = ["electric", "deep", "sky", "night"] as const;
 
 export default function EnterpriseHome() {
 	const { copy, locale } = useLocale();
@@ -58,7 +43,6 @@ export default function EnterpriseHome() {
 				<div className="hero-glow" aria-hidden="true" />
 				<div className="container hero-grid">
 					<p className="hero-kicker">
-						<span className="hero-kicker__dot" aria-hidden="true" />
 						{copy.hero.kicker}
 					</p>
 					<h1 id="hero-title">
@@ -120,47 +104,45 @@ export default function EnterpriseHome() {
 			>
 				<div className="container">
 					<header className="section-heading section-heading--split reveal">
-						<span className="section-index">01 — {copy.services.title}</span>
+						<span className="section-index">01. {copy.services.title}</span>
 						<h2 id="services-title">{copy.services.headline}</h2>
 						<p>{copy.services.lead}</p>
 					</header>
-					<div className="bento">
-						{copy.services.items.map((item, index) => {
-							const ServiceIcon = serviceIcons[item.intent];
-							return (
-								<article
-									className="bento-card reveal"
-									id={`servicio-${item.intent}`}
-									key={item.title}
-								>
-									<div className="bento-card__top">
-										<span className="bento-card__index">0{index + 1}</span>
-										<span className="bento-card__icon" aria-hidden="true">
-											<ServiceIcon />
-										</span>
+					<div className="tiles">
+						{copy.services.items.map((item, index) => (
+							<article
+								className={`tile band band--${tileTones[index]} reveal`}
+								id={`servicio-${item.intent}`}
+								key={item.title}
+							>
+								<div className="tile__top">
+									<span>0{index + 1}</span>
+									<Isotipo className="tile__iso" solid={tileTones[index] !== "night"} />
+								</div>
+								<h3>{item.title}</h3>
+								<p className="tile__body">{item.body}</p>
+								<dl className="tile__meta">
+									<div>
+										<dt>{copy.services.labels.audience}</dt>
+										<dd>{item.audience}</dd>
 									</div>
-									<h3>{item.title}</h3>
-									<p className="bento-card__body">{item.body}</p>
-									<dl className="bento-card__meta">
-										<div>
-											<dt>{copy.services.labels.audience}</dt>
-											<dd>{item.audience}</dd>
-										</div>
-										<div>
-											<dt>{copy.services.labels.model}</dt>
-											<dd>{item.model}</dd>
-										</div>
-									</dl>
-									<Link
-										className="bento-card__cta"
-										href="#contacto"
-										data-intent={item.intent}
-									>
-										{item.cta} <ArrowUpRight aria-hidden />
-									</Link>
-								</article>
-							);
-						})}
+									<div>
+										<dt>{copy.services.labels.model}</dt>
+										<dd>{item.model}</dd>
+									</div>
+								</dl>
+								<Link
+									className="tile__cta"
+									href="#contacto"
+									data-intent={item.intent}
+								>
+									{item.cta}
+									<span>
+										<ArrowUpRight aria-hidden />
+									</span>
+								</Link>
+							</article>
+						))}
 					</div>
 				</div>
 			</section>
@@ -172,7 +154,7 @@ export default function EnterpriseHome() {
 			>
 				<div className="container">
 					<header className="section-heading section-heading--split reveal">
-						<span className="section-index">02 — {copy.process.title}</span>
+						<span className="section-index">02. {copy.process.title}</span>
 						<h2 id="process-title">{copy.process.headline}</h2>
 						<p>{copy.process.lead}</p>
 					</header>
@@ -193,7 +175,7 @@ export default function EnterpriseHome() {
 			<section className="section faq" id="faq" aria-labelledby="faq-title">
 				<div className="container faq-grid">
 					<header className="section-heading reveal">
-						<span className="section-index">03 — FAQ</span>
+						<span className="section-index">03. FAQ</span>
 						<h2 id="faq-title">
 							{accentWord(
 								copy.faq.title,
