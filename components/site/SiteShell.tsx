@@ -1,5 +1,4 @@
 "use client";
-import Particles from "@/components/Particles";
 import CookieConsentBanner from "./CookieConsent";
 import EnterpriseHome from "./EnterpriseHome";
 import { LocaleProvider, useLocale } from "./LocaleProvider";
@@ -44,9 +43,6 @@ function ShellContent() {
 			<a className="skip-link" href="#contenido">
 				{copy.skip}
 			</a>
-			<div className="page-particles" aria-hidden="true">
-				<Particles />
-			</div>
 			<SiteHeader />
 			<main id="contenido">
 				<EnterpriseHome />

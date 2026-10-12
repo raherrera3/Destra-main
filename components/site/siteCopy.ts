@@ -36,6 +36,7 @@ type SiteCopy = {
 	hero: {
 		kicker: string;
 		title: string;
+		titleAccent: string;
 		lead: string;
 		primary: string;
 		secondary: string;
@@ -43,6 +44,7 @@ type SiteCopy = {
 		facts: Array<{ value: string; label: string }>;
 	};
 	clients: string;
+	manifesto: { label: string; title: string; titleAccent: string; body: string; values: string[] };
 	services: {
 		title: string;
 		headline: string;
@@ -139,6 +141,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 		hero: {
 			kicker: "Partner de IA para organizaciones",
 			title: "Convierte la IA en una capacidad que tu empresa puede operar.",
+			titleAccent: "que tu empresa puede operar.",
 			lead: "Definimos la prioridad, construimos la solución y la integramos en tus sistemas, datos y equipos.",
 			primary: "Solicitar estudio sin compromiso",
 			secondary: "Ver servicios",
@@ -150,6 +153,13 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			],
 		},
 		clients: "Empresas que ya confían en nosotros",
+		manifesto: {
+			label: "Naming",
+			title: "Tu mano derecha para avanzar.",
+			titleAccent: "para avanzar.",
+			body: "DESTRA viene del italiano destra, «derecha». La mano derecha como figura de confianza y como sentido de dirección: acompañamos a tu empresa y aportamos el criterio para avanzar en su transformación con inteligencia artificial.",
+			values: ["Humano", "Claro", "Experto", "Estratégico", "Accesible"],
+		},
 		services: {
 			title: "Servicios",
 			headline: "Cuatro formas de trabajar con nosotros.",
@@ -372,6 +382,7 @@ siteCopy.en = {
 	hero: {
 		kicker: "AI partner for organisations",
 		title: "Turn AI into a capability your business can run.",
+		titleAccent: "your business can run.",
 		lead: "We define the priority, build the solution and integrate it with your systems, data and teams.",
 		primary: "Let’s discuss your project",
 		secondary: "View services",
@@ -383,6 +394,13 @@ siteCopy.en = {
 		],
 	},
 	clients: "Companies that already trust us",
+	manifesto: {
+		label: "Naming",
+		title: "Your right hand to move forward.",
+		titleAccent: "to move forward.",
+		body: "DESTRA comes from the Italian destra, “right”. The right hand as a figure of trust and as a sense of direction: we stand beside your company and bring the judgement it needs to move forward with artificial intelligence.",
+		values: ["Human", "Clear", "Expert", "Strategic", "Accessible"],
+	},
 	services: {
 		title: "Services",
 		headline: "Four ways to work with us.",

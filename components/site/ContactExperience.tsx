@@ -306,14 +306,15 @@ export default function ContactExperience() {
 		<DialogPrimitive.Root open={drawerOpen} onOpenChange={setDrawerOpen}>
 			<section
 				ref={section}
-				className="contact section"
+				className="contact section band band--electric"
 				id="contacto"
 				aria-labelledby="contact-title"
 			>
 				<div className="container contact-intro">
 					<div className="contact-copy">
 						<h2 id="contact-title">
-							<span className="accent-text">{copy.contact.title}</span>
+							{copy.contact.title}
+							<span className="accent-text">.</span>
 						</h2>
 						<p>{copy.contact.lead}</p>
 						<button
@@ -321,7 +322,10 @@ export default function ContactExperience() {
 							type="button"
 							data-contact-open
 						>
-							{copy.contact.open} <ArrowUpRight aria-hidden />
+							{copy.contact.open}
+							<span className="button__icon">
+								<ArrowUpRight aria-hidden />
+							</span>
 						</button>
 					</div>
 				</div>

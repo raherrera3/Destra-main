@@ -51,64 +51,54 @@
 	font-display: swap;
 }
 
+@font-face {
+	font-family: "Neue Montreal";
+	src: local("Neue Montreal Light"), local("PPNeueMontreal-Light"),
+		url("/fonts/NeueMontreal-Light.woff2") format("woff2");
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* ── Marca ────────────────────────────────────────────────────────────────
+ * Brand Guidelines DESTRA V4. Siete colores y ninguno más. La web se compone
+ * por bandas, igual que la página «Fondos» del manual: cada sección se apoya
+ * en un color de la paleta y el resto de la hoja sólo habla en roles
+ * (--fg, --bg, --accent), así que no sabe sobre qué color está. */
+
 :root {
-	/* Principal: Neue Montreal. Secundaria: Azeret Mono, que next/font inyecta
-	 * como --font-mono desde app/layout.tsx. */
 	--font-sans: "Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	--font-mono-stack: var(--font-mono), ui-monospace, SFMono-Regular, Menlo,
 		monospace;
 
-	/* Paleta cerrada DESTRA. El resto de colores deriva sólo de estos cuatro. */
-	--blue: #216df3;
-	--navy: #051062;
-	--paper: #fffbf9;
+	--night: #02082a; /* Azul Noche */
+	--deep: #051062; /* Azul Profundo */
+	--electric: #002fc1; /* Azul Eléctrico */
+	--sky: #67b4fe; /* Azul Cielo */
+	--ice: #c2e4fd; /* Azul Hielo */
+	--paper: #fffbf9; /* Blanco Cálido */
+	--snow: #f4f4f5; /* Snow */
 
-	/* Roles de tema. Por defecto, oscuro: negro y azul. `data-theme="light"`
-	 * (ver más abajo) los reasigna a papel y azul; el resto de la hoja sólo
-	 * habla en roles y no sabe en qué tema está.
-	 *   --fg     texto, líneas y tintes sobre el fondo
-	 *   --bg     suelo y bases opacas
-	 *   --shade  sombras proyectadas
-	 *   --haze   luz ambiental de los degradados radiales */
+	/* Alias que usan el formulario, las cookies y las páginas legales. */
+	--blue: var(--electric);
+	--navy: var(--deep);
+	--blue-pale: color-mix(in srgb, var(--electric) 16%, transparent);
+	--success: var(--electric);
+	--error: var(--electric);
+	--error-bg: color-mix(in srgb, var(--electric) 10%, var(--paper));
+
+	/* Tema raíz (legales, cookies, 404). La portada lo ignora: van las bandas. */
 	--fg: var(--paper);
-	--bg: #000000;
+	--bg: var(--night);
+	--accent: var(--sky);
 	--shade: #000000;
-	--haze: var(--blue);
-	--ground: linear-gradient(
-		180deg,
-		color-mix(in srgb, var(--blue) 55%, var(--bg)) 0%,
-		var(--bg) 52%,
-		color-mix(in srgb, var(--blue) 36%, var(--bg)) 100%
-	);
 	color-scheme: dark;
 
-	/* Texto y superficies semánticas. */
-	--ink: var(--fg);
-	--ink-soft: color-mix(in srgb, var(--fg) 84%, transparent);
-	--ink-muted: color-mix(in srgb, var(--fg) 66%, transparent);
-	--navy-2: var(--navy);
-	/* Único tono de énfasis: azul eléctrico. Sobre negro, aclarado un poco con
-	 * papel para que brille (≈7:1). En claro basta el azul puro (≈4,6:1 sobre
-	 * papel, válido para texto). */
-	--accent: color-mix(in srgb, var(--blue) 72%, var(--paper));
-	--blue-pale: color-mix(in srgb, var(--blue) 16%, transparent);
-	--surface: var(--bg);
-	--glass: color-mix(in srgb, var(--fg) 10%, transparent);
-	--edge: color-mix(in srgb, var(--fg) 34%, transparent);
-	--line: color-mix(in srgb, var(--fg) 14%, transparent);
-	--line-strong: color-mix(in srgb, var(--fg) 25%, transparent);
-	--success: var(--blue);
-	--error: var(--blue);
-	--error-bg: color-mix(in srgb, var(--blue) 10%, var(--paper));
-	--focus-ring: var(--fg);
-
-	--container: 73.75rem;
-	--shell: 80rem;
+	--container: 76rem;
+	--shell: 82rem;
 	--radius-sm: 0.625rem;
 	--radius-lg: 1.5rem;
 
-	/* Escala de elevación semántica. Nunca 999 ni 9999. */
-	--z-particles: 2;
 	--z-sticky: 50;
 	--z-menu: 55;
 	--z-mobile-cta: 60;
@@ -118,35 +108,86 @@
 	--z-cookie: 110;
 	--z-cookie-dialog: 120;
 
-	/* Salida exponencial. Sin rebote, sin elástica. */
 	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 	--ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Tema claro: papel y negro (el navy se veía lila). Las custom properties que derivan de --fg/--bg
- * se recalculan aquí porque var() se resuelve en el elemento que las declara. */
 :root[data-theme="light"] {
-	--fg: #000000;
+	--fg: var(--night);
 	--bg: var(--paper);
-	--shade: #000000;
-	--haze: color-mix(in srgb, var(--blue) 55%, var(--paper));
-	--ground: linear-gradient(
-		180deg,
-		color-mix(in srgb, var(--blue) 14%, var(--bg)) 0%,
-		var(--bg) 46%,
-		color-mix(in srgb, var(--blue) 10%, var(--bg)) 100%
-	);
+	--accent: var(--electric);
 	color-scheme: light;
+}
+
+/* Bandas. Cada una fija tres roles; lo demás deriva abajo. */
+.band--night {
+	--fg: var(--paper);
+	--bg: var(--night);
+	--accent: var(--sky);
+}
+
+.band--deep {
+	--fg: var(--paper);
+	--bg: var(--deep);
+	--accent: var(--sky);
+}
+
+.band--electric {
+	--fg: var(--paper);
+	--bg: var(--electric);
+	--accent: var(--ice);
+	--cta-bg: var(--paper);
+	--cta-fg: var(--electric);
+}
+
+.band--sky {
+	--fg: var(--night);
+	--bg: var(--sky);
+	--accent: var(--deep);
+}
+
+.band--ice {
+	--fg: var(--night);
+	--bg: var(--ice);
+	--accent: var(--electric);
+}
+
+.band--paper {
+	--fg: var(--night);
+	--bg: var(--paper);
+	--accent: var(--electric);
+}
+
+.band--snow {
+	--fg: var(--night);
+	--bg: var(--snow);
+	--accent: var(--electric);
+}
+
+/* var() se resuelve en el elemento que declara la propiedad: por eso los
+ * derivados se redeclaran en cada banda y no sólo en :root. */
+:root,
+.band {
 	--ink: var(--fg);
 	--ink-soft: color-mix(in srgb, var(--fg) 86%, transparent);
-	--ink-muted: color-mix(in srgb, var(--fg) 72%, transparent);
-	--accent: var(--blue);
-	--surface: var(--bg);
-	--glass: color-mix(in srgb, var(--paper) 45%, transparent);
-	--edge: color-mix(in srgb, var(--fg) 34%, transparent);
+	--ink-muted: color-mix(in srgb, var(--fg) 70%, transparent);
 	--line: color-mix(in srgb, var(--fg) 14%, transparent);
-	--line-strong: color-mix(in srgb, var(--fg) 22%, transparent);
-	--focus-ring: var(--blue);
+	--line-strong: color-mix(in srgb, var(--fg) 26%, transparent);
+	--edge: color-mix(in srgb, var(--fg) 34%, transparent);
+	--glass: color-mix(in srgb, var(--fg) 10%, transparent);
+	--surface: var(--bg);
+	--focus-ring: var(--accent);
+}
+
+:root {
+	--cta-bg: var(--electric);
+	--cta-fg: var(--paper);
+}
+
+.band {
+	position: relative;
+	color: var(--ink);
+	background: var(--bg);
 }
 
 /* ── Base ─────────────────────────────────────────────────────────────── */
@@ -157,43 +198,17 @@
 
 html {
 	scroll-behavior: smooth;
-	scroll-padding-top: 7.5rem;
+	scroll-padding-top: 6.5rem;
 }
 
 body {
 	margin: 0;
 	color: var(--ink);
-	background: var(--ground);
-	transition: color 240ms ease;
-	background-attachment: fixed;
+	background: var(--bg);
 	font-family: var(--font-sans);
+	font-weight: 400;
 	-webkit-font-smoothing: antialiased;
 	overflow-x: hidden;
-}
-
-/* Una única fuente de luz arriba a la izquierda, para que el cristal tenga
- * algo real que refractar en lugar de flotar sobre un plano muerto. */
-body::before {
-	content: "";
-	position: fixed;
-	inset: 0;
-	z-index: 0;
-	pointer-events: none;
-	background: radial-gradient(
-			54rem 34rem at 12% -4%,
-			color-mix(in srgb, var(--haze) 38%, transparent),
-			transparent 62%
-		),
-		radial-gradient(
-			42rem 28rem at 94% 12%,
-			color-mix(in srgb, var(--haze) 24%, transparent),
-			transparent 64%
-		),
-		radial-gradient(
-			50rem 40rem at 50% 106%,
-			color-mix(in srgb, var(--haze) 14%, transparent),
-			transparent 60%
-		);
 }
 
 a {
@@ -218,13 +233,18 @@ summary {
 }
 
 :where(a, button, input, select, textarea, summary):focus-visible {
-	outline: 3px solid var(--focus-ring);
+	outline: 2px solid var(--focus-ring);
 	outline-offset: 3px;
 }
 
+img {
+	max-width: 100%;
+}
+
 /* ── Tipografía ───────────────────────────────────────────────────────────
- * Neue Montreal es la voz principal. La pila conserva proporciones neutras si
- * el archivo licenciado no está instalado en el dispositivo. */
+ * Neue Montreal, como en el manual: titulares en Medium con el tracking muy
+ * cerrado y textos largos en Light. Azeret Mono sólo para índices, datos y
+ * etiquetas. */
 
 h1,
 h2,
@@ -233,36 +253,68 @@ h4 {
 	margin-top: 0;
 	color: var(--ink);
 	font-family: var(--font-sans);
-	letter-spacing: -0.028em;
+	font-weight: 500;
+	letter-spacing: -0.035em;
 	text-wrap: balance;
 }
 
 h1 {
-	max-width: 13ch;
-	margin-bottom: 1.4rem;
-	font-size: clamp(2.75rem, 7vw, 6.5rem);
-	font-weight: 500;
-	line-height: 0.94;
-	letter-spacing: -0.045em;
-}
-
-h4 {
-	letter-spacing: -0.014em;
+	margin-bottom: 1.75rem;
+	font-size: clamp(3rem, 7.2vw, 7rem);
+	line-height: 0.93;
+	letter-spacing: -0.05em;
 }
 
 p {
 	text-wrap: pretty;
 }
 
-/* La etiqueta en versalita mono es un recurso de datos, no un adorno de
- * sección: sólo la usan campos y fichas con información real detrás. */
-.label-mono {
+.accent-text {
+	color: var(--accent);
+}
+
+.label-mono,
+.eyebrow {
 	color: var(--ink-muted);
 	font-family: var(--font-mono-stack);
 	font-size: 0.6875rem;
 	font-weight: 500;
-	letter-spacing: 0.11em;
+	letter-spacing: 0.12em;
 	text-transform: uppercase;
+}
+
+/* «01. ——— Sección», el índice del manual. */
+.eyebrow {
+	display: flex;
+	align-items: center;
+	gap: 0.85rem;
+	margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.eyebrow b {
+	color: var(--accent);
+	font-weight: 500;
+}
+
+.eyebrow::before {
+	content: "";
+	order: 1;
+	width: 2.75rem;
+	height: 1px;
+	background: currentColor;
+}
+
+.eyebrow b + * {
+	order: 2;
+}
+
+/* El isotipo reducido a su gesto: la flecha que avanza. */
+.chev {
+	display: inline-block;
+	width: 0.62em;
+	height: 0.74em;
+	background: currentColor;
+	clip-path: polygon(0 0, 46% 0, 100% 50%, 46% 100%, 0 100%, 50% 50%);
 }
 
 .sr-only {
@@ -284,9 +336,9 @@ p {
 	z-index: var(--z-skip);
 	padding: 0.75rem 1rem;
 	border-radius: var(--radius-sm);
-	color: var(--fg);
-	background: var(--bg);
-	font-weight: 700;
+	color: var(--paper);
+	background: var(--electric);
+	font-weight: 500;
 	transform: translateY(-180%);
 	transition: transform 150ms ease;
 }
@@ -298,100 +350,64 @@ p {
 /* ── Estructura ───────────────────────────────────────────────────────── */
 
 .container {
-	width: min(calc(100% - 2rem), var(--container));
+	width: min(calc(100% - 2.5rem), var(--container));
 	margin-inline: auto;
 }
 
 .section {
-	position: relative;
-	padding-block: clamp(5rem, 9vw, 8rem);
-}
-
-.site-header,
-main,
-.site-footer {
-	position: relative;
-	z-index: 1;
+	padding-block: clamp(5.5rem, 10vw, 9rem);
 }
 
 .section-heading {
-	max-width: 44rem;
-}
-
-.section-heading--wide {
-	max-width: 53rem;
+	max-width: 48rem;
+	margin-bottom: clamp(3rem, 6vw, 5rem);
 }
 
 .section-heading h2 {
-	margin-bottom: 1.15rem;
-	font-size: clamp(2.4rem, 5vw, 4.75rem);
-	font-weight: 500;
-	line-height: 0.98;
-	letter-spacing: -0.04em;
+	margin-bottom: 0;
+	font-size: clamp(2.5rem, 5.4vw, 5.25rem);
+	line-height: 0.96;
+	letter-spacing: -0.045em;
 }
 
-.section-heading > p:last-child {
+.section-heading--split {
+	display: grid;
+	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+	align-items: end;
+	gap: 1.5rem clamp(2rem, 6vw, 6rem);
+	max-width: none;
+}
+
+.section-heading--split .eyebrow {
+	grid-column: 1 / -1;
+	margin-bottom: 0.5rem;
+}
+
+.section-heading--split > p {
 	margin: 0;
-	max-width: 46rem;
 	color: var(--ink-soft);
-	font-size: 1.05rem;
-	line-height: 1.7;
-}
-
-.accent-text {
-	color: var(--accent);
-}
-
-/* Un único lienzo fijo mantiene la atmósfera continua mientras el documento
- * se desplaza. Queda sobre los fondos pero nunca intercepta el puntero. */
-.page-particles {
-	position: fixed;
-	inset: 0;
-	z-index: var(--z-particles);
-	overflow: hidden;
-	pointer-events: none;
-}
-
-.page-particles > div,
-.page-particles canvas {
-	pointer-events: none;
+	font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+	font-weight: 300;
+	line-height: 1.55;
 }
 
 /* ── Cristal ──────────────────────────────────────────────────────────────
- * Una sola receta. `--glass-fill` gradúa cuánta luz retiene cada superficie;
- * el desplazamiento SVG es mejora progresiva, nunca requisito. */
+ * El manual reserva el cristal para botones y controles flotantes. Una sola
+ * receta, teñida de Azul Noche para que se lea sobre cualquier banda. */
 
 .glass-surface {
 	position: relative;
-	border: 1px solid var(--line-strong);
+	border: 1px solid color-mix(in srgb, var(--paper) 16%, transparent);
 	background: linear-gradient(
 			145deg,
-			color-mix(in srgb, var(--paper) 16%, transparent),
-			color-mix(in srgb, var(--paper) 5%, transparent) 46%,
-			color-mix(in srgb, var(--paper) 9%, transparent)
-		), color-mix(in srgb, var(--bg) 42%, transparent);
-	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 32%, transparent), 0
-		1rem 2.5rem color-mix(in srgb, var(--shade) 18%, transparent);
-	-webkit-backdrop-filter: blur(22px) saturate(155%);
-	backdrop-filter: blur(22px) saturate(155%);
-}
-
-.glass-surface::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	border-radius: inherit;
-	pointer-events: none;
-	background: radial-gradient(
-			70% 120% at 12% -40%,
-			color-mix(in srgb, var(--paper) 30%, transparent),
-			transparent 65%
-		),
-		linear-gradient(
-			105deg,
-			transparent 62%,
-			color-mix(in srgb, var(--paper) 10%, transparent)
-		);
+			color-mix(in srgb, var(--paper) 12%, transparent),
+			color-mix(in srgb, var(--paper) 3%, transparent) 50%,
+			color-mix(in srgb, var(--paper) 7%, transparent)
+		), color-mix(in srgb, var(--night) 84%, transparent);
+	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 22%, transparent), 0
+		1rem 2.5rem color-mix(in srgb, var(--night) 22%, transparent);
+	-webkit-backdrop-filter: blur(22px) saturate(160%);
+	backdrop-filter: blur(22px) saturate(160%);
 }
 
 .liquid-glass-filters {
@@ -402,9 +418,7 @@ main,
 	pointer-events: none;
 }
 
-/* ── Controles ────────────────────────────────────────────────────────────
- * Botones, chips y el toggle de idioma comparten el mismo material. La regla
- * es puramente visual: no toca `position` de nada que no sea suyo. */
+/* ── Controles ────────────────────────────────────────────────────────── */
 
 .menu-toggle,
 .language-toggle a[aria-current="page"],
@@ -416,55 +430,33 @@ main,
 	color: var(--fg);
 	background: linear-gradient(
 		145deg,
-		color-mix(in srgb, var(--paper) 28%, transparent),
-		color-mix(in srgb, var(--paper) 11%, transparent) 48%,
-		color-mix(in srgb, var(--paper) 13%, transparent)
+		color-mix(in srgb, var(--paper) 26%, transparent),
+		color-mix(in srgb, var(--paper) 9%, transparent) 48%,
+		color-mix(in srgb, var(--paper) 12%, transparent)
 	);
-	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 60%, transparent),
-		inset 0 -1px 0 color-mix(in srgb, var(--paper) 20%, transparent);
+	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 55%, transparent),
+		inset 0 -1px 0 color-mix(in srgb, var(--paper) 18%, transparent);
 	-webkit-backdrop-filter: blur(16px) saturate(165%);
 	backdrop-filter: blur(16px) saturate(165%);
 	transition: transform 360ms var(--ease-out), background 180ms ease,
 		border-color 180ms ease, color 180ms ease;
 }
 
-/* El reflejo especular que recorre el control al pasar por encima. Es lo que
- * separa un cristal vivo de un rectángulo translúcido. */
-.menu-toggle::after,
-.language-toggle a[aria-current="page"]::after,
-.need-chip input:checked + label::after {
-	content: "";
-	position: absolute;
-	inset: 1px;
-	border-radius: inherit;
-	pointer-events: none;
-	background: linear-gradient(
-		112deg,
-		color-mix(in srgb, var(--paper) 32%, transparent),
-		transparent 28%,
-		transparent 70%,
-		color-mix(in srgb, var(--paper) 18%, transparent)
-	);
-	opacity: 0.52;
-	transform: translateX(-8%);
-	transition: opacity 220ms ease, transform 420ms var(--ease-out-soft);
-}
-
 .button {
 	display: inline-flex;
-	min-height: 3rem;
+	min-height: 3.25rem;
 	align-items: center;
 	justify-content: center;
-	gap: 0.55rem;
-	padding: 0.7rem 1.25rem;
-	border-radius: 999px;
-	font-size: 0.92rem;
-	font-weight: 700;
-	line-height: 1.2;
+	gap: 0.85rem;
+	padding: 0.7rem 1.5rem;
 	border: 1px solid transparent;
-	color: var(--bg);
-	background: var(--fg);
-	box-shadow: none;
+	border-radius: 999px;
+	color: var(--cta-fg);
+	background: var(--cta-bg);
+	font-size: 0.95rem;
+	font-weight: 500;
+	line-height: 1.2;
+	letter-spacing: -0.005em;
 	cursor: pointer;
 	transition: transform 360ms var(--ease-out), background 180ms ease,
 		border-color 180ms ease, color 180ms ease;
@@ -476,86 +468,96 @@ main,
 	flex: 0 0 auto;
 }
 
+/* Píldora con la flecha en un círculo, como la maqueta digital del manual. */
+.button:has(.button__icon) {
+	padding-right: 0.4rem;
+}
+
+.button__icon {
+	display: inline-grid;
+	width: 2.45rem;
+	height: 2.45rem;
+	place-items: center;
+	border-radius: 999px;
+	color: var(--cta-bg);
+	background: var(--cta-fg);
+	transition: transform 420ms var(--ease-out);
+}
+
+.button__icon svg {
+	width: 1.05rem;
+	height: 1.05rem;
+}
+
 .button--primary {
-	border-color: color-mix(in srgb, var(--bg) 14%, transparent);
-	color: var(--bg);
-	background: var(--fg);
+	color: var(--cta-fg);
+	background: var(--cta-bg);
+}
+
+.button--primary:hover {
+	background: color-mix(in srgb, var(--cta-bg) 84%, var(--cta-fg));
 }
 
 .button--secondary {
-	border-color: color-mix(in srgb, var(--fg) 45%, transparent);
+	border-color: var(--line-strong);
 	color: var(--fg);
 	background: transparent;
+}
+
+.button--secondary:hover {
+	border-color: var(--edge);
+	background: color-mix(in srgb, var(--fg) 8%, transparent);
 }
 
 .menu-toggle:hover,
 .language-toggle a[aria-current="page"]:hover,
 .need-chip input:checked + label:hover {
 	border-color: color-mix(in srgb, var(--fg) 55%, transparent);
-	background: linear-gradient(
-		145deg,
-		color-mix(in srgb, var(--paper) 38%, transparent),
-		color-mix(in srgb, var(--paper) 18%, transparent) 52%,
-		color-mix(in srgb, var(--paper) 22%, transparent)
-	);
-}
-
-.button:hover,
-.button--primary:hover,
-.button--secondary:hover {
-	border-color: var(--blue);
-	color: var(--paper);
-	background: var(--blue);
 }
 
 @media (hover: hover) and (pointer: fine) {
-	.button:hover,
-	.menu-toggle:hover,
-	.contact-drawer__close:hover {
-		transform: translateY(-1px) scale(1.018);
-	}
-
-	.menu-toggle:hover::after {
-		opacity: 0.88;
-		transform: translateX(7%);
+	.button:hover .button__icon {
+		transform: rotate(45deg);
 	}
 
 	.button:active,
 	.menu-toggle:active,
 	.contact-drawer__close:active {
-		transform: translateY(0) scale(0.975);
+		transform: scale(0.975);
 		transition-duration: 90ms;
 	}
 }
 
-/* Refracción óptica real: sólo Chromium desplaza el fondo con el filtro SVG
- * dentro de `backdrop-filter`. Safari y Firefox se quedan con el esmerilado
- * de arriba, que es un resultado perfectamente digno.
- *
- * NO QUITAR EL `@supports`. No es un adorno de progresividad: sin él, Safari
- * descarta la declaración `backdrop-filter` ENTERA al no entender el `url()`,
- * y la cabecera y los botones se quedan sin cristal ninguno, transparentes.
- * Comprobado el 2026-09-07 con una página de prueba aislada en Safari 26:
- * la caja con `url()` sin proteger desaparecía; la protegida se ve bien.
- *
- * Se evaluaron y descartaron dos librerías para esto (naughtyduk/liquidGL y
- * rdev/liquid-glass-react); ver el mensaje del commit que trae este comentario. */
+/* NO QUITAR EL `@supports`: sin él Safari descarta el `backdrop-filter`
+ * entero al no entender el `url()` y el cristal desaparece (comprobado en
+ * Safari 26, 2026-09-07). */
 @media (min-width: 861px) {
 	@supports (
 			(backdrop-filter: url("#button-glass") blur(1px)) or
 			(-webkit-backdrop-filter: url("#button-glass") blur(1px))
 		) {
 		.header-shell {
-			-webkit-backdrop-filter: url("#button-glass") blur(22px) saturate(155%);
-			backdrop-filter: url("#button-glass") blur(22px) saturate(155%);
+			-webkit-backdrop-filter: url("#button-glass") blur(22px) saturate(160%);
+			backdrop-filter: url("#button-glass") blur(22px) saturate(160%);
 		}
 
-		.menu-toggle,
 		.need-chip input:checked + label {
 			-webkit-backdrop-filter: url("#button-glass") blur(16px) saturate(165%);
 			backdrop-filter: url("#button-glass") blur(16px) saturate(165%);
 		}
 	}
+}
+
+.button-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+}
+
+.microcopy {
+	margin: 1.25rem 0 0;
+	color: var(--ink-muted);
+	font-size: 0.85rem;
 }
 
 /* ── Cabecera ─────────────────────────────────────────────────────────── */
@@ -565,24 +567,20 @@ main,
 	top: 0;
 	z-index: var(--z-sticky);
 	height: 0;
+	background: none;
 }
 
 .header-shell {
-	top: 0.75rem;
+	top: 0.85rem;
 	display: grid;
 	grid-template-columns: auto 1fr auto;
 	align-items: center;
 	gap: 1rem;
 	width: min(calc(100% - 1.5rem), var(--shell));
-	min-height: 4.5rem;
+	min-height: 4.25rem;
 	margin-inline: auto;
-	padding: 0.55rem 0.65rem 0.55rem 0.8rem;
-	border-radius: 1.2rem;
-}
-
-.header-shell > * {
-	position: relative;
-	z-index: 1;
+	padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+	border-radius: 999px;
 }
 
 .brand {
@@ -593,45 +591,48 @@ main,
 
 .brand-logo {
 	display: block;
-	width: 9.5rem;
-	aspect-ratio: 833 / 313;
-	/* Logo a color: texto blanco en oscuro, negro en claro. */
-	background: url("/destra-logo-light.png") center / contain no-repeat;
-}
-
-:root[data-theme="light"] .brand-logo {
-	background-image: url("/destra-logo-dark.png");
+	width: 8.25rem;
+	height: auto;
+	overflow: visible;
 }
 
 .desktop-nav {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 0.15rem;
+	gap: 0.25rem;
 }
 
 .desktop-nav a {
 	display: inline-flex;
 	align-items: center;
 	min-height: 2.75rem;
-	padding: 0.55rem 0.85rem;
+	padding: 0.5rem 0.95rem;
 	border-radius: 999px;
 	color: var(--ink-soft);
-	font-size: 0.84rem;
-	font-weight: 650;
+	font-size: 0.9rem;
 	transition: color 180ms ease, background-color 180ms ease;
 }
 
 .desktop-nav a:hover,
 .desktop-nav a:focus-visible {
 	color: var(--fg);
-	background: color-mix(in srgb, var(--fg) 13%, transparent);
+	background: color-mix(in srgb, var(--fg) 10%, transparent);
 }
 
 .header-actions {
 	display: flex;
 	align-items: center;
 	gap: 0.6rem;
+}
+
+.header-cta {
+	min-height: 3rem;
+}
+
+.header-cta .button__icon {
+	width: 2.15rem;
+	height: 2.15rem;
 }
 
 .language-toggle {
@@ -644,25 +645,21 @@ main,
 }
 
 .language-toggle a {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
 	min-width: 2.4rem;
 	min-height: 2.1rem;
-	padding: 0.2rem 0.5rem;
+	padding: 0.2rem 0.6rem;
 	border: 0;
 	border-radius: 999px;
 	color: var(--ink-muted);
 	background: transparent;
-	font-size: 0.7rem;
-	font-weight: 700;
-	letter-spacing: 0.06em;
-	cursor: pointer;
+	font-family: var(--font-mono-stack);
+	font-size: 0.68rem;
+	font-weight: 500;
+	letter-spacing: 0.08em;
 	transition: color 160ms ease, background-color 160ms ease;
-}
-
-.language-toggle a {
-	display: inline-flex;
-	text-decoration: none;
-	align-items: center;
-	gap: 0.35rem;
 }
 
 .language-toggle__flag {
@@ -674,63 +671,12 @@ main,
 	color: var(--ink);
 }
 
-/* Mismo contorno que el toggle de idioma para que ambos lean como una pareja
- * de preferencias. Los dos iconos se apilan y se cruzan girando: el que se
- * muestra es el tema al que se cambiará. */
-.theme-toggle {
-	position: relative;
-	display: inline-grid;
-	width: 2.6rem;
-	height: 2.6rem;
-	place-items: center;
-	padding: 0;
-	border: 1px solid var(--line);
-	border-radius: 999px;
-	color: var(--ink-soft);
-	background: transparent;
-	cursor: pointer;
-	transition: color 160ms ease, border-color 160ms ease,
-		background-color 160ms ease, transform 360ms var(--ease-out);
-}
-
-.theme-toggle:hover {
-	border-color: var(--edge);
-	color: var(--ink);
-	background: color-mix(in srgb, var(--fg) 8%, transparent);
-}
-
-.theme-toggle svg {
-	grid-area: 1 / 1;
-	width: 1.05rem;
-	height: 1.05rem;
-	transition: opacity 240ms ease, transform 480ms var(--ease-out);
-}
-
-:root:not([data-theme="light"]) .theme-toggle [data-icon="moon"],
-:root[data-theme="light"] .theme-toggle [data-icon="sun"] {
-	opacity: 0;
-	transform: rotate(-90deg) scale(0.6);
-}
-
-@media (hover: hover) and (pointer: fine) {
-	.theme-toggle:active {
-		transform: scale(0.94);
-		transition-duration: 90ms;
-	}
-}
-
 .mobile-menu__prefs {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	gap: 0.6rem;
 	margin-bottom: 0.35rem;
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-	animation-duration: 320ms;
-	animation-timing-function: ease;
 }
 
 .menu-toggle {
@@ -765,8 +711,6 @@ main,
 }
 
 .mobile-menu nav {
-	position: relative;
-	z-index: 1;
 	display: grid;
 	gap: 0.35rem;
 }
@@ -775,206 +719,182 @@ main,
 	display: flex;
 	align-items: center;
 	min-height: 3rem;
-	padding: 0.7rem 0.8rem;
+	padding: 0.7rem 0.9rem;
 	border-radius: 0.8rem;
-	font-weight: 680;
+	font-size: 1.15rem;
 }
 
 .mobile-menu nav > a:not(.button):hover {
-	background: color-mix(in srgb, var(--fg) 13%, transparent);
+	background: color-mix(in srgb, var(--fg) 10%, transparent);
 }
 
-/* ── Portada ──────────────────────────────────────────────────────────────
- * Editorial: el titular ocupa el ancho entero y manda; debajo, dos columnas
- * (entradilla y datos). Cierra una marquesina con los cuatro servicios. */
+/* ── Portada ──────────────────────────────────────────────────────────── */
 
 .hero {
-	position: relative;
-	isolation: isolate;
-	padding-top: clamp(8.5rem, 14vw, 13rem);
+	display: flex;
+	min-height: 100svh;
+	flex-direction: column;
+	overflow: clip;
+	padding-top: clamp(8.5rem, 16vh, 11rem);
 	padding-bottom: 0;
-}
-
-.hero-glow {
-	position: absolute;
-	inset: 0;
-	z-index: 0;
-	pointer-events: none;
 	background: radial-gradient(
-			60rem 30rem at 50% -10%,
-			color-mix(in srgb, var(--haze) 30%, transparent),
-			transparent 60%
+			56rem 42rem at 82% 38%,
+			color-mix(in srgb, var(--deep) 92%, transparent),
+			transparent 70%
 		),
-		radial-gradient(
-			circle at 92% 70%,
-			color-mix(in srgb, var(--haze) 10%, transparent),
-			transparent 28%
-		);
+		var(--bg);
 }
 
 .hero-grid {
-	position: relative;
-	z-index: 2;
 	display: grid;
-	grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
-	column-gap: clamp(2rem, 6vw, 6rem);
-	row-gap: clamp(2rem, 4vw, 3.5rem);
-	align-items: end;
-}
-
-.hero-grid > h1,
-.hero-kicker {
-	grid-column: 1 / -1;
-}
-
-.hero-kicker {
-	display: inline-flex;
+	flex: 1;
+	grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
 	align-items: center;
-	gap: 0.65rem;
-	margin: 0;
-	color: var(--accent);
-	font: 500 0.72rem / 1.4 var(--font-mono-stack);
-	letter-spacing: 0.16em;
-	text-transform: uppercase;
+	gap: clamp(2rem, 5vw, 5rem);
 }
 
-.hero-kicker__dot {
-	width: 0.5rem;
-	height: 0.5rem;
-	border-radius: 999px;
-	background: var(--blue);
-	box-shadow: 0 0 0 0 color-mix(in srgb, var(--blue) 60%, transparent);
-	animation: kicker-pulse 2.4s var(--ease-out) infinite;
-}
-
-@keyframes kicker-pulse {
-	0% {
-		box-shadow: 0 0 0 0 color-mix(in srgb, var(--blue) 60%, transparent);
-	}
-	70% {
-		box-shadow: 0 0 0 0.7rem transparent;
-	}
-	100% {
-		box-shadow: 0 0 0 0 transparent;
-	}
-}
-
-.hero-grid h1 {
-	max-width: 14ch;
-	margin: 0;
-	font-size: clamp(3rem, 7.4vw, 7.25rem);
-	font-weight: 500;
-	line-height: 0.94;
-	letter-spacing: -0.045em;
-}
-
-.hero-aside {
-	max-width: 34rem;
+.hero h1 {
+	max-width: 12.5ch;
 }
 
 .hero-lead {
-	margin: 0;
+	max-width: 34rem;
+	margin: 0 0 2.25rem;
 	color: var(--ink-soft);
-	font-size: clamp(1.05rem, 1.5vw, 1.3rem);
-	line-height: 1.55;
-	text-wrap: pretty;
+	font-size: clamp(1.1rem, 1.55vw, 1.35rem);
+	font-weight: 300;
+	line-height: 1.5;
 }
 
-.button-group {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.75rem;
-	margin-top: 1.75rem;
+.hero-copy > * {
+	animation: rise 900ms var(--ease-out) both;
 }
 
-.microcopy {
-	margin: 1rem 0 0;
-	color: var(--ink-muted);
-	font-size: 0.82rem;
+.hero-copy > :nth-child(2) {
+	animation-delay: 80ms;
 }
 
-/* Los tres datos que un director financiero quiere ver antes de leer nada. */
+.hero-copy > :nth-child(3) {
+	animation-delay: 160ms;
+}
+
+.hero-copy > :nth-child(n + 4) {
+	animation-delay: 240ms;
+}
+
+@keyframes rise {
+	from {
+		opacity: 0;
+		transform: translateY(1.25rem);
+	}
+}
+
+/* El isotipo a gran escala: las dos piezas entran desde la izquierda,
+ * desfasadas, como un paso hacia delante. */
+.hero-mark {
+	position: relative;
+	justify-self: end;
+	width: min(100%, 30rem);
+	aspect-ratio: 124 / 142;
+}
+
+.hero-mark::before {
+	content: "";
+	position: absolute;
+	inset: 8% -6% 8% 6%;
+	border-radius: 50%;
+	background: radial-gradient(
+		closest-side,
+		color-mix(in srgb, var(--electric) 70%, transparent),
+		transparent
+	);
+	filter: blur(48px);
+	animation: glow 6s ease-in-out infinite alternate;
+}
+
+.hero-iso {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+.hero-iso path {
+	animation: iso-in 1.2s var(--ease-out) both;
+}
+
+.hero-iso .iso-bottom {
+	animation-delay: 140ms;
+}
+
+@keyframes iso-in {
+	from {
+		opacity: 0;
+		transform: translateX(-22%);
+	}
+}
+
+@keyframes glow {
+	to {
+		opacity: 0.6;
+		transform: translateX(6%) scale(1.06);
+	}
+}
+
 .hero-facts {
 	display: grid;
-	margin: 0;
+	grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+	margin: clamp(3.5rem, 7vw, 5.5rem) auto 0;
 	padding: 0;
-	list-style: none;
 	border-top: 1px solid var(--line-strong);
+	list-style: none;
 }
 
 .hero-facts li {
-	display: grid;
-	grid-template-columns: auto 1fr;
+	display: flex;
 	align-items: baseline;
 	gap: 1rem;
-	padding: 0.9rem 0;
-	border-bottom: 1px solid var(--line);
+	padding: 1.5rem 1.5rem 1.5rem 0;
+}
+
+.hero-facts li + li {
+	padding-left: 1.5rem;
+	border-left: 1px solid var(--line-strong);
 }
 
 .hero-facts strong {
-	font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+	font-size: clamp(2rem, 3.4vw, 3rem);
 	font-weight: 500;
-	letter-spacing: -0.03em;
 	line-height: 1;
-	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.04em;
 }
 
 .hero-facts span {
 	color: var(--ink-muted);
 	font-family: var(--font-mono-stack);
 	font-size: 0.7rem;
-	letter-spacing: 0.08em;
+	letter-spacing: 0.1em;
 	text-transform: uppercase;
-	text-align: right;
 }
 
-/* Entrada orquestada al cargar. Retardos cortos: la página nunca espera. */
-@keyframes hero-rise {
-	from {
-		opacity: 0;
-		transform: translateY(1.1rem);
-	}
-}
-
-.hero-grid > * {
-	animation: hero-rise 820ms var(--ease-out) backwards;
-}
-
-.hero-grid > :nth-child(2) {
-	animation-delay: 90ms;
-}
-
-.hero-grid > :nth-child(3) {
-	animation-delay: 220ms;
-}
-
-.hero-grid > :nth-child(4) {
-	animation-delay: 300ms;
-}
-
-/* Empresas. Marquesina de logos: duplicamos la lista en el marcado y
- * desplazamos la mitad. Los logos se pintan en monocromo; el hover les
- * devuelve la opacidad plena. */
 .clients {
-	position: relative;
-	z-index: 2;
-	margin-top: clamp(3.5rem, 7vw, 6.5rem);
+	padding-block: 2.5rem 3rem;
+	border-top: 1px solid var(--line);
 }
 
 .clients__title {
-	margin: 0 auto 1.25rem;
+	margin: 0 auto 1.75rem;
 	color: var(--ink-muted);
 	font-family: var(--font-mono-stack);
-	font-size: 0.72rem;
+	font-size: 0.7rem;
 	font-weight: 500;
-	letter-spacing: 0.16em;
+	letter-spacing: 0.14em;
 	text-transform: uppercase;
 }
 
 .marquee {
-	padding-block: 1.5rem;
 	overflow: hidden;
-	border-block: 1px solid var(--line-strong);
 	-webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 	mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
@@ -989,11 +909,21 @@ main,
 	animation: marquee 55s linear infinite;
 }
 
+.marquee:hover .marquee__track {
+	animation-play-state: paused;
+}
+
+@keyframes marquee {
+	to {
+		transform: translateX(-50%);
+	}
+}
+
 .client {
 	display: flex;
 	align-items: center;
-	height: 3.5rem;
-	opacity: 0.7;
+	height: 3.25rem;
+	opacity: 0.62;
 	transition: opacity 200ms ease;
 }
 
@@ -1009,77 +939,17 @@ main,
 	width: auto;
 	max-width: 12rem;
 	object-fit: contain;
-	filter: grayscale(1) contrast(1.1);
-}
-
-:root:not([data-theme="light"]) .client img {
 	filter: grayscale(1) contrast(1.1) invert(1);
 }
 
 .client span {
-	color: var(--ink);
 	font-size: 1.35rem;
 	font-weight: 500;
 	letter-spacing: -0.03em;
 	white-space: nowrap;
 }
 
-@keyframes marquee {
-	to {
-		transform: translateX(-50%);
-	}
-}
-
-.marquee:hover .marquee__track {
-	animation-play-state: paused;
-}
-
-/* ── Secciones: índice y aparición ───────────────────────────────────────
- * Cada bloque lleva un índice mono ("01 — Servicios"). Las piezas aparecen al
- * entrar en el viewport con animaciones ligadas al scroll, sin JavaScript;
- * donde el motor no las soporta, simplemente ya están visibles. */
-
-.section-index {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.75rem;
-	margin-bottom: 1.5rem;
-	color: var(--accent);
-	font-family: var(--font-mono-stack);
-	font-size: 0.72rem;
-	font-weight: 500;
-	letter-spacing: 0.16em;
-	text-transform: uppercase;
-}
-
-.section-index::before {
-	content: "";
-	width: 2rem;
-	height: 1px;
-	background: currentColor;
-}
-
-.section-heading--split {
-	display: grid;
-	grid-template-columns: 1fr;
-	max-width: none;
-}
-
-@media (min-width: 861px) {
-	.section-heading--split {
-		grid-template-columns: 1.1fr 0.9fr;
-		column-gap: clamp(2rem, 6vw, 6rem);
-		align-items: end;
-	}
-
-	.section-heading--split .section-index {
-		grid-column: 1 / -1;
-	}
-
-	.section-heading--split > p:last-child {
-		margin-bottom: 0.4rem;
-	}
-}
+/* ── Aparición al desplazarse ─────────────────────────────────────────── */
 
 @keyframes reveal-up {
 	from {
@@ -1092,207 +962,224 @@ main,
 	.reveal {
 		animation: reveal-up 1s var(--ease-out) both;
 		animation-timeline: view();
-		animation-range: entry 0% entry 35%;
+		animation-range: entry 0% entry 40%;
 	}
 }
 
-/* ── Servicios (bento) ──────────────────────────────────────────────────
- * El FDE es la puerta de entrada y se lleva la tarjeta grande en azul sólido.
- * Los otros tres comparten fila en tarjetas de cristal. */
+/* ── Naming ───────────────────────────────────────────────────────────── */
 
-.bento {
+.manifesto-grid {
+	display: grid;
+	align-items: start;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr);
+	gap: 2rem clamp(2rem, 6vw, 6rem);
+}
+
+.manifesto h2 {
+	margin-bottom: clamp(2rem, 4vw, 3rem);
+	font-size: clamp(2.75rem, 6.6vw, 6.5rem);
+	line-height: 0.95;
+	letter-spacing: -0.05em;
+}
+
+.manifesto h2 .chev {
+	margin-left: 0.18em;
+	color: var(--paper);
+	vertical-align: 0.02em;
+}
+
+.manifesto-body {
+	display: grid;
+	grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+	gap: 2rem clamp(2rem, 5vw, 4rem);
+	align-items: end;
+}
+
+.manifesto-body p {
+	margin: 0;
+	color: var(--ink-soft);
+	font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+	font-weight: 300;
+	line-height: 1.55;
+}
+
+.values {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.values li {
+	padding: 0.45rem 0.85rem;
+	border: 1px solid var(--line-strong);
+	border-radius: 999px;
+	font-family: var(--font-mono-stack);
+	font-size: 0.68rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+/* ── Servicios: cuatro fondos de la paleta ───────────────────────────── */
+
+.tiles {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 1rem;
-	margin-top: clamp(2.5rem, 5vw, 4rem);
 }
 
-.bento-card {
-	position: relative;
+.tile {
 	display: flex;
+	min-height: 30rem;
 	flex-direction: column;
-	gap: 1.1rem;
-	min-height: 24rem;
 	padding: clamp(1.5rem, 3vw, 2.5rem);
-	border: 1px solid var(--line-strong);
-	border-radius: var(--radius-lg);
-	background: color-mix(in srgb, var(--fg) 4%, transparent);
-	transition: transform 420ms var(--ease-out), border-color 260ms ease,
-		background-color 260ms ease;
+	border-radius: 1.25rem;
+	transition: transform 520ms var(--ease-out);
 }
 
-.bento-card::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-	border-radius: inherit;
-	pointer-events: none;
-	background: radial-gradient(
-		30rem 14rem at var(--mx, 50%) var(--my, 0%),
-		color-mix(in srgb, var(--blue) 18%, transparent),
-		transparent 70%
-	);
-	opacity: 0;
-	transition: opacity 320ms ease;
-}
-
-.bento-card:hover,
-.bento-card:focus-within {
-	border-color: color-mix(in srgb, var(--fg) 40%, transparent);
-}
-
-.bento-card:hover::after,
-.bento-card:focus-within::after {
-	opacity: 1;
-}
-
-@media (hover: hover) and (pointer: fine) {
-	.bento-card:hover {
-		transform: translateY(-4px);
-	}
-}
-
-.bento-card > * {
-	position: relative;
-	z-index: 1;
-}
-
-.bento-card__top {
+.tile__top {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-}
-
-.bento-card__index {
-	color: var(--accent);
+	margin-bottom: auto;
+	padding-bottom: 3rem;
+	color: var(--ink-muted);
 	font-family: var(--font-mono-stack);
-	font-size: 0.72rem;
-	font-weight: 500;
-	letter-spacing: 0.16em;
+	font-size: 0.75rem;
+	letter-spacing: 0.1em;
 }
 
-.bento-card__icon {
-	display: grid;
-	width: 2.5rem;
-	height: 2.5rem;
-	place-items: center;
-	border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent);
-	border-radius: 999px;
+.tile__top .chev {
 	color: var(--accent);
+	font-size: 1.4rem;
 }
 
-.bento-card__icon svg {
-	width: 1.05rem;
-	height: 1.05rem;
+.tile h3 {
+	max-width: 16ch;
+	margin-bottom: 1rem;
+	font-size: clamp(1.75rem, 2.8vw, 2.6rem);
+	line-height: 1;
+	letter-spacing: -0.04em;
 }
 
-.bento-card h3 {
-	margin: 0;
-	max-width: 18ch;
-	font-size: clamp(1.6rem, 2.6vw, 2.4rem);
-	font-weight: 500;
-	line-height: 1.08;
-	letter-spacing: -0.03em;
-}
-
-.bento-card__body {
-	margin: 0;
+.tile__body {
 	max-width: 34rem;
+	margin: 0 0 1.75rem;
 	color: var(--ink-soft);
-	font-size: clamp(0.98rem, 1.2vw, 1.08rem);
-	line-height: 1.6;
+	font-size: 1.05rem;
+	line-height: 1.55;
 }
 
-.bento-card__meta {
+.tile__meta {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 1rem 1.5rem;
-	margin: auto 0 0;
-	padding-top: 1.1rem;
-	border-top: 1px solid var(--line);
+	gap: 1.25rem;
+	margin: 0 0 2rem;
+	padding-top: 1.25rem;
+	border-top: 1px solid var(--line-strong);
 }
 
-.bento-card__meta dt {
-	margin-bottom: 0.3rem;
-	color: var(--accent);
+.tile__meta dt {
+	margin-bottom: 0.4rem;
+	color: var(--ink-muted);
 	font-family: var(--font-mono-stack);
-	font-size: 0.66rem;
-	font-weight: 500;
+	font-size: 0.65rem;
 	letter-spacing: 0.12em;
 	text-transform: uppercase;
 }
 
-.bento-card__meta dd {
+.tile__meta dd {
 	margin: 0;
 	color: var(--ink-soft);
 	font-size: 0.88rem;
-	line-height: 1.55;
+	line-height: 1.5;
 }
 
-.bento-card__meta div:last-child dd {
-	color: var(--ink);
+.tile__cta {
+	display: inline-flex;
+	align-self: flex-start;
+	align-items: center;
+	gap: 0.75rem;
+	min-height: 2.75rem;
 	font-weight: 500;
 }
 
-.bento-card__cta {
-	display: inline-flex;
-	align-items: center;
-	align-self: flex-start;
-	gap: 0.45rem;
-	min-height: 2.5rem;
-	color: var(--fg);
-	font-size: 0.86rem;
-	font-weight: 700;
+.tile__cta span {
+	display: inline-grid;
+	width: 2.5rem;
+	height: 2.5rem;
+	place-items: center;
+	border: 1px solid var(--line-strong);
+	border-radius: 999px;
+	transition: transform 420ms var(--ease-out), background 180ms ease,
+		color 180ms ease;
 }
 
-.bento-card__cta svg {
+.tile__cta svg {
 	width: 1rem;
 	height: 1rem;
-	transition: transform 280ms var(--ease-out);
 }
 
-.bento-card__cta:hover svg {
-	transform: translate(0.2rem, -0.2rem);
+@media (hover: hover) and (pointer: fine) {
+	.tile:hover {
+		transform: translateY(-0.35rem);
+	}
+
+	.tile:hover .tile__cta span {
+		color: var(--bg);
+		background: var(--fg);
+		transform: rotate(45deg);
+	}
 }
 
 /* ── Método ───────────────────────────────────────────────────────────── */
 
-.process-steps {
+.steps {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 1rem;
-	margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+	gap: clamp(1.5rem, 4vw, 3.5rem);
+	margin: 0;
 	padding: 0;
 	list-style: none;
-	counter-reset: step;
 }
 
-.process-steps li {
+.steps li {
 	position: relative;
-	padding: 2rem 0 0;
+	padding-top: 1.75rem;
 	border-top: 1px solid var(--line-strong);
 }
 
-.process-step__num {
+.step__num {
 	display: block;
-	margin-bottom: clamp(2rem, 5vw, 4rem);
+	margin-bottom: clamp(2.5rem, 5vw, 4rem);
 	color: var(--accent);
-	font-size: clamp(3rem, 6vw, 5.5rem);
+	font-size: clamp(3.5rem, 7vw, 6rem);
 	font-weight: 500;
 	line-height: 0.85;
-	letter-spacing: -0.05em;
-	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.06em;
 }
 
-.process-steps h3 {
-	margin: 0 0 0.6rem;
-	font-size: clamp(1.35rem, 2vw, 1.75rem);
-	font-weight: 500;
+/* Entre paso y paso, la flecha de la marca marca la dirección. */
+.steps li:not(:last-child)::after {
+	content: "";
+	position: absolute;
+	top: -0.62rem;
+	right: calc(clamp(1.5rem, 4vw, 3.5rem) / -2 - 0.5rem);
+	width: 1rem;
+	height: 1.2rem;
+	background: var(--accent);
+	clip-path: polygon(0 0, 46% 0, 100% 50%, 46% 100%, 0 100%, 50% 50%);
+}
+
+.steps h3 {
+	margin-bottom: 0.85rem;
+	font-size: clamp(1.4rem, 2vw, 1.75rem);
 	letter-spacing: -0.03em;
 }
 
-.process-steps p {
-	max-width: 28rem;
+.steps p {
 	margin: 0;
 	color: var(--ink-soft);
 	line-height: 1.6;
@@ -1302,137 +1189,133 @@ main,
 
 .faq-grid {
 	display: grid;
-	grid-template-columns: 0.8fr 1.2fr;
-	gap: clamp(2.5rem, 7vw, 7rem);
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+	gap: clamp(2.5rem, 6vw, 6rem);
 	align-items: start;
 }
 
 .faq-grid .section-heading {
 	position: sticky;
-	top: 7rem;
-}
-
-.faq-list {
-	border-top: 1px solid var(--line-strong);
-	counter-reset: faq;
+	top: 8rem;
+	margin-bottom: 0;
 }
 
 .faq-list details {
+	border-top: 1px solid var(--line-strong);
+}
+
+.faq-list details:last-child {
 	border-bottom: 1px solid var(--line-strong);
 }
 
 .faq-list summary {
-	display: grid;
-	grid-template-columns: auto 1fr auto;
-	gap: 1.5rem;
+	display: flex;
 	align-items: center;
-	min-height: 4.5rem;
-	padding: 1.1rem 0;
-	font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+	justify-content: space-between;
+	gap: 1.5rem;
+	min-height: 5rem;
+	padding: 1.25rem 0;
+	font-size: clamp(1.1rem, 1.6vw, 1.35rem);
 	font-weight: 500;
-	letter-spacing: -0.015em;
+	letter-spacing: -0.02em;
 	list-style: none;
 	cursor: pointer;
-	transition: color 180ms ease;
-}
-
-.faq-list summary::before {
-	counter-increment: faq;
-	content: "0" counter(faq);
-	color: var(--accent);
-	font-family: var(--font-mono-stack);
-	font-size: 0.72rem;
-	font-weight: 500;
-	letter-spacing: 0.14em;
 }
 
 .faq-list summary::-webkit-details-marker {
 	display: none;
 }
 
-.faq-list summary:hover {
-	color: var(--accent);
-}
-
 .faq-list summary svg {
-	width: 1.1rem;
-	height: 1.1rem;
-	color: var(--accent);
-	transition: transform 300ms var(--ease-out);
+	flex: 0 0 auto;
+	width: 2.5rem;
+	height: 2.5rem;
+	padding: 0.65rem;
+	border: 1px solid var(--line-strong);
+	border-radius: 999px;
+	transition: transform 360ms var(--ease-out), background 180ms ease,
+		color 180ms ease;
 }
 
 .faq-list details[open] summary svg {
+	color: var(--paper);
+	background: var(--accent);
+	border-color: var(--accent);
 	transform: rotate(45deg);
 }
 
 .faq-list details p {
-	max-width: 62ch;
-	margin: -0.25rem 0 1.5rem;
-	padding-left: calc(1.35rem + 1.5rem);
+	max-width: 40rem;
+	margin: 0;
+	padding: 0 3.5rem 1.75rem 0;
 	color: var(--ink-soft);
-	line-height: 1.7;
+	line-height: 1.65;
 }
 
-/* Apertura animada donde el motor la soporta; donde no, el acordeón nativo
- * sigue funcionando exactamente igual. */
 @supports (interpolate-size: allow-keywords) {
-	:root {
+	.faq-list {
 		interpolate-size: allow-keywords;
 	}
 
 	.faq-list details::details-content {
-		block-size: 0;
-		overflow: hidden;
-		transition: block-size 380ms var(--ease-out-soft), content-visibility 380ms
+		height: 0;
+		overflow: clip;
+		transition: height 420ms var(--ease-out), content-visibility 420ms
 			allow-discrete;
 	}
 
 	.faq-list details[open]::details-content {
-		block-size: auto;
+		height: auto;
 	}
 }
 
 /* ── Contacto (sección) ───────────────────────────────────────────────── */
 
 .contact {
-	background: linear-gradient(
-		145deg,
-		color-mix(in srgb, var(--blue) 10%, var(--bg)),
-		color-mix(in srgb, var(--blue) 20%, var(--bg))
-	);
+	overflow: clip;
 }
 
-/* Sobre negro el azul eléctrico necesita más carga para leerse como azul. */
-:root:not([data-theme="light"]) .contact {
-	background: linear-gradient(
-		145deg,
-		color-mix(in srgb, var(--blue) 26%, var(--bg)),
-		color-mix(in srgb, var(--blue) 50%, var(--bg))
-	);
+/* El isotipo enorme, en tinta casi invisible, empuja hacia la derecha. */
+.contact::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: -8rem;
+	width: clamp(22rem, 48vw, 44rem);
+	aspect-ratio: 0.84;
+	background: color-mix(in srgb, var(--paper) 7%, transparent);
+	clip-path: polygon(0 0, 46% 0, 100% 50%, 46% 100%, 0 100%, 50% 50%);
+	transform: translateY(-50%);
+	pointer-events: none;
+}
+
+.contact-intro {
+	position: relative;
+	z-index: 1;
 }
 
 .contact-copy {
-	max-width: 46rem;
+	max-width: 52rem;
 }
 
 .contact-copy h2 {
-	margin-bottom: 1.35rem;
-	font-size: clamp(3.25rem, 9vw, 8.5rem);
-	font-weight: 500;
-	line-height: 0.92;
-	letter-spacing: -0.05em;
+	margin-bottom: 1.5rem;
+	font-size: clamp(4rem, 13vw, 12rem);
+	line-height: 0.88;
+	letter-spacing: -0.06em;
 }
 
 .contact-copy > p {
-	max-width: 38rem;
+	max-width: 36rem;
 	margin: 0;
 	color: var(--ink-soft);
-	font-size: clamp(1rem, 1.5vw, 1.18rem);
-	line-height: 1.7;
+	font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+	font-weight: 300;
+	line-height: 1.55;
 }
 
 .contact-open {
-	margin-top: 2rem;
+	margin-top: 2.5rem;
 }
 
 /* ── Contacto (panel lateral) ─────────────────────────────────────────────
@@ -2122,42 +2005,39 @@ main,
 /* ── Pie ──────────────────────────────────────────────────────────────── */
 
 .site-footer {
-	padding: clamp(3.5rem, 6vw, 4.75rem) 0 1.5rem;
+	padding: clamp(4rem, 7vw, 6rem) 0 1.5rem;
+	overflow: clip;
 	color: var(--ink-soft);
-	background: linear-gradient(
-		180deg,
-		var(--bg) 0%,
-		color-mix(in srgb, var(--blue) 12%, var(--bg)) 100%
-	);
-}
-
-:root:not([data-theme="light"]) .site-footer {
-	background: linear-gradient(
-		180deg,
-		var(--bg) 0%,
-		color-mix(in srgb, var(--blue) 18%, var(--bg)) 100%
-	);
 }
 
 .footer-grid {
 	display: grid;
-	grid-template-columns: minmax(18rem, 1.5fr) 1fr 1.15fr;
+	grid-template-columns: minmax(18rem, 1.6fr) 1fr 1.15fr;
 	gap: clamp(2rem, 5vw, 4rem);
 }
 
+.footer-brand .brand-logo {
+	width: 9.5rem;
+}
+
 .footer-brand p {
-	max-width: 28rem;
-	margin: 1.25rem 0 0;
-	color: var(--ink-soft);
-	line-height: 1.65;
+	max-width: 26rem;
+	margin: 1.5rem 0 0;
+	color: var(--ink);
+	font-size: clamp(1.25rem, 2vw, 1.6rem);
+	font-weight: 500;
+	line-height: 1.2;
+	letter-spacing: -0.03em;
 }
 
 .footer-brand .footer-legal-entity {
 	max-width: 32rem;
-	margin-top: 0.85rem;
-	color: color-mix(in srgb, var(--fg) 58%, transparent);
+	margin-top: 1rem;
+	color: var(--ink-muted);
 	font-size: 0.74rem;
+	font-weight: 400;
 	line-height: 1.55;
+	letter-spacing: 0;
 }
 
 .site-footer nav,
@@ -2165,16 +2045,16 @@ main,
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	gap: 0.7rem;
+	gap: 0.6rem;
 	font-style: normal;
 }
 
 .site-footer nav strong,
 .footer-contact strong {
-	margin-bottom: 0.35rem;
-	color: var(--fg);
+	margin-bottom: 0.5rem;
+	color: var(--accent);
 	font-family: var(--font-mono-stack);
-	font-size: 0.7rem;
+	font-size: 0.68rem;
 	font-weight: 500;
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
@@ -2185,7 +2065,7 @@ main,
 .footer-contact span {
 	min-height: 2rem;
 	color: var(--ink-soft);
-	font-size: 0.9rem;
+	font-size: 0.95rem;
 	line-height: 1.55;
 	transition: color 160ms ease;
 }
@@ -2195,28 +2075,19 @@ main,
 	color: var(--fg);
 }
 
-/* Teléfono y correo son la conversión de reserva del pie: merecen peso. */
 .footer-contact a {
-	font-weight: 620;
+	font-weight: 500;
 }
 
-/* El nombre a página completa, fundido hacia el suelo. */
+/* El logotipo a ancho completo, en tinta apenas visible. */
 .footer-wordmark {
-	margin: clamp(3rem, 8vw, 6rem) 0 0;
-	font-size: clamp(4.5rem, 19.5vw, 19rem);
-	font-weight: 500;
-	line-height: 0.78;
-	letter-spacing: -0.06em;
-	text-align: center;
-	color: transparent;
-	background: linear-gradient(
-		180deg,
-		color-mix(in srgb, var(--fg) 34%, transparent),
-		color-mix(in srgb, var(--fg) 4%, transparent)
-	);
-	-webkit-background-clip: text;
-	background-clip: text;
+	margin: clamp(3.5rem, 8vw, 6rem) 0 0;
+	color: color-mix(in srgb, var(--paper) 9%, transparent);
 	user-select: none;
+}
+
+.footer-wordmark .brand-logo {
+	width: 100%;
 }
 
 .footer-bottom {
@@ -2225,8 +2096,8 @@ main,
 	gap: 2rem;
 	margin-top: 1.5rem;
 	padding-top: 1.5rem;
-	border-top: 1px solid color-mix(in srgb, var(--fg) 17%, transparent);
-	color: color-mix(in srgb, var(--fg) 58%, transparent);
+	border-top: 1px solid var(--line);
+	color: var(--ink-muted);
 	font-size: 0.76rem;
 }
 
@@ -2272,7 +2143,6 @@ main,
 	display: none;
 }
 
-/* El CTA fijo no debe interceptar los campos mientras contacto está visible. */
 .mobile-cta[hidden] {
 	display: none;
 }
@@ -2565,11 +2435,6 @@ main,
 /* ── Adaptación ───────────────────────────────────────────────────────── */
 
 @media (max-width: 1100px) {
-	.faq-grid {
-		grid-template-columns: 1fr;
-		gap: 2.5rem;
-	}
-
 	.footer-grid {
 		grid-template-columns: 1fr 1fr;
 	}
@@ -2588,6 +2453,16 @@ main,
 		display: inline-flex;
 	}
 
+	.header-shell {
+		grid-template-columns: auto 1fr auto;
+		border-radius: 1.25rem;
+	}
+
+	.header-actions {
+		justify-self: end;
+	}
+
+	.header-actions .language-toggle,
 	.header-cta {
 		display: none;
 	}
@@ -2598,25 +2473,62 @@ main,
 		scroll-padding-top: 6rem;
 	}
 
+	.hero {
+		min-height: 0;
+		padding-top: 8rem;
+	}
+
+	/* En móvil el isotipo pasa a ser fondo: grande, detrás y sin robar sitio. */
 	.hero-grid {
+		position: relative;
 		grid-template-columns: 1fr;
 	}
 
-	.hero-facts span {
-		text-align: left;
+	.hero-copy {
+		position: relative;
+		z-index: 1;
 	}
 
-	.bento,
-	.process-steps {
+	.hero-mark {
+		position: absolute;
+		top: -3rem;
+		right: -6rem;
+		width: 17rem;
+		opacity: 0.45;
+	}
+
+	.hero-facts li + li {
+		padding-left: 0;
+		border-left: 0;
+		border-top: 1px solid var(--line-strong);
+	}
+
+	.section-heading--split,
+	.manifesto-grid,
+	.manifesto-body,
+	.faq-grid {
 		grid-template-columns: 1fr;
 	}
 
-	.bento-card {
+	.tiles,
+	.steps {
+		grid-template-columns: 1fr;
+	}
+
+	.tile {
 		min-height: 0;
 	}
 
-	.bento-card__meta {
+	.tile__meta {
 		grid-template-columns: 1fr;
+	}
+
+	.steps li:not(:last-child)::after {
+		display: none;
+	}
+
+	.step__num {
+		margin-bottom: 1.5rem;
 	}
 
 	.faq-grid .section-heading {
@@ -2624,7 +2536,7 @@ main,
 	}
 
 	.faq-list details p {
-		padding-left: 0;
+		padding-right: 0;
 	}
 
 	.mobile-cta {
@@ -2632,7 +2544,7 @@ main,
 	}
 
 	.site-footer {
-		padding-bottom: 5rem;
+		padding-bottom: 5.5rem;
 	}
 
 	.footer-bottom {
@@ -2671,7 +2583,7 @@ main,
 		grid-template-columns: 1fr;
 	}
 
-	.button-group .button {
+	.hero .button-group .button {
 		flex: 1 1 100%;
 	}
 }
@@ -2681,18 +2593,13 @@ main,
 /* biome-ignore lint/correctness/noUnknownMediaFeatureName: implementado por Safari, se mantiene como mejora progresiva */
 @media (prefers-reduced-transparency: reduce) {
 	.header-shell,
-	.button,
+	.mobile-menu,
 	.menu-toggle,
 	.language-toggle a[aria-current="page"],
 	.need-chip input:checked + label {
-		background: color-mix(in srgb, var(--blue) 30%, var(--bg));
+		background: var(--night);
 		-webkit-backdrop-filter: none;
 		backdrop-filter: none;
-	}
-
-	.button--primary {
-		color: var(--bg);
-		background: var(--fg);
 	}
 }
 
@@ -2710,24 +2617,21 @@ main,
 		scroll-behavior: auto !important;
 	}
 
-	.hero-grid > *,
-	.hero-kicker__dot,
+	.hero-copy > *,
+	.hero-iso path,
+	.hero-mark::before,
 	.marquee__track,
 	.reveal {
 		animation: none;
 	}
 
-	.button:hover,
 	.button:active,
-	.menu-toggle:hover,
-	.contact-drawer__close:hover,
-	.need-chip input:active + label,
-	.bento-card:hover,
-	.bento-card__cta:hover svg {
+	.tile:hover,
+	.button:hover .button__icon,
+	.tile:hover .tile__cta span {
 		transform: none;
 	}
 
-	/* El panel sigue apareciendo, pero como fundido en lugar de deslizamiento. */
 	.contact-drawer[data-state="open"] {
 		animation-name: fade-in;
 	}

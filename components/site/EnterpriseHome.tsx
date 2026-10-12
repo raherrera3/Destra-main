@@ -1,20 +1,10 @@
 "use client";
 
-import {
-	ArrowDown,
-	ArrowUpRight,
-	Blocks,
-	Bot,
-	CircleHelp,
-	type LucideIcon,
-	Network,
-	Plus,
-	ShieldCheck,
-} from "lucide-react";
+import { ArrowUpRight, Plus } from "lucide-react";
 import Link from "next/link";
+import { Isotipo } from "./BrandLogo";
 import ContactExperience from "./ContactExperience";
 import { useLocale } from "./LocaleProvider";
-import type { NeedValue } from "./contactSchema";
 
 function accentWord(text: string, word: string) {
 	const index = text.indexOf(word);
@@ -25,6 +15,15 @@ function accentWord(text: string, word: string) {
 			<span className="accent-text">{word}</span>
 			{text.slice(index + word.length)}
 		</>
+	);
+}
+
+function Eyebrow({ index, children }: { index: string; children: string }) {
+	return (
+		<p className="eyebrow">
+			<b>{index}.</b>
+			<span>{children}</span>
+		</p>
 	);
 }
 
@@ -41,50 +40,53 @@ const clients: Array<{ name: string; logo?: string }> = [
 	{ name: "Larson Martin", logo: "larson-martin.png" },
 ];
 
-const serviceIcons: Record<NeedValue, LucideIcon> = {
-	fde: Bot,
-	solution: Blocks,
-	architecture: Network,
-	private: ShieldCheck,
-	unclear: CircleHelp,
-};
+// Un fondo de la paleta por servicio, como la página «Fondos» del manual.
+const tileTones = ["electric", "deep", "sky", "night"] as const;
 
 export default function EnterpriseHome() {
 	const { copy, locale } = useLocale();
 
 	return (
 		<>
-			<section className="hero section" aria-labelledby="hero-title">
-				<div className="hero-glow" aria-hidden="true" />
+			<section
+				className="hero section band band--night"
+				aria-labelledby="hero-title"
+			>
 				<div className="container hero-grid">
-					<p className="hero-kicker">
-						<span className="hero-kicker__dot" aria-hidden="true" />
-						{copy.hero.kicker}
-					</p>
-					<h1 id="hero-title">
-						{accentWord(copy.hero.title, locale === "es" ? "IA" : "AI")}
-					</h1>
-					<div className="hero-aside">
+					<div className="hero-copy">
+						<p className="eyebrow">
+							<b className="chev" aria-hidden="true" />
+							<span>{copy.hero.kicker}</span>
+						</p>
+						<h1 id="hero-title">
+							{accentWord(copy.hero.title, copy.hero.titleAccent)}
+						</h1>
 						<p className="hero-lead">{copy.hero.lead}</p>
 						<div className="button-group">
 							<Link className="button button--primary" href="#contacto">
-								{copy.hero.primary} <ArrowUpRight aria-hidden />
+								{copy.hero.primary}
+								<span className="button__icon">
+									<ArrowUpRight aria-hidden />
+								</span>
 							</Link>
 							<Link className="button button--secondary" href="#servicios">
-								{copy.hero.secondary} <ArrowDown aria-hidden />
+								{copy.hero.secondary}
 							</Link>
 						</div>
 						<p className="microcopy">{copy.hero.reassurance}</p>
 					</div>
-					<ul className="hero-facts">
-						{copy.hero.facts.map((fact) => (
-							<li key={fact.label}>
-								<strong>{fact.value}</strong>
-								<span>{fact.label}</span>
-							</li>
-						))}
-					</ul>
+					<div className="hero-mark">
+						<Isotipo className="hero-iso" />
+					</div>
 				</div>
+				<ul className="container hero-facts">
+					{copy.hero.facts.map((fact) => (
+						<li key={fact.label}>
+							<strong>{fact.value}</strong>
+							<span>{fact.label}</span>
+						</li>
+					))}
+				</ul>
 				<div className="clients">
 					<p className="clients__title container">{copy.clients}</p>
 					<div className="marquee">
@@ -101,7 +103,7 @@ export default function EnterpriseHome() {
 											src={`/logos/${client.logo}`}
 											alt={client.name}
 											loading="lazy"
-											height="56"
+											height="52"
 										/>
 									) : (
 										<span>{client.name}</span>
@@ -114,72 +116,93 @@ export default function EnterpriseHome() {
 			</section>
 
 			<section
-				className="section services"
-				id="servicios"
-				aria-labelledby="services-title"
+				className="section manifesto band band--deep"
+				aria-labelledby="manifesto-title"
 			>
-				<div className="container">
-					<header className="section-heading section-heading--split reveal">
-						<span className="section-index">01 — {copy.services.title}</span>
-						<h2 id="services-title">{copy.services.headline}</h2>
-						<p>{copy.services.lead}</p>
-					</header>
-					<div className="bento">
-						{copy.services.items.map((item, index) => {
-							const ServiceIcon = serviceIcons[item.intent];
-							return (
-								<article
-									className="bento-card reveal"
-									id={`servicio-${item.intent}`}
-									key={item.title}
-								>
-									<div className="bento-card__top">
-										<span className="bento-card__index">0{index + 1}</span>
-										<span className="bento-card__icon" aria-hidden="true">
-											<ServiceIcon />
-										</span>
-									</div>
-									<h3>{item.title}</h3>
-									<p className="bento-card__body">{item.body}</p>
-									<dl className="bento-card__meta">
-										<div>
-											<dt>{copy.services.labels.audience}</dt>
-											<dd>{item.audience}</dd>
-										</div>
-										<div>
-											<dt>{copy.services.labels.model}</dt>
-											<dd>{item.model}</dd>
-										</div>
-									</dl>
-									<Link
-										className="bento-card__cta"
-										href="#contacto"
-										data-intent={item.intent}
-									>
-										{item.cta} <ArrowUpRight aria-hidden />
-									</Link>
-								</article>
-							);
-						})}
+				<div className="container manifesto-grid">
+					<Eyebrow index="01">{copy.manifesto.label}</Eyebrow>
+					<div className="reveal">
+						<h2 id="manifesto-title">
+							{accentWord(copy.manifesto.title, copy.manifesto.titleAccent)}
+							<span className="chev" aria-hidden="true" />
+						</h2>
+						<div className="manifesto-body">
+							<p>{copy.manifesto.body}</p>
+							<ul className="values">
+								{copy.manifesto.values.map((value) => (
+									<li key={value}>{value}</li>
+								))}
+							</ul>
+						</div>
 					</div>
 				</div>
 			</section>
 
 			<section
-				className="section process"
+				className="section services band band--paper"
+				id="servicios"
+				aria-labelledby="services-title"
+			>
+				<div className="container">
+					<header className="section-heading section-heading--split reveal">
+						<Eyebrow index="02">{copy.services.title}</Eyebrow>
+						<h2 id="services-title">{copy.services.headline}</h2>
+						<p>{copy.services.lead}</p>
+					</header>
+					<div className="tiles">
+						{copy.services.items.map((item, index) => (
+							<article
+								className={`tile band band--${tileTones[index]} reveal`}
+								id={`servicio-${item.intent}`}
+								key={item.title}
+							>
+								<div className="tile__top">
+									<span>0{index + 1}</span>
+									<span className="chev" aria-hidden="true" />
+								</div>
+								<h3>{item.title}</h3>
+								<p className="tile__body">{item.body}</p>
+								<dl className="tile__meta">
+									<div>
+										<dt>{copy.services.labels.audience}</dt>
+										<dd>{item.audience}</dd>
+									</div>
+									<div>
+										<dt>{copy.services.labels.model}</dt>
+										<dd>{item.model}</dd>
+									</div>
+								</dl>
+								<Link
+									className="tile__cta"
+									href="#contacto"
+									data-intent={item.intent}
+								>
+									{item.cta}
+									<span>
+										<ArrowUpRight aria-hidden />
+									</span>
+								</Link>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section
+				className="section process band band--ice"
 				id="metodo"
 				aria-labelledby="process-title"
 			>
 				<div className="container">
 					<header className="section-heading section-heading--split reveal">
-						<span className="section-index">02 — {copy.process.title}</span>
+						<Eyebrow index="03">{copy.process.title}</Eyebrow>
 						<h2 id="process-title">{copy.process.headline}</h2>
 						<p>{copy.process.lead}</p>
 					</header>
-					<ol className="process-steps">
+					<ol className="steps">
 						{copy.process.steps.map((step, index) => (
 							<li className="reveal" key={step.title}>
-								<span className="process-step__num" aria-hidden="true">
+								<span className="step__num" aria-hidden="true">
 									0{index + 1}
 								</span>
 								<h3>{step.title}</h3>
@@ -190,10 +213,14 @@ export default function EnterpriseHome() {
 				</div>
 			</section>
 
-			<section className="section faq" id="faq" aria-labelledby="faq-title">
+			<section
+				className="section faq band band--snow"
+				id="faq"
+				aria-labelledby="faq-title"
+			>
 				<div className="container faq-grid">
 					<header className="section-heading reveal">
-						<span className="section-index">03 — FAQ</span>
+						<Eyebrow index="04">FAQ</Eyebrow>
 						<h2 id="faq-title">
 							{accentWord(
 								copy.faq.title,
