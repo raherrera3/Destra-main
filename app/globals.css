@@ -1534,40 +1534,6 @@ main,
 
 /* ── Contacto (sección) ───────────────────────────────────────────────── */
 
-.contact {
-	overflow: clip;
-}
-
-/* En oscuro el azul entra y sale fundido con el suelo, sin cortes. */
-:root:not([data-theme="light"]) .contact.band {
-	background: linear-gradient(
-		180deg,
-		transparent 0%,
-		var(--electric) 24%,
-		var(--electric) 72%,
-		transparent 100%
-	);
-}
-
-/* El isotipo enorme, en tinta casi invisible, empuja hacia la derecha. */
-.contact::after {
-	content: "";
-	position: absolute;
-	top: 50%;
-	right: -8rem;
-	width: clamp(22rem, 48vw, 44rem);
-	aspect-ratio: 0.84;
-	background: color-mix(in srgb, var(--paper) 7%, transparent);
-	clip-path: polygon(0 0, 46% 0, 100% 50%, 46% 100%, 0 100%, 50% 50%);
-	transform: translateY(-50%);
-	pointer-events: none;
-}
-
-.contact-intro {
-	position: relative;
-	z-index: 1;
-}
-
 .contact-copy {
 	max-width: 52rem;
 }
