@@ -2,6 +2,7 @@
 
 import { ArrowDown, ArrowUpRight, Plus } from "lucide-react";
 import Link from "next/link";
+import { Isotipo } from "./BrandLogo";
 import ContactExperience from "./ContactExperience";
 import { useLocale } from "./LocaleProvider";
 
@@ -42,7 +43,6 @@ export default function EnterpriseHome() {
 				<div className="hero-glow" aria-hidden="true" />
 				<div className="container hero-grid">
 					<p className="hero-kicker">
-						<span className="hero-kicker__dot" aria-hidden="true" />
 						{copy.hero.kicker}
 					</p>
 					<h1 id="hero-title">
@@ -98,16 +98,13 @@ export default function EnterpriseHome() {
 			</section>
 
 			<section
-				className="section services band band--paper"
+				className="section services"
 				id="servicios"
 				aria-labelledby="services-title"
 			>
 				<div className="container">
-					<header className="services-heading reveal">
-						<p className="eyebrow">
-							<b>01.</b>
-							<span>{copy.services.title}</span>
-						</p>
+					<header className="section-heading section-heading--split reveal">
+						<span className="section-index">01. {copy.services.title}</span>
 						<h2 id="services-title">{copy.services.headline}</h2>
 						<p>{copy.services.lead}</p>
 					</header>
@@ -120,7 +117,7 @@ export default function EnterpriseHome() {
 							>
 								<div className="tile__top">
 									<span>0{index + 1}</span>
-									<span className="chev" aria-hidden="true" />
+									<Isotipo className="tile__iso" solid={tileTones[index] !== "night"} />
 								</div>
 								<h3>{item.title}</h3>
 								<p className="tile__body">{item.body}</p>
@@ -157,7 +154,7 @@ export default function EnterpriseHome() {
 			>
 				<div className="container">
 					<header className="section-heading section-heading--split reveal">
-						<span className="section-index">02 — {copy.process.title}</span>
+						<span className="section-index">02. {copy.process.title}</span>
 						<h2 id="process-title">{copy.process.headline}</h2>
 						<p>{copy.process.lead}</p>
 					</header>
@@ -178,7 +175,7 @@ export default function EnterpriseHome() {
 			<section className="section faq" id="faq" aria-labelledby="faq-title">
 				<div className="container faq-grid">
 					<header className="section-heading reveal">
-						<span className="section-index">03 — FAQ</span>
+						<span className="section-index">03. FAQ</span>
 						<h2 id="faq-title">
 							{accentWord(
 								copy.faq.title,

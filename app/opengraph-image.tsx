@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "DESTRA — IA diseñada para operar en tu empresa";
+export const alt = "DESTRA | IA diseñada para operar en tu empresa";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

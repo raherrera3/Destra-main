@@ -800,7 +800,7 @@ main,
 .hero {
 	position: relative;
 	isolation: isolate;
-	padding-top: clamp(8.5rem, 14vw, 13rem);
+	padding-top: clamp(7.75rem, 9vw, 8.5rem);
 	padding-bottom: 0;
 }
 
@@ -845,27 +845,6 @@ main,
 	font: 500 0.72rem / 1.4 var(--font-mono-stack);
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
-}
-
-.hero-kicker__dot {
-	width: 0.5rem;
-	height: 0.5rem;
-	border-radius: 999px;
-	background: var(--blue);
-	box-shadow: 0 0 0 0 color-mix(in srgb, var(--blue) 60%, transparent);
-	animation: kicker-pulse 2.4s var(--ease-out) infinite;
-}
-
-@keyframes kicker-pulse {
-	0% {
-		box-shadow: 0 0 0 0 color-mix(in srgb, var(--blue) 60%, transparent);
-	}
-	70% {
-		box-shadow: 0 0 0 0.7rem transparent;
-	}
-	100% {
-		box-shadow: 0 0 0 0 transparent;
-	}
 }
 
 .hero-grid h1 {
@@ -1044,7 +1023,7 @@ main,
 }
 
 /* ── Secciones: índice y aparición ───────────────────────────────────────
- * Cada bloque lleva un índice mono ("01 — Servicios"). Las piezas aparecen al
+ * Cada bloque lleva un índice mono ("01. Servicios"). Las piezas aparecen al
  * entrar en el viewport con animaciones ligadas al scroll, sin JavaScript;
  * donde el motor no las soporta, simplemente ya están visibles. */
 
@@ -1059,13 +1038,6 @@ main,
 	font-weight: 500;
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
-}
-
-.section-index::before {
-	content: "";
-	width: 2rem;
-	height: 1px;
-	background: currentColor;
 }
 
 .section-heading--split {
@@ -1281,12 +1253,6 @@ main,
 	--accent: var(--deep);
 }
 
-.band--paper {
-	--fg: var(--night);
-	--bg: var(--paper);
-	--accent: var(--electric);
-}
-
 .band {
 	--ink: var(--fg);
 	--ink-soft: color-mix(in srgb, var(--fg) 86%, transparent);
@@ -1298,15 +1264,6 @@ main,
 	position: relative;
 	color: var(--ink);
 	background: var(--bg);
-}
-
-/* El isotipo reducido a su gesto: la flecha que avanza. */
-.chev {
-	display: inline-block;
-	width: 0.62em;
-	height: 0.74em;
-	background: currentColor;
-	clip-path: polygon(0 0, 46% 0, 100% 50%, 46% 100%, 0 100%, 50% 50%);
 }
 
 /* Píldora con la flecha en un círculo, como la maqueta digital del manual. */
@@ -1338,62 +1295,6 @@ main,
 
 /* ── Servicios: cuatro fondos de la paleta ───────────────────────────── */
 
-/* «01. ——— Sección», el índice del manual. */
-.eyebrow {
-	display: flex;
-	grid-column: 1 / -1;
-	align-items: center;
-	gap: 0.85rem;
-	margin: 0 0 0.5rem;
-	color: var(--ink-muted);
-	font-family: var(--font-mono-stack);
-	font-size: 0.6875rem;
-	font-weight: 500;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-}
-
-.eyebrow b {
-	color: var(--accent);
-	font-weight: 500;
-}
-
-.eyebrow::before {
-	content: "";
-	order: 1;
-	width: 2.75rem;
-	height: 1px;
-	background: currentColor;
-}
-
-.eyebrow b + * {
-	order: 2;
-}
-
-.services-heading {
-	display: grid;
-	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-	align-items: end;
-	gap: 1.5rem clamp(2rem, 6vw, 6rem);
-	margin-bottom: clamp(3rem, 6vw, 5rem);
-}
-
-.services-heading h2 {
-	margin-bottom: 0;
-	font-size: clamp(2.5rem, 5.4vw, 5.25rem);
-	font-weight: 500;
-	line-height: 0.96;
-	letter-spacing: -0.045em;
-}
-
-.services-heading > p {
-	margin: 0;
-	color: var(--ink-soft);
-	font-size: clamp(1.05rem, 1.4vw, 1.2rem);
-	font-weight: 300;
-	line-height: 1.55;
-}
-
 .tiles {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1413,7 +1314,6 @@ main,
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: auto;
 	padding-bottom: 3rem;
 	color: var(--ink-muted);
 	font-family: var(--font-mono-stack);
@@ -1421,9 +1321,9 @@ main,
 	letter-spacing: 0.1em;
 }
 
-.tile__top .chev {
-	color: var(--accent);
-	font-size: 1.4rem;
+.tile__iso {
+	width: 1.75rem;
+	height: auto;
 }
 
 .tile h3 {
@@ -1447,7 +1347,7 @@ main,
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 1.25rem;
-	margin: 0 0 2rem;
+	margin: auto 0 2rem;
 	padding-top: 1.25rem;
 	border-top: 1px solid var(--line-strong);
 }
@@ -1506,7 +1406,6 @@ main,
 }
 
 @media (max-width: 860px) {
-	.services-heading,
 	.tiles,
 	.tile__meta {
 		grid-template-columns: 1fr;
@@ -1517,15 +1416,8 @@ main,
 	}
 }
 
-/* En oscuro la banda de papel cortaba la página en dos: la sección se vuelve
- * transparente, deja ver el suelo de siempre y las tarjetas de color flotan
- * sobre él con un filo de luz para que la de Azul Noche no se pierda. */
-:root:not([data-theme="light"]) .services.band {
-	--fg: var(--paper);
-	--accent: var(--sky);
-	background: transparent;
-}
-
+/* En oscuro las tarjetas llevan un filo de luz para que la de Azul Noche no
+ * se pierda contra el fondo. */
 :root:not([data-theme="light"]) .tile {
 	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 14%, transparent),
 		inset 0 0 0 1px color-mix(in srgb, var(--paper) 8%, transparent), 0 1.5rem
@@ -1870,14 +1762,14 @@ main,
 }
 
 .field ::placeholder {
-	color: var(--d-muted);
+	color: color-mix(in srgb, var(--navy) 30%, var(--paper));
 	opacity: 1;
 	transition: color 200ms ease-out;
 }
 
 /* Al enfocar, la pista se retira un paso para dejar sitio a lo que se escribe. */
 .field :focus::placeholder {
-	color: color-mix(in srgb, var(--navy) 46%, var(--paper));
+	color: color-mix(in srgb, var(--navy) 20%, var(--paper));
 }
 
 /* El desplegable sin elegir se lee como placeholder, no como respuesta. */
@@ -2827,7 +2719,6 @@ main,
 	}
 
 	.hero-grid > *,
-	.hero-kicker__dot,
 	.marquee__track,
 	.reveal {
 		animation: none;
