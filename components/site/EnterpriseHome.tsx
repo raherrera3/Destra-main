@@ -2,6 +2,7 @@
 
 import { ArrowDown, ArrowUpRight, Plus } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Isotipo } from "./BrandLogo";
 import ContactExperience from "./ContactExperience";
 import { useLocale } from "./LocaleProvider";
@@ -32,10 +33,38 @@ const clients: Array<{ name: string; logo?: string }> = [
 ];
 
 // Un fondo de la paleta por servicio, como la página «Fondos» del manual.
-const tileTones = ["electric", "deep", "sky", "night"] as const;
+// ponytail: propuestas de color en prueba; al elegir una, dejar solo esa y
+// borrar el selector, el useEffect y las bandas que sobren.
+const tilePalettes = {
+	actual: ["electric", "deep", "sky", "night"],
+	noche: ["night", "night", "night", "night"],
+	profundo: ["deep", "deep", "deep", "deep"],
+	escala: ["night", "deep", "electric", "sky"],
+	destacado: ["electric", "night", "night", "night"],
+	diagonal: ["deep", "sky", "sky", "deep"],
+	hielo: ["ice", "snow", "snow", "ice"],
+	cristal: ["glass", "glass", "glass", "glass"],
+} as const;
+type Palette = keyof typeof tilePalettes;
+const paletteNames = Object.keys(tilePalettes) as Palette[];
 
 export default function EnterpriseHome() {
 	const { copy, locale } = useLocale();
+	const [palette, setPalette] = useState<Palette>("actual");
+	const tileTones = tilePalettes[palette];
+
+	// ?paleta=escala abre directamente una propuesta y se puede compartir.
+	useEffect(() => {
+		const fromUrl = new URLSearchParams(location.search).get("paleta");
+		if (fromUrl && fromUrl in tilePalettes) setPalette(fromUrl as Palette);
+	}, []);
+
+	function choosePalette(next: Palette) {
+		setPalette(next);
+		const url = new URL(location.href);
+		url.searchParams.set("paleta", next);
+		history.replaceState(null, "", url);
+	}
 
 	return (
 		<>
@@ -117,7 +146,10 @@ export default function EnterpriseHome() {
 							>
 								<div className="tile__top">
 									<span>0{index + 1}</span>
-									<Isotipo className="tile__iso" solid={tileTones[index] !== "night"} />
+									<Isotipo
+										className="tile__iso"
+										solid={tileTones[index] !== "night" && tileTones[index] !== "glass"}
+									/>
 								</div>
 								<h3>{item.title}</h3>
 								<p className="tile__body">{item.body}</p>
@@ -142,6 +174,18 @@ export default function EnterpriseHome() {
 									</span>
 								</Link>
 							</article>
+						))}
+					</div>
+					<div className="palette-picker" role="group" aria-label="Propuestas de color">
+						{paletteNames.map((name) => (
+							<button
+								type="button"
+								key={name}
+								aria-pressed={name === palette}
+								onClick={() => choosePalette(name)}
+							>
+								{name}
+							</button>
 						))}
 					</div>
 				</div>

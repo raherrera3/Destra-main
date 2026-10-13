@@ -1266,6 +1266,53 @@ main,
 	background: var(--bg);
 }
 
+.band--ice {
+	--fg: var(--night);
+	--bg: var(--ice);
+	--accent: var(--electric);
+}
+
+.band--snow {
+	--fg: var(--night);
+	--bg: var(--snow);
+	--accent: var(--electric);
+}
+
+/* Cristal: sin color propio, sigue el tema y deja ver el fondo de la página. */
+.band.band--glass {
+	border: 1px solid var(--line-strong);
+	background: var(--glass);
+	backdrop-filter: blur(18px);
+}
+
+/* ponytail: selector temporal de propuestas de color para Servicios. */
+.palette-picker {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.4rem;
+	margin-top: 1.5rem;
+}
+
+.palette-picker button {
+	min-height: 2.25rem;
+	padding: 0 0.9rem;
+	border: 1px solid var(--line-strong);
+	border-radius: 999px;
+	color: var(--ink-soft);
+	background: transparent;
+	font-family: var(--font-mono-stack);
+	font-size: 0.72rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.palette-picker button[aria-pressed="true"] {
+	color: var(--bg);
+	background: var(--fg);
+}
+
 /* Píldora con la flecha en un círculo, como la maqueta digital del manual. */
 .button:has(.button__icon) {
 	padding-right: 0.4rem;
