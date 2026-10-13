@@ -1516,6 +1516,13 @@ main,
 	}
 }
 
+/* spreadit-degradado en oscuro: a medio camino entre el adaptado y el claro. */
+:root:not([data-theme="light"]) .band--spreadit.grad--adapt {
+	--g1: var(--deep);
+	--g2: var(--electric);
+	--g3: color-mix(in srgb, var(--electric) 50%, var(--sky));
+}
+
 /* ponytail: selector temporal de propuestas de color para Servicios. */
 .palette-picker {
 	display: flex;
