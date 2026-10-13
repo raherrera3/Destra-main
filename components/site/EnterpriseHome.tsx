@@ -42,6 +42,11 @@ const tilePalettes = {
 	"degradado-intenso": Array(4).fill("band--gradient grad--bold"),
 	"degradado-vertical": Array(4).fill("band--gradient grad--vertical"),
 	"degradado-adaptado": Array(4).fill("band--gradient grad--adapt"),
+	neon: Array(4).fill("band--neon band--glow"),
+	"neon-cielo": Array(4).fill("band--neon band--glow glow--sky"),
+	"neon-degradado": Array(4).fill(
+		"band--gradient grad--adapt band--glow glow--sky",
+	),
 } as const;
 type Palette = keyof typeof tilePalettes;
 const paletteNames = Object.keys(tilePalettes) as Palette[];
