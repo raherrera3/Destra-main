@@ -1580,6 +1580,10 @@ main,
 
 /* ── Servicios: cuatro fondos de la paleta ───────────────────────────── */
 
+.services .section-heading {
+	margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
 .tiles {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
