@@ -2,7 +2,6 @@
 
 import { ArrowDown, ArrowUpRight, Plus } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { Isotipo } from "./BrandLogo";
 import ContactExperience from "./ContactExperience";
 import { useLocale } from "./LocaleProvider";
@@ -32,41 +31,8 @@ const clients: Array<{ name: string; logo?: string }> = [
 	{ name: "Larson Martin", logo: "larson-martin.png" },
 ];
 
-// Un fondo de la paleta por servicio, como la página «Fondos» del manual.
-// ponytail: propuestas de color en prueba; al elegir una, dejar solo esa y
-// borrar el selector, el useEffect y las bandas que sobren.
-const tilePalettes = {
-	actual: ["band--electric", "band--deep", "band--sky", "band--night"],
-	degradado: Array(4).fill("band--gradient"),
-	"degradado-suave": Array(4).fill("band--gradient grad--soft"),
-	"degradado-intenso": Array(4).fill("band--gradient grad--bold"),
-	"degradado-vertical": Array(4).fill("band--gradient grad--vertical"),
-	"degradado-adaptado": Array(4).fill("band--gradient grad--adapt"),
-	spreadit: Array(4).fill("band--spreadit"),
-	"spreadit-degradado": Array(4).fill(
-		"band--gradient grad--adapt band--spreadit",
-	),
-} as const;
-type Palette = keyof typeof tilePalettes;
-const paletteNames = Object.keys(tilePalettes) as Palette[];
-
 export default function EnterpriseHome() {
 	const { copy, locale } = useLocale();
-	const [palette, setPalette] = useState<Palette>("actual");
-	const tileTones = tilePalettes[palette];
-
-	// ?paleta=escala abre directamente una propuesta y se puede compartir.
-	useEffect(() => {
-		const fromUrl = new URLSearchParams(location.search).get("paleta");
-		if (fromUrl && fromUrl in tilePalettes) setPalette(fromUrl as Palette);
-	}, []);
-
-	function choosePalette(next: Palette) {
-		setPalette(next);
-		const url = new URL(location.href);
-		url.searchParams.set("paleta", next);
-		history.replaceState(null, "", url);
-	}
 
 	return (
 		<>
@@ -142,16 +108,13 @@ export default function EnterpriseHome() {
 					<div className="tiles">
 						{copy.services.items.map((item, index) => (
 							<article
-								className={`tile band ${tileTones[index]} reveal`}
+								className="tile band band--service reveal"
 								id={`servicio-${item.intent}`}
 								key={item.title}
 							>
 								<div className="tile__top">
 									<span>0{index + 1}</span>
-									<Isotipo
-										className="tile__iso"
-										solid={tileTones[index] !== "band--night"}
-									/>
+									<Isotipo className="tile__iso" solid />
 								</div>
 								<h3>{item.title}</h3>
 								<p className="tile__body">{item.body}</p>
@@ -176,18 +139,6 @@ export default function EnterpriseHome() {
 									</span>
 								</Link>
 							</article>
-						))}
-					</div>
-					<div className="palette-picker" role="group" aria-label="Propuestas de color">
-						{paletteNames.map((name) => (
-							<button
-								type="button"
-								key={name}
-								aria-pressed={name === palette}
-								onClick={() => choosePalette(name)}
-							>
-								{name}
-							</button>
 						))}
 					</div>
 				</div>
