@@ -85,7 +85,7 @@
 	--haze: var(--blue);
 	--ground: linear-gradient(
 		180deg,
-		color-mix(in srgb, var(--blue) 55%, var(--bg)) 0%,
+		color-mix(in srgb, var(--blue) 25%, var(--bg)) 0%,
 		var(--bg) 52%,
 		color-mix(in srgb, var(--blue) 36%, var(--bg)) 100%
 	);
