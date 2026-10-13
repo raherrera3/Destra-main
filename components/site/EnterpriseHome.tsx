@@ -37,45 +37,11 @@ const clients: Array<{ name: string; logo?: string }> = [
 // borrar el selector, el useEffect y las bandas que sobren.
 const tilePalettes = {
 	actual: ["band--electric", "band--deep", "band--sky", "band--night"],
-	hielo: ["band--ice", "band--snow", "band--snow", "band--ice"],
-	cristal: ["band--glass", "band--glass", "band--glass", "band--glass"],
-	"cristal-cielo": [
-		"band--glass tint--sky",
-		"band--glass tint--sky",
-		"band--glass tint--sky",
-		"band--glass tint--sky",
-	],
-	"cristal-azules": [
-		"band--glass tint--electric",
-		"band--glass tint--sky",
-		"band--glass tint--ice",
-		"band--glass tint--deep",
-	],
-	"cristal-aurora": [
-		"band--glass band--aurora tint--electric",
-		"band--glass band--aurora tint--sky",
-		"band--glass band--aurora tint--sky",
-		"band--glass band--aurora tint--electric",
-	],
-	"cristal-filo": [
-		"band--glass band--edge tint--electric",
-		"band--glass band--edge tint--sky",
-		"band--glass band--edge tint--deep",
-		"band--glass band--edge tint--sky",
-	],
-	"hielo-cielo": ["band--ice", "band--sky", "band--sky", "band--ice"],
-	"hielo-noche": ["band--ice", "band--night", "band--night", "band--ice"],
-	grafito: Array(4).fill("band--gray-graphite"),
-	pizarra: Array(4).fill("band--gray-slate"),
-	carbon: Array(4).fill("band--gray-carbon"),
-	humo: Array(4).fill("band--smoke"),
-	medianoche: Array(4).fill("band--midnight"),
-	degradado: [
-		"band--gradient",
-		"band--gradient",
-		"band--gradient",
-		"band--gradient",
-	],
+	degradado: Array(4).fill("band--gradient"),
+	"degradado-suave": Array(4).fill("band--gradient grad--soft"),
+	"degradado-intenso": Array(4).fill("band--gradient grad--bold"),
+	"degradado-vertical": Array(4).fill("band--gradient grad--vertical"),
+	"degradado-adaptado": Array(4).fill("band--gradient grad--adapt"),
 } as const;
 type Palette = keyof typeof tilePalettes;
 const paletteNames = Object.keys(tilePalettes) as Palette[];
@@ -180,7 +146,7 @@ export default function EnterpriseHome() {
 									<span>0{index + 1}</span>
 									<Isotipo
 										className="tile__iso"
-										solid={!/night|glass|gray|smoke/.test(tileTones[index])}
+										solid={tileTones[index] !== "band--night"}
 									/>
 								</div>
 								<h3>{item.title}</h3>
