@@ -1285,6 +1285,49 @@ main,
 	backdrop-filter: blur(18px);
 }
 
+/* Cristal con color: --tint tiñe el vidrio sin perder la transparencia. */
+.tint--electric { --tint: var(--electric); }
+.tint--deep { --tint: var(--deep); }
+.tint--sky { --tint: var(--sky); }
+.tint--ice { --tint: var(--ice); }
+
+.band.band--glass[class*="tint--"] {
+	border-color: color-mix(in srgb, var(--tint) 45%, transparent);
+	background: color-mix(in srgb, var(--tint) 24%, var(--glass));
+}
+
+/* Aurora: vidrio neutro con un halo de color desde la esquina. */
+.band.band--glass.band--aurora {
+	background: radial-gradient(
+			circle at 100% 0%,
+			color-mix(in srgb, var(--tint) 55%, transparent),
+			transparent 65%
+		),
+		var(--glass);
+}
+
+/* Filo: vidrio neutro con una línea de color arriba. */
+.band.band--glass.band--edge {
+	border-color: var(--line-strong);
+	background: var(--glass);
+}
+
+.band--edge::before {
+	content: "";
+	position: absolute;
+	inset: 0 1.5rem auto;
+	height: 3px;
+	border-radius: 0 0 3px 3px;
+	background: var(--tint);
+}
+
+.band.band--gradient {
+	--fg: var(--paper);
+	--bg: var(--deep);
+	--accent: var(--ice);
+	background: linear-gradient(140deg, var(--deep), var(--electric) 70%, var(--sky));
+}
+
 /* ponytail: selector temporal de propuestas de color para Servicios. */
 .palette-picker {
 	display: flex;

@@ -36,14 +36,41 @@ const clients: Array<{ name: string; logo?: string }> = [
 // ponytail: propuestas de color en prueba; al elegir una, dejar solo esa y
 // borrar el selector, el useEffect y las bandas que sobren.
 const tilePalettes = {
-	actual: ["electric", "deep", "sky", "night"],
-	noche: ["night", "night", "night", "night"],
-	profundo: ["deep", "deep", "deep", "deep"],
-	escala: ["night", "deep", "electric", "sky"],
-	destacado: ["electric", "night", "night", "night"],
-	diagonal: ["deep", "sky", "sky", "deep"],
-	hielo: ["ice", "snow", "snow", "ice"],
-	cristal: ["glass", "glass", "glass", "glass"],
+	actual: ["band--electric", "band--deep", "band--sky", "band--night"],
+	hielo: ["band--ice", "band--snow", "band--snow", "band--ice"],
+	cristal: ["band--glass", "band--glass", "band--glass", "band--glass"],
+	"cristal-cielo": [
+		"band--glass tint--sky",
+		"band--glass tint--sky",
+		"band--glass tint--sky",
+		"band--glass tint--sky",
+	],
+	"cristal-azules": [
+		"band--glass tint--electric",
+		"band--glass tint--sky",
+		"band--glass tint--ice",
+		"band--glass tint--deep",
+	],
+	"cristal-aurora": [
+		"band--glass band--aurora tint--electric",
+		"band--glass band--aurora tint--sky",
+		"band--glass band--aurora tint--sky",
+		"band--glass band--aurora tint--electric",
+	],
+	"cristal-filo": [
+		"band--glass band--edge tint--electric",
+		"band--glass band--edge tint--sky",
+		"band--glass band--edge tint--deep",
+		"band--glass band--edge tint--sky",
+	],
+	"hielo-cielo": ["band--ice", "band--sky", "band--sky", "band--ice"],
+	"hielo-noche": ["band--ice", "band--night", "band--night", "band--ice"],
+	degradado: [
+		"band--gradient",
+		"band--gradient",
+		"band--gradient",
+		"band--gradient",
+	],
 } as const;
 type Palette = keyof typeof tilePalettes;
 const paletteNames = Object.keys(tilePalettes) as Palette[];
@@ -140,7 +167,7 @@ export default function EnterpriseHome() {
 					<div className="tiles">
 						{copy.services.items.map((item, index) => (
 							<article
-								className={`tile band band--${tileTones[index]} reveal`}
+								className={`tile band ${tileTones[index]} reveal`}
 								id={`servicio-${item.intent}`}
 								key={item.title}
 							>
@@ -148,7 +175,7 @@ export default function EnterpriseHome() {
 									<span>0{index + 1}</span>
 									<Isotipo
 										className="tile__iso"
-										solid={tileTones[index] !== "night" && tileTones[index] !== "glass"}
+										solid={!/night|glass/.test(tileTones[index])}
 									/>
 								</div>
 								<h3>{item.title}</h3>
