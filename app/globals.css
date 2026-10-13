@@ -1321,6 +1321,25 @@ main,
 	background: var(--tint);
 }
 
+/* Grises planos: un solo tono para las cuatro tarjetas. */
+.band--gray-graphite {
+	--fg: var(--paper);
+	--bg: #232326; /* gris neutro */
+	--accent: var(--sky);
+}
+
+.band--gray-slate {
+	--fg: var(--paper);
+	--bg: #1d2129; /* gris con un punto de azul */
+	--accent: var(--sky);
+}
+
+.band--gray-carbon {
+	--fg: var(--paper);
+	--bg: #141415; /* casi negro */
+	--accent: var(--sky);
+}
+
 .band.band--gradient {
 	--fg: var(--paper);
 	--bg: var(--deep);

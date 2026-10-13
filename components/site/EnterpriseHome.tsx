@@ -65,6 +65,9 @@ const tilePalettes = {
 	],
 	"hielo-cielo": ["band--ice", "band--sky", "band--sky", "band--ice"],
 	"hielo-noche": ["band--ice", "band--night", "band--night", "band--ice"],
+	grafito: Array(4).fill("band--gray-graphite"),
+	pizarra: Array(4).fill("band--gray-slate"),
+	carbon: Array(4).fill("band--gray-carbon"),
 	degradado: [
 		"band--gradient",
 		"band--gradient",
@@ -175,7 +178,7 @@ export default function EnterpriseHome() {
 									<span>0{index + 1}</span>
 									<Isotipo
 										className="tile__iso"
-										solid={!/night|glass/.test(tileTones[index])}
+										solid={!/night|glass|gray/.test(tileTones[index])}
 									/>
 								</div>
 								<h3>{item.title}</h3>
