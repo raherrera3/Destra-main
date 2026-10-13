@@ -1340,6 +1340,32 @@ main,
 	--accent: var(--sky);
 }
 
+/* Como las tarjetas de workflowai.es. Humo: vidrio ahumado de Servicios. */
+.band.band--smoke {
+	--fg: var(--paper);
+	--bg: #141414;
+	--accent: var(--sky);
+	border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
+	background: linear-gradient(145deg, rgb(30 30 30 / 0.6), rgb(20 20 20 / 0.8));
+	backdrop-filter: blur(10px);
+}
+
+/* Medianoche: gris azulado a negro, con halo azul al pasar el ratón. */
+.band.band--midnight {
+	--fg: var(--paper);
+	--bg: #000000;
+	--accent: var(--sky);
+	border: 1px solid #1f2937;
+	background: linear-gradient(#111827, #000000);
+	transition: transform 520ms var(--ease-out), box-shadow 300ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.tiles .band.band--midnight:hover {
+		box-shadow: 0 0 2.5rem color-mix(in srgb, #2563eb 30%, transparent);
+	}
+}
+
 .band.band--gradient {
 	--fg: var(--paper);
 	--bg: var(--deep);

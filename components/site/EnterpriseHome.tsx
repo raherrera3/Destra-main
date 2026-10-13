@@ -68,6 +68,8 @@ const tilePalettes = {
 	grafito: Array(4).fill("band--gray-graphite"),
 	pizarra: Array(4).fill("band--gray-slate"),
 	carbon: Array(4).fill("band--gray-carbon"),
+	humo: Array(4).fill("band--smoke"),
+	medianoche: Array(4).fill("band--midnight"),
 	degradado: [
 		"band--gradient",
 		"band--gradient",
@@ -178,7 +180,7 @@ export default function EnterpriseHome() {
 									<span>0{index + 1}</span>
 									<Isotipo
 										className="tile__iso"
-										solid={!/night|glass|gray/.test(tileTones[index])}
+										solid={!/night|glass|gray|smoke/.test(tileTones[index])}
 									/>
 								</div>
 								<h3>{item.title}</h3>
