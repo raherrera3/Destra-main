@@ -31,9 +31,6 @@ const clients: Array<{ name: string; logo?: string }> = [
 	{ name: "Larson Martin", logo: "larson-martin.png" },
 ];
 
-// Un fondo de la paleta por servicio, como la página «Fondos» del manual.
-const tileTones = ["electric", "deep", "sky", "night"] as const;
-
 export default function EnterpriseHome() {
 	const { copy, locale } = useLocale();
 
@@ -111,13 +108,13 @@ export default function EnterpriseHome() {
 					<div className="tiles">
 						{copy.services.items.map((item, index) => (
 							<article
-								className={`tile band band--${tileTones[index]} reveal`}
+								className="tile band band--service reveal"
 								id={`servicio-${item.intent}`}
 								key={item.title}
 							>
 								<div className="tile__top">
 									<span>0{index + 1}</span>
-									<Isotipo className="tile__iso" solid={tileTones[index] !== "night"} />
+									<Isotipo className="tile__iso" solid />
 								</div>
 								<h3>{item.title}</h3>
 								<p className="tile__body">{item.body}</p>
