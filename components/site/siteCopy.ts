@@ -138,7 +138,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 		},
 		hero: {
 			kicker: "Somos el partner de IA para empresas",
-			title: "Soluciones de IA para empresas",
+			title: "Sistemas con IA para tu empresa",
 			lead: "Definimos la prioridad, construimos la solución y la integramos en tus sistemas, datos y equipos.",
 			primary: "Solicitar estudio sin compromiso",
 			secondary: "Ver servicios",
