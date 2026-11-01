@@ -25,7 +25,6 @@ const clients: Array<{ name: string; logo?: string }> = [
 	{ name: "CRUGA Rehabilita", logo: "cruga.png" },
 	{ name: "Indy", logo: "indy.png" },
 	{ name: "Grup Capital", logo: "grup-capital.png" },
-	{ name: "StratyaERP", logo: "stratya.png" },
 	{ name: "Alcosmik", logo: "alcosmik.svg" },
 	{ name: "Foimpex", logo: "foimpex.png" },
 	{ name: "Larson Martin", logo: "larson-martin.png" },
