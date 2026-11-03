@@ -1,11 +1,15 @@
 "use client";
+import { builderMedia } from "@/lib/site";
 import { useEffect, useRef } from "react";
 
-// Adaptación ligera de github.com/califa/swarm-site: unos pocos cursores
-// "construyen" elementos reales de la página (seleccionan, subrayan texto,
-// colocan guías, miden distancias, trazan con la pluma). Todo es decorativo
-// (aria-hidden, sin eventos de puntero) y se anima fuera de React: cada cursor
-// es un generador que avanza un fotograma por llamada a next(dt).
+// Adaptación de github.com/califa/swarm-site: seis cursores construyen la home
+// a medida que entra en pantalla. Cada componente arranca oculto (clase
+// `building` que pone el script del layout antes del primer pintado) y aparece
+// mientras un cursor lo dibuja: caja arrastrada, texto tecleado o trazo de
+// pluma. Cada componente se construye una sola vez (a lo sumo con una guía
+// previa); sin nada a la vista, los cursores esperan a que se haga scroll.
+// Se anima fuera de React: cada cursor es un generador que avanza un fotograma
+// por llamada a next(dt).
 
 const CURSORS = [
 	{ name: "Ada", color: "#F24E1E" },
@@ -16,13 +20,28 @@ const CURSORS = [
 	{ name: "Ken", color: "#FFC700" },
 ];
 
+// Qué se construye y cómo. Mismos selectores que la regla html.building de
+// globals.css; el orden importa (gana el primero que coincide).
+type Kind = "pen" | "box" | "text";
+const KINDS: Array<[string, Kind]> = [
+	[".tile__top", "pen"],
+	[
+		".tile, .button, .process-steps > li, .faq-list details, .hero-facts li, .tile__meta, .marquee",
+		"box",
+	],
+	[
+		"h1, h2, h3, p, .section-index, .process-step__num, .tile__cta, summary > span",
+		"text",
+	],
+];
+const UNITS = `:is(${KINDS.map(([s]) => s).join(", ")}):not(details > p, .marquee *)`;
+const kindOf = (el: Element): Kind =>
+	KINDS.find(([s]) => el.matches(s))?.[1] ?? "box";
+
 const BLUE = "#0D99FF";
 const RED = "#F24822";
-const TARGETS =
-	"main h1, main h2, main h3, main p, main .button, main .tile, main li";
-const TEXT = "h1, h2, h3, p, li";
 const TOP = 80; // alto del header fijo
-const BOTTOM = 30;
+const PATIENCE = 5; // s a la vista sin cursor libre antes de mostrarlo sin más
 
 // Formas de cursor de swarm-site: [svg, origen x, origen y].
 type Shape = "arrow" | "pen" | "ibeam" | "ew" | "ns";
@@ -69,7 +88,7 @@ type Cursor = {
 	shape: Shape;
 	drawn: Shape | null;
 	color: string;
-	claims: Element[];
+	unit: HTMLElement | null;
 	ov: (() => string) | null;
 	gen: Task;
 	root: HTMLDivElement;
@@ -93,7 +112,6 @@ function pageRect(el: Element): Box {
 		h: r.height,
 	};
 }
-const center = (b: Box) => ({ x: b.x + b.w / 2, y: b.y + b.h / 2 });
 
 // Líneas de texto reales del elemento (una caja por renglón).
 function textLines(el: Element): Box[] {
@@ -134,6 +152,17 @@ function sweep(lines: Box[], p: number) {
 	return { rects, end };
 }
 
+// Recorte en escalera: renglones completos arriba y el actual hasta el caret.
+function staircase(b: Box, rects: Box[]) {
+	const cur = rects[rects.length - 1];
+	if (!cur) return "inset(0 100% 100% 0)";
+	const w = n(b.w);
+	const top = n(cur.y - b.y);
+	const bottom = n(cur.y + cur.h - b.y);
+	const x = n(cur.x + cur.w - b.x);
+	return `polygon(0 0, ${w}px 0, ${w}px ${top}px, ${x}px ${top}px, ${x}px ${bottom}px, 0 ${bottom}px)`;
+}
+
 const box = (b: Box, color: string, handles = false) =>
 	`<rect x="${n(b.x)}" y="${n(b.y)}" width="${n(b.w)}" height="${n(b.h)}" fill="none" stroke="${color}"/>${
 		handles
@@ -156,18 +185,29 @@ const badge = (cx: number, top: number, text: string, color: string) => {
 	const w = text.length * 6.6 + 8;
 	return `<rect x="${n(cx - w / 2)}" y="${n(top)}" width="${n(w)}" height="16" rx="2" fill="${color}"/><text x="${n(cx)}" y="${n(top + 12)}" text-anchor="middle">${text}</text>`;
 };
+const size = (b: Box) =>
+	badge(
+		b.x + b.w / 2,
+		b.y + b.h + 6,
+		`${Math.round(b.w)} × ${Math.round(b.h)}`,
+		BLUE,
+	);
 
 export default function BuilderCursors() {
 	const layer = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const host = layer.current;
-		// ponytail: solo escritorio con ratón y sin reduced-motion; en móvil 6
-		// cursores tapan demasiado.
-		const ok = matchMedia(
-			"(min-width: 900px) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
-		);
-		if (!host || !ok.matches) return;
+		const html = document.documentElement;
+		// Sin la clase no hay nada oculto que construir (móvil, reduced-motion o
+		// el script del layout ya se rindió).
+		if (
+			!host ||
+			!matchMedia(builderMedia).matches ||
+			!html.classList.contains("building")
+		)
+			return;
+		(window as Window & { __builder?: boolean }).__builder = true;
 
 		const overlay = document.createElementNS(
 			"http://www.w3.org/2000/svg",
@@ -177,41 +217,71 @@ export default function BuilderCursors() {
 		host.append(overlay);
 
 		const claimed = new Set<Element>();
+		const seen = new WeakMap<Element, number>();
+		let clock = 0;
+		let cache: HTMLElement[] | null = null;
+
+		const done = (el: HTMLElement) => {
+			el.style.clipPath = "";
+			delete el.dataset.build;
+			el.dataset.built = "";
+		};
+		const start = (el: HTMLElement, clip: string) => {
+			el.style.clipPath = clip;
+			el.dataset.build = "";
+		};
+
+		// Componentes listos para construir: a la vista, sin dueño y con su
+		// contenedor ya construido. Se calcula una vez por fotograma.
+		const avail = () => {
+			if (cache) return cache;
+			cache = [];
+			const main = document.querySelector("main");
+			if (!main) return cache;
+			for (const el of main.querySelectorAll<HTMLElement>(UNITS)) {
+				if ("built" in el.dataset || claimed.has(el)) continue;
+				const r = el.getBoundingClientRect();
+				if (r.width < 2 || r.height < 2) continue;
+				// Ya quedó por encima: nadie lo verá construirse.
+				if (r.bottom < TOP) {
+					done(el);
+					continue;
+				}
+				if (r.top > window.innerHeight - 40) continue;
+				const parent = el.parentElement?.closest<HTMLElement>(UNITS);
+				if (parent && main.contains(parent) && !("built" in parent.dataset))
+					continue;
+				const first = seen.get(el) ?? clock;
+				seen.set(el, first);
+				if (clock - first > PATIENCE) {
+					done(el);
+					continue;
+				}
+				cache.push(el);
+			}
+			return cache;
+		};
+		const free = () => avail().filter((el) => !claimed.has(el));
 		const inView = (el: Element) => {
 			const r = el.getBoundingClientRect();
 			return r.bottom > TOP - 10 && r.top < window.innerHeight;
 		};
-		const free = () =>
-			[...document.querySelectorAll(TARGETS)].filter((el) => {
-				if (claimed.has(el) || el.closest(".marquee")) return false;
-				const r = el.getBoundingClientRect();
-				return (
-					r.width > 40 &&
-					r.height > 14 &&
-					r.width < window.innerWidth * 0.8 &&
-					r.top > TOP + 10 &&
-					r.bottom < window.innerHeight - BOTTOM
-				);
-			});
 		// Preferir lo cercano: menos recorrido, menos ruido visual.
-		const near = (c: Cursor, list: Element[]) => {
+		const pick = (c: Cursor) => {
 			const d = (el: Element) => {
-				const p = center(pageRect(el));
-				return Math.hypot(p.x - c.x, p.y - c.y);
+				const b = pageRect(el);
+				return Math.hypot(b.x - c.x, b.y - c.y);
 			};
-			const sorted = [...list].sort((a, b) => d(a) - d(b));
-			return (
-				sorted[Math.floor(Math.random() * Math.min(4, sorted.length))] ?? null
-			);
-		};
-		const claim = (c: Cursor, ...els: Element[]) => {
-			c.claims = els;
-			for (const el of els) claimed.add(el);
-			c.op = 1;
+			const list = free().sort((a, b) => d(a) - d(b));
+			return list[Math.floor(Math.random() * Math.min(3, list.length))];
 		};
 		const release = (c: Cursor) => {
-			for (const el of c.claims) claimed.delete(el);
-			c.claims = [];
+			if (c.unit) {
+				// Abortado por scroll: se termina de golpe, ya está fuera de vista.
+				if (!("built" in c.unit.dataset)) done(c.unit);
+				claimed.delete(c.unit);
+			}
+			c.unit = null;
 			c.ov = null;
 			c.shape = "arrow";
 		};
@@ -224,14 +294,13 @@ export default function BuilderCursors() {
 		function* moveTo(
 			c: Cursor,
 			to: () => Pt,
-			dur?: number,
-			bend?: number,
+			o: { dur?: number; bend?: number; each?: () => void } = {},
 		): Task {
 			const from = { x: c.x, y: c.y };
 			const p0 = to();
 			const d =
-				dur ?? clamp(Math.hypot(p0.x - c.x, p0.y - c.y) / 1600, 0.2, 0.65);
-			const bow = bend ?? rand(-0.12, 0.12);
+				o.dur ?? clamp(Math.hypot(p0.x - c.x, p0.y - c.y) / 1800, 0.18, 0.55);
+			const bow = o.bend ?? rand(-0.12, 0.12);
 			let t = 0;
 			while (t < d) {
 				t += yield;
@@ -243,11 +312,12 @@ export default function BuilderCursors() {
 				const arc = Math.sin(Math.PI * e) * bow;
 				c.x = from.x + dx * e - dy * arc;
 				c.y = from.y + dy * e + dx * arc;
+				o.each?.();
 			}
 		}
 		function* click(c: Cursor): Task {
 			c.press = 1;
-			yield* wait(0.07);
+			yield* wait(0.06);
 		}
 		function* hold(c: Cursor, s: number, pin: () => Pt): Task {
 			let left = s;
@@ -258,15 +328,18 @@ export default function BuilderCursors() {
 		}
 		function* fade(c: Cursor): Task {
 			let t = 0;
-			while (t < 0.25) {
+			while (t < 0.2) {
 				t += yield;
-				c.op = Math.max(0, 1 - t / 0.25);
+				c.op = Math.max(0, 1 - t / 0.2);
 			}
+			c.ov = null;
+			c.op = 1;
 		}
-		// Reposo: el cursor acompaña al viewport con algo de retraso al hacer scroll.
-		function* rest(c: Cursor, s: number): Task {
+		// Reposo: el cursor acompaña al viewport con algo de retraso al hacer
+		// scroll. Con `eager`, lo interrumpe en cuanto aparece trabajo.
+		function* rest(c: Cursor, s: number, eager: boolean): Task {
 			let left = s;
-			while (left > 0) {
+			while (left > 0 && !(eager && free().length)) {
 				const dt = yield;
 				left -= dt;
 				const k = Math.min(1, dt * 5);
@@ -285,83 +358,63 @@ export default function BuilderCursors() {
 			}
 		}
 
-		// ── Acciones ──
-		function* select(c: Cursor, el: Element): Task {
+		// ── Construcción ──
+		function* buildBox(c: Cursor, el: HTMLElement): Task {
 			yield* moveTo(c, () => pageRect(el));
 			yield* click(c);
-			c.ov = () => {
+			start(el, "inset(0 100% 100% 0)");
+			const cut = () => {
 				const b = pageRect(el);
-				return box(
-					{ ...b, w: Math.max(0, c.x - b.x), h: Math.max(0, c.y - b.y) },
-					BLUE,
-				);
+				return {
+					...b,
+					w: clamp(c.x - b.x, 0, b.w),
+					h: clamp(c.y - b.y, 0, b.h),
+				};
 			};
 			const corner = () => {
 				const b = pageRect(el);
-				return { x: b.x + b.w, y: b.y + b.h };
+				return {
+					x: b.x + b.w,
+					// Sin salir de pantalla: lo que quede debajo aparece al soltar.
+					y: Math.min(b.y + b.h, window.scrollY + window.innerHeight - 24),
+				};
 			};
-			yield* moveTo(c, corner, rand(0.22, 0.4), rand(-0.04, 0.04));
+			c.ov = () => {
+				const k = cut();
+				return box(k, BLUE) + size(k);
+			};
+			yield* moveTo(c, corner, {
+				dur: rand(0.25, 0.45),
+				bend: rand(-0.04, 0.04),
+				each: () => {
+					const b = pageRect(el);
+					const k = cut();
+					el.style.clipPath = `inset(0px ${n(b.w - k.w)}px ${n(b.h - k.h)}px 0px)`;
+				},
+			});
+			done(el);
 			c.ov = () => {
 				const b = pageRect(el);
-				return (
-					box(b, BLUE, true) +
-					badge(
-						b.x + b.w / 2,
-						b.y + b.h + 6,
-						`${Math.round(b.w)} × ${Math.round(b.h)}`,
-						BLUE,
-					)
-				);
+				return box(b, BLUE, true) + size(b);
 			};
-			yield* hold(c, rand(0.5, 0.9), corner);
+			yield* hold(c, rand(0.2, 0.4), corner);
 		}
 
-		function* highlight(c: Cursor, el: Element): Task {
-			c.shape = "ibeam";
-			let p = 0;
-			const at = () => sweep(textLines(el), p);
-			yield* moveTo(c, () => at().end);
-			yield* click(c);
-			c.ov = () => {
-				const { rects, end } = at();
-				const fill = rects
-					.map(
-						(r) =>
-							`<rect x="${n(r.x)}" y="${n(r.y)}" width="${n(r.w)}" height="${n(r.h)}" fill="${BLUE}" fill-opacity="0.28"/>`,
-					)
-					.join("");
-				return (
-					fill +
-					line({ x: end.x, y: end.y - 9 }, { x: end.x, y: end.y + 9 }, BLUE)
-				);
-			};
-			const total = textLines(el).reduce((s, l) => s + l.w, 0);
-			const dur = clamp(total / 1400, 0.35, 1);
-			let t = 0;
-			while (t < dur) {
-				t += yield;
-				p = Math.min(1, t / dur);
-				Object.assign(c, at().end);
-			}
-			yield* hold(c, rand(0.4, 0.8), () => at().end);
-		}
-
-		function* guide(c: Cursor, el: Element): Task {
-			// Arrastra una guía desde la regla y la suelta alineada con el elemento.
+		function* guide(c: Cursor, el: HTMLElement): Task {
+			// Arrastra una guía desde la regla y la deja donde irá el elemento.
 			const vertical = Math.random() < 0.5;
-			const fx = rand(0.15, 0.85);
-			const fy = rand(0.3, 0.8);
-			const ruler = () =>
+			const f = rand(0.2, 0.8);
+			const edge = () =>
 				vertical
 					? {
-							x: window.scrollX + fx * window.innerWidth,
+							x: window.scrollX + f * window.innerWidth,
 							y: window.scrollY + TOP + 6,
 						}
 					: {
 							x: window.scrollX + 8,
-							y: window.scrollY + fy * window.innerHeight,
+							y: window.scrollY + f * window.innerHeight,
 						};
-			yield* moveTo(c, ruler);
+			yield* moveTo(c, edge);
 			yield* click(c);
 			c.shape = vertical ? "ew" : "ns";
 			const snapped = () => {
@@ -370,7 +423,7 @@ export default function BuilderCursors() {
 					? { x: b.x, y: window.scrollY + TOP + 6 }
 					: { x: window.scrollX + 8, y: b.y };
 			};
-			let done = false;
+			let snap = false;
 			c.ov = () => {
 				const sx = window.scrollX;
 				const sy = window.scrollY;
@@ -385,38 +438,47 @@ export default function BuilderCursors() {
 							{ x: sx + window.innerWidth, y: c.y },
 							RED,
 						) + badge(c.x + 34, c.y - 8, `${Math.round(c.y - sy)}`, RED);
-				return done ? g + box(pageRect(el), RED) : g;
+				return snap ? g + box(pageRect(el), RED) : g;
 			};
-			yield* moveTo(c, snapped, rand(0.3, 0.5), 0);
-			done = true;
-			yield* hold(c, rand(0.5, 0.8), snapped);
+			yield* moveTo(c, snapped, { dur: rand(0.25, 0.4), bend: 0 });
+			snap = true;
+			yield* hold(c, 0.2, snapped);
+			yield* fade(c);
+			c.shape = "arrow";
 		}
 
-		function* measure(c: Cursor, a: Element, b: Element): Task {
-			yield* moveTo(c, () => center(pageRect(a)));
+		function* buildText(c: Cursor, el: HTMLElement): Task {
+			c.shape = "ibeam";
+			let p = 0;
+			const at = () => sweep(textLines(el), p);
+			yield* moveTo(c, () => at().end);
 			yield* click(c);
-			c.ov = () => box(pageRect(a), BLUE, true);
-			yield* moveTo(c, () => center(pageRect(b)));
+			start(el, "inset(0 100% 100% 0)");
 			c.ov = () => {
-				const A = pageRect(a);
-				const B = pageRect(b);
-				const x = (Math.max(A.x, B.x) + Math.min(A.x + A.w, B.x + B.w)) / 2;
-				const y1 = A.y + A.h;
-				const y2 = B.y;
+				const { end } = at();
 				return (
-					box(A, BLUE, true) +
-					box(B, RED) +
-					line({ x, y: y1 }, { x, y: y2 }, RED) +
-					line({ x: x - 4, y: y1 }, { x: x + 4, y: y1 }, RED) +
-					line({ x: x - 4, y: y2 }, { x: x + 4, y: y2 }, RED) +
-					badge(x + 22, (y1 + y2) / 2 - 8, `${Math.round(y2 - y1)}`, RED)
+					box(pageRect(el), BLUE) +
+					line({ x: end.x, y: end.y - 9 }, { x: end.x, y: end.y + 9 }, BLUE)
 				);
 			};
-			yield* hold(c, rand(0.6, 1), () => center(pageRect(b)));
+			const total = textLines(el).reduce((s, l) => s + l.w, 0);
+			const dur = clamp(total / 2200, 0.2, 0.8);
+			let t = 0;
+			while (t < dur) {
+				t += yield;
+				p = Math.min(1, t / dur);
+				const { rects, end } = at();
+				el.style.clipPath = staircase(pageRect(el), rects);
+				Object.assign(c, end);
+			}
+			done(el);
+			c.ov = () => box(pageRect(el), BLUE);
+			yield* hold(c, rand(0.15, 0.3), () => at().end);
 		}
 
-		function* pen(c: Cursor, el: Element): Task {
+		function* buildPen(c: Cursor, el: HTMLElement): Task {
 			c.shape = "pen";
+			start(el, "inset(50%)");
 			const corners = () => {
 				const b = pageRect(el);
 				const p = 6;
@@ -441,68 +503,60 @@ export default function BuilderCursors() {
 				return `<polyline points="${path.map((q) => `${n(q.x)},${n(q.y)}`).join(" ")}" fill="none" stroke="${BLUE}" stroke-width="1.5"/>${nodes}`;
 			};
 			for (let i = 0; i <= 4; i++) {
-				yield* moveTo(c, () => corners()[i % 4], undefined, rand(-0.03, 0.03));
+				yield* moveTo(c, () => corners()[i % 4], { bend: rand(-0.03, 0.03) });
 				yield* click(c);
 				if (i < 4) placed = i + 1;
 				else closed = true;
 			}
-			yield* hold(c, rand(0.4, 0.7), () => corners()[0]);
+			// Trazado cerrado: el contenido se abre desde el centro.
+			let t = 0;
+			while (t < 0.25) {
+				t += yield;
+				el.style.clipPath = `inset(${n(50 * (1 - ease(Math.min(1, t / 0.25))))}%)`;
+			}
+			done(el);
+			yield* hold(c, 0.2, () => corners()[0]);
 		}
 
-		function* task(c: Cursor): Task {
-			const list = free();
-			const el = near(c, list);
-			if (!el) return;
-			const roll = Math.random();
-			if (roll < 0.24) {
-				const t = near(
-					c,
-					list.filter(
-						(x) => x.matches(TEXT) && (x.textContent?.trim().length ?? 0) > 12,
-					),
-				);
-				if (t) {
-					claim(c, t);
-					return yield* highlight(c, t);
-				}
-			} else if (roll < 0.42) {
-				claim(c, el);
-				return yield* guide(c, el);
-			} else if (roll < 0.6) {
-				// Pareja apilada con solape horizontal: medir el hueco entre ambas.
-				const A = pageRect(el);
-				const b = list
-					.filter((x) => {
-						if (x === el) return false;
-						const B = pageRect(x);
-						const gap = B.y - A.y - A.h;
-						return (
-							gap > 4 &&
-							gap < 220 &&
-							B.x < A.x + A.w - 20 &&
-							B.x + B.w > A.x + 20
-						);
-					})
-					.sort((x, y) => pageRect(x).y - pageRect(y).y)[0];
-				if (b) {
-					claim(c, el, b);
-					return yield* measure(c, el, b);
-				}
-			} else if (roll < 0.76) {
-				claim(c, el);
-				return yield* pen(c, el);
-			}
-			claim(c, el);
-			yield* select(c, el);
+		function* build(c: Cursor, el: HTMLElement): Task {
+			const kind = kindOf(el);
+			if (kind === "pen") return yield* buildPen(c, el);
+			if (kind === "box") return yield* buildBox(c, el);
+			// Segunda pasada opcional: guía previa en los titulares.
+			const g = el.matches("h1, h2") ? 0.7 : el.matches("h3") ? 0.25 : 0;
+			if (Math.random() < g) yield* guide(c, el);
+			yield* buildText(c, el);
 		}
 
 		function* life(c: Cursor, delay: number): Task {
-			yield* rest(c, delay);
+			yield* rest(c, delay, false);
 			for (;;) {
-				yield* task(c);
-				if (c.ov) yield* fade(c);
-				release(c);
-				yield* rest(c, rand(0.25, 0.9));
+				const el = pick(c);
+				if (el) {
+					c.unit = el;
+					claimed.add(el);
+					yield* build(c, el);
+					if (c.ov) yield* fade(c);
+					release(c);
+					yield* rest(c, rand(0.05, 0.2), false);
+					continue;
+				}
+				// Nada que construir a la vista: esperar casi quieto al scroll.
+				yield* rest(c, rand(1.5, 3), true);
+				if (free().length) continue;
+				const to = {
+					x: clamp(
+						c.x + rand(-120, 120),
+						window.scrollX + 40,
+						window.scrollX + window.innerWidth - 80,
+					),
+					y: clamp(
+						c.y + rand(-80, 80),
+						window.scrollY + TOP + 40,
+						window.scrollY + window.innerHeight - 80,
+					),
+				};
+				yield* moveTo(c, () => to, { dur: rand(0.9, 1.4) });
 			}
 		}
 
@@ -523,13 +577,13 @@ export default function BuilderCursors() {
 				shape: "arrow",
 				drawn: null,
 				color,
-				claims: [],
+				unit: null,
 				ov: null,
 				gen: wait(0),
 				root,
 				svg: root.firstElementChild as SVGSVGElement,
 			};
-			c.gen = life(c, i * 0.15);
+			c.gen = life(c, i * 0.12);
 			return c;
 		});
 
@@ -537,27 +591,29 @@ export default function BuilderCursors() {
 		let last = performance.now();
 		let lastScroll = window.scrollY;
 		let vel = 0;
-		let html = "";
+		let drawn = "";
 		const tick = (now: number) => {
 			// Pestaña en segundo plano: no recuperar el tiempo perdido de golpe.
 			const dt = Math.min(0.05, (now - last) / 1000);
 			last = now;
+			clock = now / 1000;
+			cache = null;
 			const sx = window.scrollX;
 			const sy = window.scrollY;
-			// Cuanto más rápido el scroll, más rápido trabajan.
+			// Más trabajo pendiente o scroll más rápido: trabajan más deprisa.
 			const speed = Math.abs(sy - lastScroll) / Math.max(dt, 0.001);
 			vel += (speed - vel) * Math.min(1, dt * 6);
 			lastScroll = sy;
-			const tdt = dt * clamp(1 + vel / 1500, 1, 2.5);
+			const tempo = clamp(1 + free().length * 0.06 + vel / 1500, 1, 2.6);
 
 			let next = "";
 			for (const c of cursors) {
-				// El objetivo salió de pantalla al hacer scroll: soltarlo y buscar otro.
-				if (c.claims.length && !c.claims.every(inView)) {
+				// Su componente salió de pantalla al hacer scroll: soltarlo.
+				if (c.unit && !inView(c.unit)) {
 					release(c);
 					c.gen = life(c, 0.05);
 				}
-				c.gen.next(tdt);
+				c.gen.next(dt * tempo);
 
 				c.press = Math.max(0, c.press - dt * 6);
 				const vx = (c.x - c.px) / Math.max(dt, 0.001);
@@ -575,8 +631,8 @@ export default function BuilderCursors() {
 				if (c.ov) next += `<g opacity="${c.op.toFixed(2)}">${c.ov()}</g>`;
 			}
 			next = `<g transform="translate(${-sx} ${-sy})">${next}</g>`;
-			if (next !== html) {
-				html = next;
+			if (next !== drawn) {
+				drawn = next;
 				overlay.innerHTML = next;
 			}
 			raf = requestAnimationFrame(tick);
@@ -585,6 +641,8 @@ export default function BuilderCursors() {
 
 		return () => {
 			cancelAnimationFrame(raf);
+			// Lo que estuviera a medio construir queda visible.
+			for (const c of cursors) if (c.unit) done(c.unit);
 			host.replaceChildren();
 		};
 	}, []);

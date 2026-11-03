@@ -2881,6 +2881,32 @@ main,
 
 /* ── Cursores constructores (decorativos) ─────────────────────────────── */
 
+/* Componentes aún sin construir. Mismos selectores que KINDS en
+   BuilderCursors.tsx. Opacidad (no visibility) para no sacarlos del árbol de
+   accesibilidad; !important gana a las animaciones de entrada (.reveal). */
+html.building
+	main
+	:is(
+		.tile__top,
+		.tile,
+		.button,
+		.process-steps > li,
+		.faq-list details,
+		.hero-facts li,
+		.tile__meta,
+		.marquee,
+		h1,
+		h2,
+		h3,
+		p,
+		.section-index,
+		.process-step__num,
+		.tile__cta,
+		summary > span
+	):not(details > p, .marquee *, [data-built], [data-build], :focus-within) {
+	opacity: 0 !important;
+}
+
 .builder-cursors {
 	position: fixed;
 	inset: 0;

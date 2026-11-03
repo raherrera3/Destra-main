@@ -1,6 +1,6 @@
 import { CookieConsentProvider } from "@/components/site/CookieConsent";
 import { type Locale, locales } from "@/components/site/siteCopy";
-import { siteUrl } from "@/lib/site";
+import { builderMedia, siteUrl } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { Azeret_Mono } from "next/font/google";
 import type { ReactNode } from "react";
@@ -17,6 +17,11 @@ const mono = Azeret_Mono({
 
 // Preferencia guardada; si no hay, la del sistema. Corre antes del primer pintado.
 const themeScript = `try{var t=localStorage.getItem("destra-theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.dataset.theme=t}catch(e){}`;
+
+// Solo en la home: oculta los componentes antes del primer pintado para que los
+// construyan los cursores (BuilderCursors). Si el componente no arranca en 6 s,
+// se quita la clase y la página se ve entera.
+const builderScript = `try{if(/^\\/(es|en)\\/?$/.test(location.pathname)&&matchMedia(${JSON.stringify(builderMedia)}).matches){var e=document.documentElement;e.classList.add("building");setTimeout(function(){window.__builder||e.classList.remove("building")},6000)}}catch(e){}`;
 
 // Cada idioma se sirve ya renderizado en su propia URL (/es, /en); la raíz
 // redirige según Accept-Language (middleware.ts).
@@ -123,7 +128,7 @@ export default async function RootLayout({
 			<head>
 				<script
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: script estático, sin datos externos; evita el destello del tema equivocado.
-					dangerouslySetInnerHTML={{ __html: themeScript }}
+					dangerouslySetInnerHTML={{ __html: themeScript + builderScript }}
 				/>
 			</head>
 			<body>

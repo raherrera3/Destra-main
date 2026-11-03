@@ -2,6 +2,11 @@ import { type Locale, siteCopy } from "@/components/site/siteCopy";
 
 export const siteUrl = "https://www.destra.es";
 
+// Dónde se activan los cursores constructores (BuilderCursors y el script de
+// pre-pintado del layout): escritorio con ratón y sin reduced-motion.
+export const builderMedia =
+	"(min-width: 900px) and (pointer: fine) and (prefers-reduced-motion: no-preference)";
+
 const orgId = `${siteUrl}/#organization`;
 
 // Grafo de entidades (AISO): una identidad canónica con @id que reutilizan
