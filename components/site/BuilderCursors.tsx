@@ -14,12 +14,12 @@ import { useEffect, useRef } from "react";
 // por llamada a next(dt).
 
 const CURSORS = [
-	{ name: "Ada", color: "#F24E1E" },
-	{ name: "Linus", color: "#A259FF" },
-	{ name: "Grace", color: "#0ACF83" },
-	{ name: "Alan", color: "#FF7262" },
-	{ name: "Hedy", color: "#1ABCFE" },
-	{ name: "Ken", color: "#FFC700" },
+	{ name: "Alberto", color: "#F24E1E" },
+	{ name: "Guille", color: "#A259FF" },
+	{ name: "Carlota", color: "#0ACF83" },
+	{ name: "Ra", color: "#FF7262" },
+	{ name: "Alba", color: "#1ABCFE" },
+	{ name: "Jambo", color: "#FFC700" },
 ];
 
 // Qué se construye y cómo. Mismos selectores que la regla html.building de
