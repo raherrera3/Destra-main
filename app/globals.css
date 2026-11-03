@@ -2878,3 +2878,78 @@ main,
 		animation-name: fade-in;
 	}
 }
+
+/* ── Cursores constructores (decorativos) ─────────────────────────────── */
+
+/* Componentes aún sin construir. Mismos selectores que KINDS en
+   BuilderCursors.tsx. Opacidad (no visibility) para no sacarlos del árbol de
+   accesibilidad; !important gana a las animaciones de entrada (.reveal). */
+html.building
+	main
+	:is(
+		.tile__top,
+		.tile,
+		.button,
+		.process-steps > li,
+		.faq-list details,
+		.hero-facts li,
+		.tile__meta,
+		.marquee,
+		h1,
+		h2,
+		h3,
+		p,
+		.section-index,
+		.process-step__num,
+		.tile__cta,
+		summary > span
+	):not(details > p, .marquee *, [data-built], [data-build], :focus-within) {
+	opacity: 0 !important;
+}
+
+.builder-cursors {
+	position: fixed;
+	inset: 0;
+	z-index: calc(var(--z-sticky) - 1);
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.builder-cursor {
+	position: absolute;
+	top: 0;
+	left: 0;
+	will-change: transform;
+}
+
+.builder-cursor svg {
+	position: absolute;
+	overflow: visible;
+	filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.28));
+}
+
+.builder-cursor__label {
+	position: absolute;
+	top: 18px;
+	left: 14px;
+	padding: 2px 6px;
+	border-radius: 4px;
+	color: #fff;
+	font: 600 11px/15px var(--font-sans, system-ui, sans-serif);
+	white-space: nowrap;
+	box-shadow: 0 1px 2px rgb(0 0 0 / 0.18);
+}
+
+.builder-overlay {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+.builder-overlay text {
+	fill: #fff;
+	font: 600 11px var(--font-sans, system-ui, sans-serif);
+	font-variant-numeric: tabular-nums;
+}
