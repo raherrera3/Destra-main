@@ -60,10 +60,17 @@ const meta: Record<
 
 type Params = Promise<{ lang: Locale }>;
 
+// Las rutas con punto y varios segmentos (/.git/config, /wp-content/x.php…,
+// típicas de bots) no pasan por el middleware y llegan aquí con un `lang`
+// arbitrario mientras se pinta el 404: sin esto, meta[lang] es undefined y el
+// render del servidor falla (el error "Server Components render" de los logs).
+const asLocale = (lang: string): Locale =>
+	(locales as readonly string[]).includes(lang) ? (lang as Locale) : "es";
+
 export async function generateMetadata({
 	params,
 }: { params: Params }): Promise<Metadata> {
-	const { lang } = await params;
+	const lang = asLocale((await params).lang);
 	const m = meta[lang];
 	return {
 		metadataBase: new URL(siteUrl),
@@ -118,7 +125,7 @@ export default async function RootLayout({
 	children,
 	params,
 }: Readonly<{ children: ReactNode; params: Params }>) {
-	const { lang } = await params;
+	const lang = asLocale((await params).lang);
 	return (
 		// La variable de next/font va en <html>: --font-mono-stack se declara en
 		// :root y necesita que --font-mono exista ya en ese ámbito.

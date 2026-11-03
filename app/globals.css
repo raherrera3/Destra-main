@@ -1336,6 +1336,13 @@ main,
 	font-size: 0.95rem;
 }
 
+/* Los halos de 24rem (abajo) se salen por el lateral en pantallas estrechas y
+   el móvil ensanchaba toda la página. `clip` (no `hidden`) no crea contenedor
+   de scroll y deja que el halo siga desbordando en vertical. */
+.services {
+	overflow-x: clip;
+}
+
 .services .tiles {
 	position: relative;
 	isolation: isolate;
@@ -2813,6 +2820,18 @@ main,
 }
 
 @media (max-width: 620px) {
+	/* Tema e idioma ya están en el menú móvil (.mobile-menu__prefs); en la
+	   cabecera no caben junto al logo y el botón del menú, que se salía y
+	   ensanchaba toda la página en horizontal. */
+	.header-actions {
+		display: none;
+	}
+
+	/* Sin .header-actions, el botón caería en la columna 1fr: a la última. */
+	.menu-toggle {
+		grid-column: 3;
+	}
+
 	.footer-grid {
 		grid-template-columns: 1fr;
 	}

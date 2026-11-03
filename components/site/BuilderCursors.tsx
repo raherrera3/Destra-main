@@ -211,7 +211,7 @@ export default function BuilderCursors() {
 	useEffect(() => {
 		const host = layer.current;
 		const html = document.documentElement;
-		// Sin la clase no hay nada oculto que construir (móvil, reduced-motion o
+		// Sin la clase no hay nada oculto que construir (reduced-motion, otra página o
 		// el script del layout ya se rindió).
 		if (
 			!host ||
@@ -241,7 +241,16 @@ export default function BuilderCursors() {
 		const onLeave = () => {
 			mouse = null;
 		};
+		// En táctil solo hay "ratón" mientras el dedo toca la pantalla; al
+		// soltarlo (o al empezar a desplazar, que cancela el puntero) vuelven a
+		// deambular como insectos en vez de rondar el último toque para siempre.
+		const onLift = (e: PointerEvent) => {
+			if (e.pointerType !== "mouse") mouse = null;
+		};
+		window.addEventListener("pointerdown", onMove, { passive: true });
 		window.addEventListener("pointermove", onMove, { passive: true });
+		window.addEventListener("pointerup", onLift, { passive: true });
+		window.addEventListener("pointercancel", onLift, { passive: true });
 		html.addEventListener("mouseleave", onLeave);
 
 		const done = (el: HTMLElement) => {
@@ -756,11 +765,17 @@ export default function BuilderCursors() {
 
 		return () => {
 			cancelAnimationFrame(raf);
+			window.removeEventListener("pointerdown", onMove);
 			window.removeEventListener("pointermove", onMove);
+			window.removeEventListener("pointerup", onLift);
+			window.removeEventListener("pointercancel", onLift);
 			html.removeEventListener("mouseleave", onLeave);
 			// Lo que estuviera a medio construir queda visible.
 			for (const c of cursors) if (c.unit) done(c.unit);
 			host.replaceChildren();
+			// Al salir de la home (p. ej. a /privacidad) la clase ocultaría el
+			// contenido de la página nueva, que comparte <html>.
+			html.classList.remove("building");
 		};
 	}, []);
 
