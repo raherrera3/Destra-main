@@ -1,5 +1,6 @@
 "use client";
 import Particles from "@/components/Particles";
+import BuilderCursors from "./BuilderCursors";
 import CookieConsentBanner from "./CookieConsent";
 import EnterpriseHome from "./EnterpriseHome";
 import { LocaleProvider, useLocale } from "./LocaleProvider";
@@ -52,6 +53,7 @@ function ShellContent() {
 				<EnterpriseHome />
 			</main>
 			<SiteFooter />
+			<BuilderCursors />
 			<a className="mobile-cta button button--primary" href="#contacto">
 				{copy.hero.primary}
 			</a>
