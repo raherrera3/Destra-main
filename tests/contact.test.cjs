@@ -21,9 +21,8 @@ const values = () => ({
 	name: "Persona de Prueba",
 	email: "lead@example.com",
 	company: "Empresa de Prueba",
-	role: "",
+	phone: "+34 600 123 456",
 	need: ["fde", "architecture"],
-	size: "",
 	context: "Consulta de prueba con suficiente contexto.",
 	website: "",
 	startedAt: Date.now() - 5000,
@@ -202,8 +201,7 @@ test("awaits provider acknowledgment and sends all lead fields, source/date and 
 		"lead@example.com",
 		"Forward Deployed Engineer",
 		"Consulta de prueba",
-		"Cargo: (vacío)",
-		"Tamaño: (vacío)",
+		"Teléfono: +34 600 123 456",
 		"https://www.destra.es/",
 	])
 		assert.ok(payload.text.includes(text), text);
@@ -380,6 +378,7 @@ test("client acknowledgment is typed, and multi-need/max-length validation stays
 			name: `name-${locale}`,
 			email: `email-${locale}`,
 			company: `company-${locale}`,
+			phone: `phone-${locale}`,
 			need: `need-${locale}`,
 			context: `context-${locale}`,
 		};
@@ -389,15 +388,20 @@ test("client acknowledgment is typed, and multi-need/max-length validation stays
 				...values(),
 				need: [],
 				name: "x".repeat(121),
-				role: "x".repeat(121),
+				company: "x".repeat(181),
+				phone: "abc",
 			});
 		assert.equal(result.success, false);
 		assert.equal(
 			result.error.issues.find((issue) => issue.path[0] === "need").message,
 			messages.need,
 		);
+		assert.equal(
+			result.error.issues.find((issue) => issue.path[0] === "phone").message,
+			messages.phone,
+		);
 		const limit = result.error.issues.find(
-			(issue) => issue.path[0] === "role",
+			(issue) => issue.path[0] === "company",
 		).message;
 		assert.match(limit, locale === "es" ? /caracteres/ : /characters/);
 	}
@@ -437,9 +441,8 @@ test("form associates every field error/hint, validates acknowledgments and expo
 		"name",
 		"email",
 		"company",
-		"role",
+		"phone",
 		"need",
-		"size",
 		"context",
 	]) {
 		assert.match(

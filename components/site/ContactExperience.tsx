@@ -109,9 +109,8 @@ export default function ContactExperience() {
 			name: "",
 			email: "",
 			company: "",
-			role: "",
+			phone: "",
 			need: [],
-			size: "",
 			context: "",
 			website: "",
 			startedAt: startedAt.current,
@@ -277,9 +276,8 @@ export default function ContactExperience() {
 				name: "",
 				email: "",
 				company: "",
-				role: "",
+				phone: "",
 				need: [],
-				size: "",
 				context: "",
 				website: "",
 				startedAt: startedAt.current,
@@ -483,7 +481,7 @@ export default function ContactExperience() {
 												/>
 											</Field>
 										</div>
-										<div className="field-row field-row--3">
+										<div className="field-row">
 											<Field
 												id="company"
 												label={l.company}
@@ -501,37 +499,22 @@ export default function ContactExperience() {
 												/>
 											</Field>
 											<Field
-												id="role"
-												label={l.role}
-												error={errors.role?.message}
+												id="phone"
+												label={l.phone}
+												required
+												error={errors.phone?.message}
 											>
 												<input
-													id="role"
-													placeholder={copy.form.hints.role}
+													id="phone"
+													type="tel"
+													autoComplete="tel"
+													inputMode="tel"
+													placeholder={copy.form.hints.phone}
 													enterKeyHint="next"
-													autoComplete="organization-title"
-													aria-invalid={!!errors.role}
-													aria-describedby={describedBy("role")}
-													{...register("role")}
+													aria-invalid={!!errors.phone}
+													aria-describedby={describedBy("phone")}
+													{...register("phone")}
 												/>
-											</Field>
-											<Field
-												id="size"
-												label={l.size}
-												error={errors.size?.message}
-											>
-												<select
-													id="size"
-													aria-invalid={!!errors.size}
-													aria-describedby={describedBy("size")}
-													{...register("size")}
-												>
-													{copy.form.sizes.map((value, index) => (
-														<option key={value} value={index ? value : ""}>
-															{value}
-														</option>
-													))}
-												</select>
 											</Field>
 										</div>
 										<Field

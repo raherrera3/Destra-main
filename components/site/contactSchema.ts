@@ -11,6 +11,7 @@ type Validation = {
 	name: string;
 	email: string;
 	company: string;
+	phone: string;
 	need: string;
 	context: string;
 };
@@ -26,12 +27,14 @@ export function createContactRequestSchema(
 		name: z.string().trim().min(2, messages.name).max(120, maximum(120)),
 		email: z.string().trim().email(messages.email).max(180, maximum(180)),
 		company: z.string().trim().min(2, messages.company).max(180, maximum(180)),
-		role: z.string().trim().max(120, maximum(120)).optional().default(""),
+		phone: z
+			.string()
+			.trim()
+			.regex(/^\+?[\d\s().-]{6,25}$/, messages.phone),
 		need: z
 			.array(z.enum(needValues))
 			.min(1, messages.need)
 			.max(needValues.length, messages.need),
-		size: z.string().trim().max(40, maximum(40)).optional().default(""),
 		context: z
 			.string()
 			.trim()
@@ -58,6 +61,7 @@ export const contactRequestSchema = createContactRequestSchema({
 	name: "Invalid name",
 	email: "Invalid email",
 	company: "Invalid organisation",
+	phone: "Invalid phone",
 	need: "Invalid need",
 	context: "Invalid context",
 });

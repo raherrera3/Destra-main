@@ -91,13 +91,13 @@ type SiteCopy = {
 		counter: string;
 		counterMin: string;
 		needs: Record<NeedValue, string>;
-		sizes: string[];
 		submit: string;
 		sending: string;
 		validation: {
 			name: string;
 			email: string;
 			company: string;
+			phone: string;
 			need: string;
 			context: string;
 		};
@@ -278,19 +278,18 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 			retry:
 				"Los datos permanecen en el formulario para que puedas intentarlo de nuevo.",
 			labels: {
-				name: "Nombre y apellidos",
+				name: "Nombre",
 				email: "Correo profesional",
 				company: "Empresa u organización",
-				role: "Cargo o área",
+				phone: "Teléfono",
 				need: "¿Qué necesitas abordar?",
-				size: "Tamaño de la organización",
 				context: "Cuéntanos el contexto",
 			},
 			hints: {
 				name: "Ej.: Laura Martín",
 				email: "nombre@empresa.com",
 				company: "Ej.: Grupo Hospitalario Norte",
-				role: "Ej.: Dirección, Tecnología",
+				phone: "Ej.: 600 123 456",
 				context:
 					"Proceso, objetivo, restricciones o plazo. No incluyas información confidencial.",
 			},
@@ -304,19 +303,13 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 				private: "IA privada u on-premise",
 				unclear: "Aún no lo tengo claro",
 			},
-			sizes: [
-				"Prefiero no indicarlo",
-				"1-49",
-				"50-249",
-				"250-999",
-				"1.000 o más",
-			],
 			submit: "Solicitar estudio sin compromiso",
 			sending: "Enviando…",
 			validation: {
-				name: "Indica tu nombre y apellidos",
+				name: "Indica tu nombre",
 				email: "Introduce un correo válido",
 				company: "Indica la empresa u organización",
+				phone: "Introduce un teléfono válido",
 				need: "Selecciona al menos una necesidad",
 				context: "Añade al menos 20 caracteres de contexto",
 			},
@@ -509,19 +502,18 @@ siteCopy.en = {
 		errorSummary: "Review the highlighted fields.",
 		retry: "Your details remain in the form so you can try again.",
 		labels: {
-			name: "Full name",
+			name: "Name",
 			email: "Work email",
 			company: "Company or organisation",
-			role: "Role or area",
+			phone: "Phone",
 			need: "What do you need to address?",
-			size: "Organisation size",
 			context: "Tell us the context",
 		},
 		hints: {
 			name: "e.g. Laura Martin",
 			email: "name@company.com",
 			company: "e.g. Northgate Health Group",
-			role: "e.g. Leadership, IT",
+			phone: "e.g. +34 600 123 456",
 			context:
 				"Process, objective, constraints or timeframe. Do not include confidential information.",
 		},
@@ -535,13 +527,13 @@ siteCopy.en = {
 			private: "Private or on-premise AI",
 			unclear: "Not sure yet",
 		},
-		sizes: ["Prefer not to say", "1-49", "50-249", "250-999", "1,000+"],
 		submit: "Let’s discuss your project",
 		sending: "Sending…",
 		validation: {
-			name: "Enter your full name",
+			name: "Enter your name",
 			email: "Enter a valid email address",
 			company: "Enter your company or organisation",
+			phone: "Enter a valid phone number",
 			need: "Select at least one need",
 			context: "Add at least 20 characters of context",
 		},
