@@ -8,8 +8,7 @@ import { useEffect, useRef } from "react";
 // mientras un cursor lo dibuja: caja arrastrada, texto tecleado o trazo de
 // pluma. Cada componente se construye una sola vez (a lo sumo con una guía
 // previa), siempre empezando por el titular; sin nada a la vista, los cursores
-// persiguen al ratón a distancia apuntándole, lo rondan como tiburones si se
-// para y, sin ratón, deambulan como insectos, hasta que se hace scroll.
+// esperan recogidos en una esquina hasta que el scroll trae más trabajo.
 // Se anima fuera de React: cada cursor es un generador que avanza un fotograma
 // por llamada a next(dt).
 
@@ -44,7 +43,7 @@ const TITLES = "h1, h2, h3";
 const BLUE = "#0D99FF";
 const RED = "#F24822";
 const TOP = 80; // alto del header fijo
-const PATIENCE = 5; // s a la vista sin cursor libre antes de mostrarlo sin más
+const PATIENCE = 7; // s a la vista sin cursor libre antes de mostrarlo sin más
 
 // Formas de cursor de swarm-site: [svg, origen x, origen y].
 type Shape = "arrow" | "pen" | "ibeam" | "ew" | "ns";
@@ -86,14 +85,12 @@ type Cursor = {
 	y: number;
 	px: number;
 	angle: number;
-	aim: number | null; // orientación pedida por idle() en este fotograma
 	press: number;
 	op: number;
 	shape: Shape;
 	drawn: Shape | null;
 	color: string;
-	slot: number; // ángulo propio alrededor del ratón en espera
-	orbit: number; // ángulo actual en esa órbita
+	slot: number; // su sitio en el corro de la esquina
 	unit: HTMLElement | null;
 	ov: (() => string) | null;
 	gen: Task;
@@ -106,12 +103,6 @@ const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 const ease = (t: number) =>
 	t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
 const n = (v: number) => v.toFixed(1);
-// Ángulos normalizados a (-π, π] y (-180, 180].
-const wrap = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
-const wrapDeg = (d: number) => (wrap((d * Math.PI) / 180) * 180) / Math.PI;
-// Giro (en grados) para que la punta de la flecha, que apunta a -135°, mire
-// en la dirección `rad`.
-const aimAt = (rad: number) => (rad * 180) / Math.PI + 135;
 
 // Rectángulo en coordenadas de documento: cursores y trazos viajan con el
 // contenido al hacer scroll.
@@ -232,26 +223,6 @@ export default function BuilderCursors() {
 		const seen = new WeakMap<Element, number>();
 		let clock = 0;
 		let cache: HTMLElement[] | null = null;
-		let mouse: Pt | null = null; // en coordenadas de viewport
-		let mouseAt = 0; // último movimiento, en la escala de `clock`
-		const onMove = (e: PointerEvent) => {
-			mouse = { x: e.clientX, y: e.clientY };
-			mouseAt = performance.now() / 1000;
-		};
-		const onLeave = () => {
-			mouse = null;
-		};
-		// En táctil solo hay "ratón" mientras el dedo toca la pantalla; al
-		// soltarlo (o al empezar a desplazar, que cancela el puntero) vuelven a
-		// deambular como insectos en vez de rondar el último toque para siempre.
-		const onLift = (e: PointerEvent) => {
-			if (e.pointerType !== "mouse") mouse = null;
-		};
-		window.addEventListener("pointerdown", onMove, { passive: true });
-		window.addEventListener("pointermove", onMove, { passive: true });
-		window.addEventListener("pointerup", onLift, { passive: true });
-		window.addEventListener("pointercancel", onLift, { passive: true });
-		html.addEventListener("mouseleave", onLeave);
 
 		const done = (el: HTMLElement) => {
 			el.style.clipPath = "";
@@ -349,7 +320,7 @@ export default function BuilderCursors() {
 			const from = { x: c.x, y: c.y };
 			const p0 = to();
 			const d =
-				o.dur ?? clamp(Math.hypot(p0.x - c.x, p0.y - c.y) / 1800, 0.18, 0.55);
+				o.dur ?? clamp(Math.hypot(p0.x - c.x, p0.y - c.y) / 2800, 0.12, 0.35);
 			const bow = o.bend ?? rand(-0.12, 0.12);
 			let t = 0;
 			while (t < d) {
@@ -367,7 +338,7 @@ export default function BuilderCursors() {
 		}
 		function* click(c: Cursor): Task {
 			c.press = 1;
-			yield* wait(0.06);
+			yield* wait(0.04);
 		}
 		function* hold(c: Cursor, s: number, pin: () => Pt): Task {
 			let left = s;
@@ -378,9 +349,9 @@ export default function BuilderCursors() {
 		}
 		function* fade(c: Cursor): Task {
 			let t = 0;
-			while (t < 0.2) {
+			while (t < 0.12) {
 				t += yield;
-				c.op = Math.max(0, 1 - t / 0.2);
+				c.op = Math.max(0, 1 - t / 0.12);
 			}
 			c.ov = null;
 			c.op = 1;
@@ -409,82 +380,28 @@ export default function BuilderCursors() {
 				stay(c, dt);
 			}
 		}
-		// En espera. Con el ratón moviéndose, lo persiguen a cierta distancia
-		// (cada uno en su hueco de un anillo) y le apuntan. Con el ratón quieto,
-		// le dan vueltas como tiburones: más rápido, cada uno a su ritmo y
-		// abriéndose y cerrándose, mirando hacia donde nadan. Sin ratón,
-		// deambulan por la pantalla como insectos: rachas cortas con giros
-		// nerviosos y pausas, mirando hacia donde van.
+		// En espera (nada a la vista por construir): se recogen en la esquina
+		// inferior derecha, en dos columnas y por encima del botón fijo del móvil,
+		// y acompañan al viewport al hacer scroll. Una vez llegan se quedan un mínimo
+		// aunque aparezca trabajo: sin esto iban y volvían de la esquina sin parar.
+		// Si aún van de camino (p. ej. esperando a que acabe un titular), vuelven al
+		// trabajo en cuanto lo hay, para no frenar la construcción.
 		function* idle(c: Cursor): Task {
-			let heading = rand(0, Math.PI * 2);
-			let speed = 0;
-			let moving = false;
-			let timer = 0;
-			let shark = 0; // 0 persiguiendo, 1 rondando; se mezcla para no dar saltos
-			while (!free().length) {
+			let dwell = rand(1.5, 2.5);
+			let parked = false;
+			while (!free().length || (parked && dwell > 0)) {
 				const dt = yield;
-				if (mouse) {
-					const mx = window.scrollX + mouse.x;
-					const my = window.scrollY + mouse.y;
-					const still = clock - mouseAt > 0.5;
-					shark += ((still ? 1 : 0) - shark) * Math.min(1, dt * 3);
-					const lerp = (a: number, b: number) => a + (b - a) * shark;
-					// Quien alcanza al de delante frena: se reparten la órbita en vez
-					// de nadar en parejas con las etiquetas pisándose.
-					let crowd = 0;
-					for (const o of cursors) {
-						const ahead = wrap(o.orbit - c.orbit);
-						if (o !== c && ahead > 0 && ahead < 0.7) crowd += 0.7 - ahead;
-					}
-					c.orbit +=
-						Math.max(
-							0.1,
-							lerp(0.25, 1.4 + 0.3 * Math.sin(c.slot * 2.3)) -
-								crowd * 2 * shark,
-						) * dt;
-					const r = lerp(
-						95 + 20 * Math.sin(clock * 0.8 + c.slot * 3),
-						115 + 30 * Math.sin(clock * 0.6 + c.slot * 2),
-					);
-					const k = Math.min(1, dt * lerp(2.5, 5));
-					const ox = c.x;
-					const oy = c.y;
-					c.x += (mx + Math.cos(c.orbit) * r - c.x) * k;
-					c.y += (my + Math.sin(c.orbit) * r - c.y) * k;
-					if (shark > 0.5) {
-						if (Math.hypot(c.x - ox, c.y - oy) > 0.2)
-							heading = Math.atan2(c.y - oy, c.x - ox);
-					} else heading = Math.atan2(my - c.y, mx - c.x);
-					c.aim = aimAt(heading);
-					continue;
-				}
-				shark = 0;
-				timer -= dt;
-				if (timer <= 0) {
-					moving = !moving || Math.random() < 0.35;
-					timer = moving ? rand(0.4, 1.6) : rand(0.3, 1.4);
-					if (moving) heading += rand(-1.3, 1.3);
-				}
-				heading += rand(-5, 5) * dt;
-				// Fuera de la zona visible (p. ej. tras un scroll): volver al centro.
-				const left = window.scrollX + 30;
-				const right = window.scrollX + window.innerWidth - 60;
-				const top = window.scrollY + TOP + 20;
-				const bottom = window.scrollY + window.innerHeight - 50;
-				if (c.x < left || c.x > right || c.y < top || c.y > bottom) {
-					const home = Math.atan2(
-						(top + bottom) / 2 - c.y,
-						(left + right) / 2 - c.x,
-					);
-					heading += wrap(home - heading) * Math.min(1, dt * 8);
-					moving = true;
-					timer = Math.max(timer, 0.3);
-					stay(c, dt);
-				}
-				speed += ((moving ? 150 : 0) - speed) * Math.min(1, dt * 8);
-				c.x += Math.cos(heading) * speed * dt;
-				c.y += Math.sin(heading) * speed * dt;
-				c.aim = aimAt(heading);
+				if (parked) dwell -= dt;
+				const cta = document
+					.querySelector(".mobile-cta")
+					?.getBoundingClientRect();
+				const floor = cta?.height ? cta.top - 12 : window.innerHeight - 24;
+				const tx = window.scrollX + window.innerWidth - 165 + (c.slot % 2) * 75;
+				const ty = window.scrollY + floor - 108 + Math.floor(c.slot / 2) * 26;
+				const k = Math.min(1, dt * 4);
+				c.x += (tx - c.x) * k;
+				c.y += (ty - c.y) * k;
+				if (Math.hypot(tx - c.x, ty - c.y) < 12) parked = true;
 			}
 		}
 
@@ -514,7 +431,7 @@ export default function BuilderCursors() {
 				return box(k, BLUE) + size(k);
 			};
 			yield* moveTo(c, corner, {
-				dur: rand(0.25, 0.45),
+				dur: rand(0.15, 0.28),
 				bend: rand(-0.04, 0.04),
 				each: () => {
 					const b = pageRect(el);
@@ -527,7 +444,7 @@ export default function BuilderCursors() {
 				const b = pageRect(el);
 				return box(b, BLUE, true) + size(b);
 			};
-			yield* hold(c, rand(0.2, 0.4), corner);
+			yield* hold(c, rand(0.08, 0.16), corner);
 		}
 
 		function* guide(c: Cursor, el: HTMLElement): Task {
@@ -570,9 +487,9 @@ export default function BuilderCursors() {
 						) + badge(c.x + 34, c.y - 8, `${Math.round(c.y - sy)}`, RED);
 				return snap ? g + box(pageRect(el), RED) : g;
 			};
-			yield* moveTo(c, snapped, { dur: rand(0.25, 0.4), bend: 0 });
+			yield* moveTo(c, snapped, { dur: rand(0.15, 0.25), bend: 0 });
 			snap = true;
-			yield* hold(c, 0.2, snapped);
+			yield* hold(c, 0.1, snapped);
 			yield* fade(c);
 			c.shape = "arrow";
 		}
@@ -592,7 +509,7 @@ export default function BuilderCursors() {
 				);
 			};
 			const total = textLines(el).reduce((s, l) => s + l.w, 0);
-			const dur = clamp(total / 2200, 0.2, 0.8);
+			const dur = clamp(total / 3500, 0.12, 0.45);
 			let t = 0;
 			while (t < dur) {
 				t += yield;
@@ -603,7 +520,7 @@ export default function BuilderCursors() {
 			}
 			done(el);
 			c.ov = () => box(pageRect(el), BLUE);
-			yield* hold(c, rand(0.15, 0.3), () => at().end);
+			yield* hold(c, rand(0.06, 0.12), () => at().end);
 		}
 
 		function* buildPen(c: Cursor, el: HTMLElement): Task {
@@ -640,12 +557,12 @@ export default function BuilderCursors() {
 			}
 			// Trazado cerrado: el contenido se abre desde el centro.
 			let t = 0;
-			while (t < 0.25) {
+			while (t < 0.15) {
 				t += yield;
-				el.style.clipPath = `inset(${n(50 * (1 - ease(Math.min(1, t / 0.25))))}%)`;
+				el.style.clipPath = `inset(${n(50 * (1 - ease(Math.min(1, t / 0.15))))}%)`;
 			}
 			done(el);
-			yield* hold(c, 0.2, () => corners()[0]);
+			yield* hold(c, 0.08, () => corners()[0]);
 		}
 
 		function* build(c: Cursor, el: HTMLElement): Task {
@@ -653,7 +570,7 @@ export default function BuilderCursors() {
 			if (kind === "pen") return yield* buildPen(c, el);
 			if (kind === "box") return yield* buildBox(c, el);
 			// Segunda pasada opcional: guía previa en los titulares.
-			const g = el.matches("h1, h2") ? 0.7 : el.matches("h3") ? 0.25 : 0;
+			const g = el.matches("h1, h2") ? 0.4 : 0;
 			if (Math.random() < g) yield* guide(c, el);
 			yield* buildText(c, el);
 		}
@@ -668,7 +585,7 @@ export default function BuilderCursors() {
 					yield* build(c, el);
 					if (c.ov) yield* fade(c);
 					release(c);
-					yield* rest(c, rand(0.05, 0.2));
+					yield* rest(c, rand(0.02, 0.08));
 					continue;
 				}
 				// Nada que construir a la vista: esperar al scroll.
@@ -688,14 +605,12 @@ export default function BuilderCursors() {
 				y: window.scrollY + rand(0.25, 0.75) * window.innerHeight,
 				px: x,
 				angle: 0,
-				aim: null,
 				press: 0,
 				op: 1,
 				shape: "arrow",
 				drawn: null,
 				color,
-				slot: (i / CURSORS.length) * Math.PI * 2,
-				orbit: (i / CURSORS.length) * Math.PI * 2,
+				slot: i,
 				unit: null,
 				ov: null,
 				gen: wait(0),
@@ -723,7 +638,7 @@ export default function BuilderCursors() {
 			const speed = Math.abs(sy - lastScroll) / Math.max(dt, 0.001);
 			vel += (speed - vel) * Math.min(1, dt * 6);
 			lastScroll = sy;
-			const tempo = clamp(1 + free().length * 0.06 + vel / 1500, 1, 2.6);
+			const tempo = clamp(1 + free().length * 0.1 + vel / 1500, 1, 3);
 
 			let next = "";
 			for (const c of cursors) {
@@ -738,12 +653,7 @@ export default function BuilderCursors() {
 				const vx = (c.x - c.px) / Math.max(dt, 0.001);
 				c.px = c.x;
 				const tilt = c.shape === "arrow" ? clamp(vx / 120, -14, 14) : 0;
-				// En espera manda la orientación que fija idle(); si no, una leve
-				// inclinación según la velocidad. Siempre por el giro más corto.
-				const target = c.aim ?? tilt;
-				c.aim = null;
-				c.angle += wrapDeg(target - c.angle) * Math.min(1, dt * 10);
-				c.angle = wrapDeg(c.angle);
+				c.angle += (tilt - c.angle) * Math.min(1, dt * 10);
 				if (c.shape !== c.drawn) {
 					c.svg.innerHTML = SHAPES[c.shape][0](c.color);
 					c.drawn = c.shape;
@@ -765,11 +675,6 @@ export default function BuilderCursors() {
 
 		return () => {
 			cancelAnimationFrame(raf);
-			window.removeEventListener("pointerdown", onMove);
-			window.removeEventListener("pointermove", onMove);
-			window.removeEventListener("pointerup", onLift);
-			window.removeEventListener("pointercancel", onLift);
-			html.removeEventListener("mouseleave", onLeave);
 			// Lo que estuviera a medio construir queda visible.
 			for (const c of cursors) if (c.unit) done(c.unit);
 			host.replaceChildren();
