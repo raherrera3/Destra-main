@@ -261,7 +261,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
 		cookies: {
 			title: "Tu privacidad, bajo control",
 			description:
-				"Guardamos únicamente la preferencia necesaria para respetar tu elección de privacidad.",
+				"Usamos cookies de analítica (Google Analytics, vía Google Tag Manager) solo si las aceptas, para medir el uso de la web.",
 			accept: "Aceptar",
 			reject: "Rechazar",
 			configure: "Configurar",
@@ -486,7 +486,7 @@ siteCopy.en = {
 	cookies: {
 		title: "Your privacy, under your control",
 		description:
-			"We only store the necessary preference needed to respect your privacy choice.",
+			"We use analytics cookies (Google Analytics, via Google Tag Manager) only if you accept them, to measure how the site is used.",
 		accept: "Accept",
 		reject: "Reject",
 		configure: "Configure",

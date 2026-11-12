@@ -125,8 +125,10 @@ export default async function PrivacyPage({ params }: { params: Params }) {
 			<section id="cookies">
 				<h2>7. Information about cookies</h2>
 				<p>
-					This site only stores the privacy preference in the browser in order
-					to respect the user's choice.
+					This site stores the privacy preference in the browser in order to
+					respect the user's choice. Only if the user accepts, it also uses
+					analytics cookies from Google Analytics, loaded through Google Tag
+					Manager (Google Ireland Ltd.), to measure aggregate use of the site.
 				</p>
 				<p>
 					This choice can be accepted, rejected or changed at any time from the
@@ -240,8 +242,11 @@ export default async function PrivacyPage({ params }: { params: Params }) {
 			<section id="cookies">
 				<h2>7. Información sobre cookies</h2>
 				<p>
-					Este sitio guarda únicamente la preferencia de privacidad en el
-					navegador para respetar la elección del usuario.
+					Este sitio guarda la preferencia de privacidad en el navegador para
+					respetar la elección del usuario. Solo si el usuario las acepta, usa
+					además cookies de analítica de Google Analytics, cargadas mediante
+					Google Tag Manager (Google Ireland Ltd.), para medir el uso agregado
+					de la web.
 				</p>
 				<p>
 					Se puede aceptar, rechazar o modificar esta elección en cualquier

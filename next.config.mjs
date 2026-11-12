@@ -2,13 +2,16 @@
 // script-src lo exigen el script de tema y los de hidratación de Next.
 // ponytail: CSP estática para no perder el prerender; con nonce por petición
 // (middleware) se quitaría 'unsafe-inline', pero todas las páginas pasarían a dinámicas.
+// Google Tag Manager / GA4: gtm.js y los envíos de analítica.
+const google =
+	"https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com";
 const csp = [
 	"default-src 'self'",
-	`script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""} https://challenges.cloudflare.com`,
+	`script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""} https://challenges.cloudflare.com ${google}`,
 	"style-src 'self' 'unsafe-inline'",
-	"img-src 'self' data: blob:",
+	`img-src 'self' data: blob: ${google}`,
 	"font-src 'self'",
-	"connect-src 'self' https://challenges.cloudflare.com",
+	`connect-src 'self' https://challenges.cloudflare.com ${google}`,
 	"frame-src https://challenges.cloudflare.com",
 	"object-src 'none'",
 	"base-uri 'self'",

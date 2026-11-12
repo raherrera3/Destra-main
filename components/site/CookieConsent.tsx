@@ -48,6 +48,15 @@ export function CookieConsentProvider({
 			} catch {
 				// The current visit still honours the selection when storage is blocked.
 			}
+			// Consent Mode v2: el valor por defecto lo fija el script de GTM en layout.tsx.
+			(window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.(
+				"consent",
+				"update",
+				{
+					analytics_storage:
+						nextConsent === "accepted" ? "granted" : "denied",
+				},
+			);
 			setConsent(nextConsent);
 			setPreferencesOpen(false);
 		},
