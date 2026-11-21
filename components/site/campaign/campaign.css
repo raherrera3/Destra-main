@@ -1,0 +1,399 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+ * Landings de campaña. Solo añade lo que globals.css no tiene y todo cuelga de
+ * .campaign, así que no puede alterar la home. Colores: siempre roles y tokens
+ * de la hoja principal, nunca valores nuevos.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.campaign-br {
+	display: none;
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────────── */
+
+.campaign .campaign-hero .hero-grid h1 {
+	max-width: none;
+	font-size: clamp(2.6rem, 6.4vw, 6.25rem);
+	line-height: 0.98;
+}
+
+.campaign-diagram {
+	display: none;
+}
+
+/* ── Rejillas y tarjetas ──────────────────────────────────────────────── */
+
+.campaign .campaign-grid {
+	margin-top: clamp(2.5rem, 5vw, 4rem);
+	grid-template-columns: 1fr;
+}
+
+.campaign .campaign-grid--joined {
+	margin-top: 1rem;
+}
+
+.campaign .campaign-card {
+	min-height: 13rem;
+	padding: clamp(1.25rem, 2vw, 1.75rem);
+	border: 1px solid var(--line-strong);
+	background: color-mix(in srgb, var(--fg) 5%, transparent);
+}
+
+.campaign .campaign-card .tile__top {
+	padding-bottom: 2rem;
+}
+
+.campaign .campaign-card > p {
+	margin: auto 0 0;
+	color: var(--ink);
+	font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+	line-height: 1.32;
+	letter-spacing: -0.012em;
+}
+
+.campaign .campaign-card h3 {
+	max-width: none;
+	margin: 0 0 0.6rem;
+	font-size: clamp(1.35rem, 2vw, 1.75rem);
+	line-height: 1.08;
+	letter-spacing: -0.03em;
+}
+
+.campaign .campaign-card .section-index {
+	margin-bottom: 2rem;
+}
+
+.campaign .campaign-card h3 + p {
+	margin: 0;
+	color: var(--ink-soft);
+	font-size: 1rem;
+	line-height: 1.5;
+}
+
+.campaign-hour {
+	color: var(--accent);
+	font-size: clamp(3rem, 5.5vw, 4.75rem);
+	font-weight: 500;
+	line-height: 0.9;
+	letter-spacing: -0.045em;
+}
+
+.campaign .campaign-panel {
+	min-height: 0;
+	margin-top: 1rem;
+	padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.campaign .campaign-panel .section-index {
+	margin-bottom: 1rem;
+}
+
+.campaign .campaign-panel > p {
+	max-width: 44ch;
+	margin: 0;
+	color: var(--ink);
+	font-size: clamp(1.3rem, 2.3vw, 2rem);
+	line-height: 1.2;
+	letter-spacing: -0.022em;
+}
+
+/* ── Protocolo 5D ─────────────────────────────────────────────────────── */
+
+.campaign-tracks {
+	display: none;
+}
+
+.campaign-protocol .process-step__num {
+	margin-bottom: 1rem;
+	font-family: var(--font-mono-stack);
+	font-size: 0.72rem;
+	line-height: 1.4;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.campaign-protocol .campaign-steps {
+	margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.campaign-protocol .campaign-step--final {
+	border-top-color: var(--accent);
+}
+
+.campaign-protocol .campaign-step--final h3 {
+	color: var(--accent);
+}
+
+.campaign-protocol .button-group {
+	margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+/* ── Cierre y contacto ────────────────────────────────────────────────── */
+
+.campaign-closing h2 {
+	max-width: 18ch;
+	margin: 0;
+	font-size: clamp(2.5rem, 6vw, 5.75rem);
+	font-weight: 500;
+	line-height: 1;
+	letter-spacing: -0.04em;
+}
+
+.campaign .contact-copy h2 {
+	font-size: clamp(2.75rem, 7vw, 6.5rem);
+	line-height: 0.96;
+	letter-spacing: -0.045em;
+}
+
+/* ── Diagramas del hero ───────────────────────────────────────────────── */
+
+.campaign-orbit {
+	position: relative;
+	aspect-ratio: 1;
+}
+
+.campaign-orbit > svg:first-child {
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+.campaign-orbit text {
+	font: 500 9px var(--font-mono-stack);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.campaign-orbit__logo {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 11%;
+	height: auto;
+	transform: translate(-50%, -50%);
+}
+
+.campaign-platform {
+	display: flex;
+	flex-direction: column;
+	font-family: var(--font-mono-stack);
+	font-size: 0.625rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.campaign-platform__source {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-inline: 0.5rem;
+	padding: 0.75rem;
+	border: 1px solid var(--line-strong);
+	border-radius: var(--radius-sm);
+	background: var(--bg);
+}
+
+.campaign-platform__source > div {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 0.375rem;
+	color: var(--ink-muted);
+}
+
+.campaign-platform__source i {
+	display: block;
+	width: 80%;
+	height: 0.25rem;
+	border-radius: 999px;
+	background: var(--line-strong);
+}
+
+.campaign-platform__source i:last-child {
+	width: 50%;
+	background: var(--line);
+}
+
+.campaign-platform__source b {
+	width: 4rem;
+	height: 1.5rem;
+	border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.campaign-platform__links {
+	display: flex;
+	height: 1.5rem;
+	justify-content: space-around;
+}
+
+.campaign-platform__links span {
+	border-left: 1px dashed color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+.campaign-platform__core {
+	padding: 1rem;
+	border-radius: var(--radius-sm);
+	color: var(--paper);
+	background: linear-gradient(135deg, var(--blue), var(--electric));
+}
+
+.campaign-platform__core > span {
+	display: block;
+	margin-bottom: 0.5rem;
+	opacity: 0.85;
+}
+
+.campaign-platform__core strong {
+	display: block;
+	font-family: var(--font-sans);
+	font-size: 1.25rem;
+	font-weight: 500;
+	line-height: 1.2;
+	letter-spacing: -0.01em;
+	text-transform: none;
+}
+
+.campaign-platform__systems {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 0.5rem;
+}
+
+.campaign-platform__systems span {
+	display: grid;
+	height: 2.5rem;
+	place-items: center;
+	border: 1px solid var(--line-strong);
+	border-radius: 0.375rem;
+	background: var(--bg);
+	letter-spacing: 0;
+}
+
+.campaign-platform__caption {
+	margin-top: 0.75rem;
+	color: var(--ink-muted);
+	text-align: center;
+}
+
+/* ── Adaptación ───────────────────────────────────────────────────────── */
+
+@media (min-width: 621px) {
+	.campaign .campaign-grid--2,
+	.campaign .campaign-grid--3,
+	.campaign .campaign-grid--4 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 861px) {
+	.campaign-br {
+		display: inline;
+	}
+
+	.campaign .campaign-steps--4 {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+
+	.campaign .campaign-steps--5 {
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+	}
+
+	.campaign-tracks {
+		display: grid;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		gap: 1rem;
+		margin-top: clamp(2.5rem, 5vw, 4rem);
+		color: var(--ink-muted);
+		font-family: var(--font-mono-stack);
+		font-size: 0.72rem;
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.campaign-tracks span:first-child {
+		grid-column: span 4;
+	}
+
+	.campaign-tracks span:last-child {
+		color: var(--accent);
+	}
+
+	.campaign-tracks + .campaign-steps {
+		margin-top: 1rem;
+	}
+
+	.campaign-diagram {
+		display: block;
+		grid-column: 2;
+		grid-row: 1 / span 3;
+		align-self: center;
+		justify-self: end;
+		width: 100%;
+		max-width: 21rem;
+	}
+
+	.campaign-hero--diagram .hero-grid {
+		grid-template-columns: minmax(0, 1.4fr) minmax(16rem, 0.6fr);
+	}
+
+	.campaign-hero--diagram .hero-grid > h1,
+	.campaign-hero--diagram .hero-kicker,
+	.campaign-hero--diagram .hero-aside {
+		grid-column: 1;
+	}
+
+	.campaign .campaign-hero--diagram .hero-grid h1 {
+		font-size: clamp(2.75rem, 5.2vw, 5rem);
+	}
+
+	.campaign-hero--diagram .hero-facts {
+		grid-column: 1 / -1;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		column-gap: 1.5rem;
+	}
+
+	.campaign-hero--diagram .hero-facts li {
+		grid-template-columns: 1fr;
+		gap: 0.5rem;
+		border-bottom: 0;
+	}
+
+	.campaign-hero--diagram .hero-facts span {
+		text-align: left;
+	}
+}
+
+@media (min-width: 1025px) {
+	.campaign .campaign-grid--3 {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.campaign .campaign-grid--4 {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+/* En móvil los titulares fluyen: los saltos pensados para escritorio dejarían
+ * líneas cortas o se saldrían de la pantalla. */
+@media (max-width: 620px) {
+	.campaign h1 br,
+	.campaign h2 br {
+		display: none;
+	}
+
+	.campaign .campaign-card {
+		min-height: 0;
+	}
+
+	.campaign .campaign-card .tile__top {
+		padding-bottom: 1.25rem;
+	}
+
+	.campaign .campaign-card .section-index {
+		margin-bottom: 1rem;
+	}
+}

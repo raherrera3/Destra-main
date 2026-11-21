@@ -6,6 +6,7 @@ import Script from "next/script";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useLocale } from "./LocaleProvider";
+import type { CampaignFormCopy } from "./campaign/content/types";
 import {
 	type ContactRequest,
 	type NeedValue,
@@ -74,8 +75,13 @@ function Field({
 		</label>
 	);
 }
-export default function ContactExperience() {
+export default function ContactExperience({
+	campaign,
+}: { campaign?: CampaignFormCopy & { need: NeedValue } }) {
 	const { copy, locale } = useLocale();
+	// En las landings: textos propios y la necesidad ya marcada.
+	const contact = { ...copy.contact, submit: copy.form.submit, ...campaign };
+	const initialNeed: NeedValue[] = campaign ? [campaign.need] : [];
 	const [drawerOpen, setDrawerOpen] = useState(false);
 	const [sent, setSent] = useState(false);
 	const [serverError, setServerError] = useState("");
@@ -110,7 +116,7 @@ export default function ContactExperience() {
 			email: "",
 			company: "",
 			phone: "",
-			need: [],
+			need: initialNeed,
 			context: "",
 			website: "",
 			startedAt: startedAt.current,
@@ -277,7 +283,7 @@ export default function ContactExperience() {
 				email: "",
 				company: "",
 				phone: "",
-				need: [],
+				need: initialNeed,
 				context: "",
 				website: "",
 				startedAt: startedAt.current,
@@ -311,16 +317,16 @@ export default function ContactExperience() {
 				<div className="container contact-intro">
 					<div className="contact-copy">
 						<h2 id="contact-title">
-							{copy.contact.title}
+							{contact.title}
 							<span className="accent-text">.</span>
 						</h2>
-						<p>{copy.contact.lead}</p>
+						<p>{contact.lead}</p>
 						<button
 							className="button button--primary contact-open"
 							type="button"
 							data-contact-open
 						>
-							{copy.contact.open}
+							{contact.open}
 							<span className="button__icon">
 								<ArrowUpRight aria-hidden />
 							</span>
@@ -356,10 +362,10 @@ export default function ContactExperience() {
 						</DialogPrimitive.Close>
 						<header className="contact-drawer__header">
 							<DialogPrimitive.Title className="contact-drawer__title">
-								{copy.contact.title}
+								{contact.title}
 							</DialogPrimitive.Title>
 							<DialogPrimitive.Description className="contact-drawer__lead">
-								{copy.contact.lead}
+								{contact.lead}
 							</DialogPrimitive.Description>
 						</header>
 						<div className="form-panel">
@@ -607,7 +613,7 @@ export default function ContactExperience() {
 											type="submit"
 											disabled={isSubmitting}
 										>
-											{isSubmitting ? copy.form.sending : copy.form.submit}{" "}
+											{isSubmitting ? copy.form.sending : contact.submit}{" "}
 											<ArrowUpRight aria-hidden />
 										</button>
 									</div>

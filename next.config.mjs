@@ -38,6 +38,15 @@ const nextConfig = {
 	},
 	async redirects() {
 		return [
+			// Landings sin idioma → español. Temporal mientras el cliente las valida;
+			// Next conserva la query (gclid, utm_*) en la redirección.
+			...["diagnostico-gratuito", "partner-ia", "plataformas-sistemas-a-medida"].map(
+				(slug) => ({
+					source: `/${slug}`,
+					destination: `/es/${slug}`,
+					permanent: false,
+				}),
+			),
 			{ source: "/privacidad", destination: "/es/privacidad", permanent: true },
 			{
 				source: "/terminos-y-condiciones",
