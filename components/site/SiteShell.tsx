@@ -6,8 +6,12 @@ import EnterpriseHome from "./EnterpriseHome";
 import { LocaleProvider, useLocale } from "./LocaleProvider";
 import SiteFooter from "./SiteFooter";
 import SiteHeader from "./SiteHeader";
+import type { ShellCampaign } from "./campaign/content/types";
 import type { Locale } from "./siteCopy";
-function ShellContent() {
+function ShellContent({
+	campaign,
+	children,
+}: { campaign?: ShellCampaign; children?: React.ReactNode }) {
 	const { copy } = useLocale();
 	return (
 		<>
@@ -48,23 +52,31 @@ function ShellContent() {
 			<div className="page-particles" aria-hidden="true">
 				<Particles />
 			</div>
-			<SiteHeader />
+			<SiteHeader campaign={campaign} />
 			<main id="contenido">
-				<EnterpriseHome />
+				{children ?? <EnterpriseHome />}
 			</main>
-			<SiteFooter />
+			<SiteFooter onCampaign={!!campaign} />
 			<BuilderCursors />
 			<a className="mobile-cta button button--primary" href="#contacto">
-				{copy.hero.primary}
+				{campaign?.cta ?? copy.hero.primary}
 			</a>
 			<CookieConsentBanner />
 		</>
 	);
 }
-export default function SiteShell({ locale }: { locale: Locale }) {
+export default function SiteShell({
+	locale,
+	campaign,
+	children,
+}: {
+	locale: Locale;
+	campaign?: ShellCampaign;
+	children?: React.ReactNode;
+}) {
 	return (
 		<LocaleProvider locale={locale}>
-			<ShellContent />
+			<ShellContent campaign={campaign}>{children}</ShellContent>
 		</LocaleProvider>
 	);
 }

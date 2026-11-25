@@ -2493,6 +2493,21 @@ main,
 	justify-content: flex-end;
 }
 
+/* El texto cede el espacio: los botones no se parten en dos filas. */
+.cookie-banner > div:first-child {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.cookie-banner__actions {
+	flex: 0 0 auto;
+	flex-wrap: nowrap;
+}
+
+.cookie-banner .button {
+	white-space: nowrap;
+}
+
 .cookie-banner .button,
 .cookie-dialog .button {
 	min-height: 2.6rem;
@@ -2804,12 +2819,14 @@ main,
 		bottom: max(5.25rem, calc(env(safe-area-inset-bottom) + 4.5rem));
 	}
 
+	/* Tres columnas iguales: los botones siguen en una fila también en móvil. */
 	.cookie-banner__actions {
-		justify-content: stretch;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 
 	.cookie-banner__actions .button {
-		flex: 1 1 8rem;
+		padding-inline: 0.5rem;
 	}
 
 	.legal-page__header {

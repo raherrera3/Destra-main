@@ -5,16 +5,25 @@ import BrandLogo from "./BrandLogo";
 import { useCookieConsent } from "./CookieConsent";
 import { useLocale } from "./LocaleProvider";
 
-export default function SiteFooter() {
+export default function SiteFooter({
+	onCampaign = false,
+}: { onCampaign?: boolean }) {
 	const { copy, locale } = useLocale();
 	const { openPreferences } = useCookieConsent();
-	const navigation = ["#inicio", "#servicios", "#faq", "#contacto"];
+	// Fuera de la home, sus anclas necesitan la ruta; el formulario está en ambas.
+	const home = onCampaign ? `/${locale}` : "";
+	const navigation = [
+		home || "#inicio",
+		`${home}#servicios`,
+		`${home}#faq`,
+		"#contacto",
+	];
 
 	return (
 		<footer className="site-footer">
 			<div className="container footer-grid">
 				<div className="footer-brand">
-					<Link href="#inicio" aria-label={copy.header.home}>
+					<Link href={home || "#inicio"} aria-label={copy.header.home}>
 						<BrandLogo />
 					</Link>
 					<p>{copy.footer.summary}</p>

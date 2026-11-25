@@ -7,14 +7,17 @@ import BrandLogo from "./BrandLogo";
 import LanguageToggle from "./LanguageToggle";
 import { useLocale } from "./LocaleProvider";
 import ThemeToggle from "./ThemeToggle";
+import type { ShellCampaign } from "./campaign/content/types";
 
-export default function SiteHeader() {
-	const { copy } = useLocale();
+export default function SiteHeader({
+	campaign,
+}: { campaign?: ShellCampaign }) {
+	const { copy, locale } = useLocale();
 	const [open, setOpen] = useState(false);
 	const id = useId();
 	const toggle = useRef<HTMLButtonElement>(null);
 	const panel = useRef<HTMLDivElement>(null);
-	const nav = [
+	const nav = campaign?.nav ?? [
 		["#inicio", copy.navLabels.home],
 		["#servicios", copy.navLabels.services],
 		["#faq", copy.navLabels.faq],
@@ -59,7 +62,7 @@ export default function SiteHeader() {
 			<div className="header-shell glass-surface">
 				<Link
 					className="brand"
-					href="#inicio"
+					href={campaign ? `/${locale}` : "#inicio"}
 					aria-label={copy.header.home}
 					onClick={close}
 				>
@@ -76,7 +79,7 @@ export default function SiteHeader() {
 					<ThemeToggle />
 					<LanguageToggle />
 					<Link className="button button--primary header-cta" href="#contacto">
-						{copy.header.cta}
+						{campaign?.cta ?? copy.header.cta}
 					</Link>
 				</div>
 				<button
@@ -112,7 +115,7 @@ export default function SiteHeader() {
 						href="#contacto"
 						onClick={close}
 					>
-						{copy.header.cta}
+						{campaign?.cta ?? copy.header.cta}
 					</Link>
 				</nav>
 			</div>

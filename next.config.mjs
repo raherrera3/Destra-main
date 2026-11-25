@@ -3,8 +3,9 @@
 // ponytail: CSP estática para no perder el prerender; con nonce por petición
 // (middleware) se quitaría 'unsafe-inline', pero todas las páginas pasarían a dinámicas.
 // Google Tag Manager / GA4: gtm.js y los envíos de analítica.
+// Google Ads (GTM-PCFLL3MK): conversiones, remarketing y pings de Consent Mode.
 const google =
-	"https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com";
+	"https://www.googletagmanager.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googleadservices.com https://*.doubleclick.net https://www.google.com https://www.google.es https://pagead2.googlesyndication.com";
 const csp = [
 	"default-src 'self'",
 	`script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""} https://challenges.cloudflare.com ${google}`,
@@ -12,7 +13,7 @@ const csp = [
 	`img-src 'self' data: blob: ${google}`,
 	"font-src 'self'",
 	`connect-src 'self' https://challenges.cloudflare.com ${google}`,
-	"frame-src https://challenges.cloudflare.com",
+	"frame-src https://challenges.cloudflare.com https://www.googletagmanager.com https://*.doubleclick.net",
 	"object-src 'none'",
 	"base-uri 'self'",
 	"form-action 'self'",
@@ -38,6 +39,15 @@ const nextConfig = {
 	},
 	async redirects() {
 		return [
+			// Landings sin idioma → español. Temporal mientras el cliente las valida;
+			// Next conserva la query (gclid, utm_*) en la redirección.
+			...["diagnostico-gratuito", "partner-ia", "plataformas-sistemas-a-medida"].map(
+				(slug) => ({
+					source: `/${slug}`,
+					destination: `/es/${slug}`,
+					permanent: false,
+				}),
+			),
 			{ source: "/privacidad", destination: "/es/privacidad", permanent: true },
 			{
 				source: "/terminos-y-condiciones",

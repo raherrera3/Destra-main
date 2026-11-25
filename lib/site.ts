@@ -2,6 +2,14 @@ import { type Locale, siteCopy } from "@/components/site/siteCopy";
 
 export const siteUrl = "https://www.destra.es";
 
+// Landings de campaña: una ruta por slug en app/[lang]/.
+export const campaignSlugs = [
+	"diagnostico-gratuito",
+	"partner-ia",
+	"plataformas-sistemas-a-medida",
+] as const;
+export type CampaignSlug = (typeof campaignSlugs)[number];
+
 // Dónde se activan los cursores constructores (BuilderCursors y el script de
 // pre-pintado del layout): en cualquier dispositivo salvo con reduced-motion.
 export const builderMedia = "(prefers-reduced-motion: no-preference)";
