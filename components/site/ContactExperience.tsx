@@ -1,4 +1,5 @@
 "use client";
+import { trackEvent, trackLead } from "@/lib/analytics";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { AlertCircle, ArrowUpRight, CheckCircle2, X } from "lucide-react";
@@ -244,6 +245,12 @@ export default function ContactExperience({
 	useEffect(() => {
 		if (submitCount && Object.keys(errors).length) summary.current?.focus();
 	}, [errors, submitCount]);
+	useEffect(() => {
+		if (drawerOpen)
+			trackEvent("contact_form_open", {
+				form_location: window.location.pathname,
+			});
+	}, [drawerOpen]);
 	const submit = async (values: ContactRequest) => {
 		setServerError("");
 		if (!siteKey) {
@@ -277,6 +284,12 @@ export default function ContactExperience({
 				return;
 			}
 			setSent(true);
+			// Conversión para GA4 y Google Ads: solo cuando el servidor aceptó el lead.
+			trackLead({
+				form_location: window.location.pathname,
+				lead_need: values.need.join(","),
+				language: locale,
+			});
 			startedAt.current = Date.now();
 			reset({
 				name: "",

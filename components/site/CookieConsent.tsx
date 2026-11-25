@@ -1,5 +1,6 @@
 "use client";
 
+import { consentStorageKey, updateConsent } from "@/lib/analytics";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createContext, useContext } from "react";
@@ -17,7 +18,7 @@ type CookieConsentContextValue = {
 	closePreferences: () => void;
 };
 
-const STORAGE_KEY = "destra-cookie-consent-v1";
+const STORAGE_KEY = consentStorageKey;
 
 const CookieConsentContext = createContext<CookieConsentContextValue | null>(
 	null,
@@ -48,15 +49,7 @@ export function CookieConsentProvider({
 			} catch {
 				// The current visit still honours the selection when storage is blocked.
 			}
-			// Consent Mode v2: el valor por defecto lo fija el script de GTM en layout.tsx.
-			(window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.(
-				"consent",
-				"update",
-				{
-					analytics_storage:
-						nextConsent === "accepted" ? "granted" : "denied",
-				},
-			);
+			updateConsent(nextConsent === "accepted");
 			setConsent(nextConsent);
 			setPreferencesOpen(false);
 		},

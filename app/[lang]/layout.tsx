@@ -1,5 +1,6 @@
 import { CookieConsentProvider } from "@/components/site/CookieConsent";
 import { type Locale, locales } from "@/components/site/siteCopy";
+import { consentStorageKey, gtmIds } from "@/lib/analytics";
 import { builderMedia, campaignSlugs, siteUrl } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { Azeret_Mono } from "next/font/google";
@@ -25,11 +26,11 @@ const builderScript = `try{if(/^\\/(es|en)(\\/(${campaignSlugs.join("|")}))?\\/?
 
 // Cada idioma se sirve ya renderizado en su propia URL (/es, /en); la raíz
 // redirige según Accept-Language (middleware.ts).
-// Google Tag Manager con Consent Mode v2: la analítica queda denegada hasta que
-// el visitante acepta en el banner (CookieConsent.tsx actualiza el consentimiento).
-// La elección ya guardada se aplica aquí para que GTM arranque con ella.
-const GTM_ID = "GTM-K6MZDLPT";
-const gtmScript = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}var a="denied";try{if(localStorage.getItem("destra-cookie-consent-v1")==="accepted")a="granted"}catch(e){}gtag("consent","default",{analytics_storage:a,ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied"});gtag("js",new Date());`;
+// Google Tag Manager con Consent Mode v2: analítica y publicidad quedan denegadas
+// hasta que el visitante acepta en el banner (CookieConsent.tsx actualiza el
+// consentimiento). La elección ya guardada se aplica aquí para que GTM arranque
+// con ella. Contenedores e IDs: lib/analytics.ts.
+const gtmScript = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}var a="denied";try{if(localStorage.getItem(${JSON.stringify(consentStorageKey)})==="accepted")a="granted"}catch(e){}gtag("consent","default",{analytics_storage:a,ad_storage:a,ad_user_data:a,ad_personalization:a});gtag("set","ads_data_redaction",true);gtag("js",new Date());`;
 
 export const dynamicParams = false;
 export const generateStaticParams = () => locales.map((lang) => ({ lang }));
@@ -147,10 +148,13 @@ export default async function RootLayout({
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: script estático de GTM, sin datos externos.
 					dangerouslySetInnerHTML={{ __html: gtmScript }}
 				/>
-				<script
-					async
-					src={`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`}
-				/>
+				{gtmIds.map((id) => (
+					<script
+						key={id}
+						async
+						src={`https://www.googletagmanager.com/gtm.js?id=${id}`}
+					/>
+				))}
 			</head>
 			<body>
 				<CookieConsentProvider>{children}</CookieConsentProvider>

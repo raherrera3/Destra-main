@@ -127,8 +127,10 @@ export default async function PrivacyPage({ params }: { params: Params }) {
 				<p>
 					This site stores the privacy preference in the browser in order to
 					respect the user's choice. Only if the user accepts, it also uses
-					analytics cookies from Google Analytics, loaded through Google Tag
-					Manager (Google Ireland Ltd.), to measure aggregate use of the site.
+					analytics cookies from Google Analytics, to measure aggregate use of
+					the site, and advertising cookies from Google Ads, to measure the
+					results of our campaigns and show relevant ads. Both are loaded
+					through Google Tag Manager (Google Ireland Ltd.).
 				</p>
 				<p>
 					This choice can be accepted, rejected or changed at any time from the
@@ -244,9 +246,10 @@ export default async function PrivacyPage({ params }: { params: Params }) {
 				<p>
 					Este sitio guarda la preferencia de privacidad en el navegador para
 					respetar la elección del usuario. Solo si el usuario las acepta, usa
-					además cookies de analítica de Google Analytics, cargadas mediante
-					Google Tag Manager (Google Ireland Ltd.), para medir el uso agregado
-					de la web.
+					además cookies de analítica de Google Analytics, para medir el uso
+					agregado de la web, y cookies publicitarias de Google Ads, para medir
+					los resultados de nuestras campañas y mostrar anuncios relevantes.
+					Ambas se cargan mediante Google Tag Manager (Google Ireland Ltd.).
 				</p>
 				<p>
 					Se puede aceptar, rechazar o modificar esta elección en cualquier
